@@ -14,13 +14,17 @@ import java.util.List;
 @Component
 public class CoinMarket {
     private final RequestHelper requestHelper;
+    public static final int MAX_ELEMENTS = 1080;
+    public static final int LIMIT = 9;
+    public static final int MAX_PAGES = MAX_ELEMENTS/ LIMIT;
+
 
     public CoinMarket(RequestHelper requestHelper) {
         this.requestHelper = requestHelper;
     }
 
-    public List<Coin> findAll() {
-        HttpResponse<String> response = requestHelper.sendGetAllRequest();
+    public List<Coin> findAll(int page) {
+        HttpResponse<String> response = requestHelper.sendGetAllRequest(page);
 
         ObjectMapper objectMapper = new ObjectMapper();
         CoinData data;

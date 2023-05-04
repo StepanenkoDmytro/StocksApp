@@ -21,9 +21,11 @@ public class RequestHelper {
     @Value("${coincap.api.key}")
     private String API_KEY;
 
-    public HttpResponse<String> sendGetAllRequest() {
-//        URI uri = URI.create(BASE_URL + "?offset=2");
-        URI uri = URI.create(BASE_URL);
+    public HttpResponse<String> sendGetAllRequest(int page) {
+        page = page - 1;
+
+        String URL = BASE_URL + "?limit=" + CoinMarket.LIMIT + "&offset=" + page*CoinMarket.LIMIT;
+        URI uri = URI.create(URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)

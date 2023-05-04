@@ -2,10 +2,12 @@ package com.stock.service.Coincap;
 
 import com.stock.api.CoinMarket;
 import com.stock.api.entity.Coin;
+import com.stock.dto.CoinDto;
 import com.stock.service.CoinService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CoinCapServiceImpl implements CoinService {
@@ -16,14 +18,16 @@ public class CoinCapServiceImpl implements CoinService {
     }
 
     @Override
-    public List<Coin> getAllCoins() {
-        List<Coin> coins = coinMarket.findAll();
-        return coins;
+    public List<CoinDto> getAllCoins(int page) {
+        List<Coin> list = coinMarket.findAll(page);
+        return list.stream()
+                .map(CoinDto::mapCoinToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Coin getByTicker(String ticker) {
+    public CoinDto getByTicker(String ticker) {
         Coin coin = coinMarket.findByTicker(ticker);
-        return coin;
+        return CoinDto.mapCoinToDto(coin);
     }
 }

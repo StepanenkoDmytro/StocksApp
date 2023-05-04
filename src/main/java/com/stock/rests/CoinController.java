@@ -17,15 +17,11 @@ public class CoinController {
         this.coinService = coinService;
     }
 
-    @GetMapping("/")
-    public List<CoinDto> getList(){
-        List<Coin> coins = coinService.getAllCoins();
-        return coins.stream().map(CoinDto::mapCoinToDto).collect(Collectors.toList());
-    }
+//    @GetMapping("/")
+//    public List<CoinDto> getList(){
+//        List<Coin> coins = coinService.getAllCoins();
+//        return coins.stream().map(CoinDto::mapCoinToDto).collect(Collectors.toList());
+//    }
 
-    @GetMapping("/{ticker}")
-    public CoinDto getByTicker(@PathVariable String ticker){
-        Coin coin = coinService.getByTicker(ticker);
-        return CoinDto.mapCoinToDto(coin);
-    }
+
 }
