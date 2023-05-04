@@ -1,7 +1,7 @@
-package com.stock.controllers;
+package com.stock.rests;
 
 import com.stock.dto.CoinDto;
-import com.stock.model.Coin;
+import com.stock.api.entity.Coin;
 import com.stock.service.CoinService;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,7 +1,7 @@
 package com.stock.service.Coincap;
 
-import com.stock.helpers.CoinMarket;
-import com.stock.model.Coin;
+import com.stock.api.CoinMarket;
+import com.stock.api.entity.Coin;
 import com.stock.service.CoinService;
 import org.springframework.stereotype.Service;
 

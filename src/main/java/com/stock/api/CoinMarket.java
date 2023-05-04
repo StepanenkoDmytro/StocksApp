@@ -1,11 +1,11 @@
-package com.stock.helpers;
+package com.stock.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stock.exceptions.RequestException;
-import com.stock.model.Coin;
-import com.stock.helpers.wrappers.CoinData;
-import com.stock.helpers.wrappers.CoinWrapper;
+import com.stock.api.entity.Coin;
+import com.stock.api.wrappers.CoinData;
+import com.stock.api.wrappers.CoinWrapper;
 import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;

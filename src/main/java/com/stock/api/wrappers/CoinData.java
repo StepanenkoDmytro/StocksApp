@@ -1,7 +1,7 @@
-package com.stock.helpers.wrappers;
+package com.stock.api.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stock.model.Coin;
+import com.stock.api.entity.Coin;
 import lombok.Data;
 
 import java.util.List;

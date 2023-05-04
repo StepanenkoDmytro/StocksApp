@@ -1,6 +1,6 @@
 package com.stock.service;
 
-import com.stock.model.Coin;
+import com.stock.api.entity.Coin;
 
 import java.util.List;
 

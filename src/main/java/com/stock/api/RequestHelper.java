@@ -1,4 +1,4 @@
-package com.stock.helpers;
+package com.stock.api;
 
 
 import com.stock.exceptions.RequestException;
@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+
 @PropertySource("classpath:api_keys.properties")
 @Component
 public class RequestHelper {
@@ -21,9 +22,11 @@ public class RequestHelper {
     private String API_KEY;
 
     public HttpResponse<String> sendGetAllRequest() {
+//        URI uri = URI.create(BASE_URL + "?offset=2");
+        URI uri = URI.create(BASE_URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(BASE_URL))
+                .uri(uri)
                 .headers("Accept-Encoding", "deflate")
                 .headers("Authorization", API_KEY)
                 .build();
