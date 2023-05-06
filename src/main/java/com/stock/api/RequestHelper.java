@@ -24,7 +24,7 @@ public class RequestHelper {
     public HttpResponse<String> sendGetAllRequest(int page) {
         page = page - 1;
 
-        String URL = BASE_URL + "?limit=" + CoinMarket.LIMIT + "&offset=" + page*CoinMarket.LIMIT;
+        String URL = BASE_URL + "?limit=" + CoinMarket.LIMIT + "&offset=" + page * CoinMarket.LIMIT;
         URI uri = URI.create(URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
