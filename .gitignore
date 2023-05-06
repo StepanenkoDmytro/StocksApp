@@ -18,6 +18,7 @@ mvn/
 api_keys.properties
 
 ### IntelliJ IDEA ###
+.mvn
 .idea
 *.iws
 *.iml

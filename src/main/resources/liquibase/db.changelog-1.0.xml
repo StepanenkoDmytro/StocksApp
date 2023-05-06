@@ -18,6 +18,10 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
+            <column name="image_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -100,5 +104,45 @@
             <column name="name" value="ROLE_ADMIN"/>
         </insert>
     </changeSet>
+
+    <changeSet id="1.0.6" author="dmytro.stepanenko">
+        <createTable tableName="images">
+            <column name="image_id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="image_name" type="VARCHAR(200)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="image_origin_file_name" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="image_size" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="image_content_type" type="VARCHAR(300)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bytes" type="BLOB" >
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.0.7" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="image_id"
+                                 baseTableName="users"
+                                 constraintName="fk_images_user_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="image_id"
+                                 referencedTableName="images"/>
+    </changeSet>
+
 
 </databaseChangeLog>

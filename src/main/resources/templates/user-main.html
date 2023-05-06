@@ -15,14 +15,21 @@
 </header>
 <div class="container mt-50">
     <h2>User profile:</h2>
-    <div th:each="el : ${user}" class="alert alert-info mt-2">
-        <p th:text="'Username: ' + ${el.username}"/>
-        <p th:text="'Email: ' + ${el.email}"/>
-<!--        <div class="btn-group" role="group" aria-label="Basic example">-->
-<!--            <a th:href="'/api/v1/user/' + ${el.id} + '/edit'" class="btn btn-secondary">Edit</a>-->
-<!--        </div>-->
+    <form action="/api/v1/user/upload-photo" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" class="form-control">
+        <button type="submit" class="btn btn-success">save</button>
+    </form> <br>
+    <div style="display: inline-block;">
+        <img th:if="${user.image != null}" th:src="'/images/' + ${user.image.getId}" height="300"/>
+        <img th:unless="${user.image != null}" src="/img/non-user-photo.png" alt="Preview image" height="300" style="vertical-align: middle;">
+    </div>
+    <div class="alert alert-info mt-2" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+        <p th:text="'Username: ' + ${user.username}"/>
+        <p th:text="'Email: ' + ${user.email}"/>
     </div>
 </div>
+
 <div th:replace="~{blocks/footer :: footer}"></div>
+
 </body>
 </html>

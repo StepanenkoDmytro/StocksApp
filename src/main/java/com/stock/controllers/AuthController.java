@@ -1,6 +1,7 @@
 package com.stock.controllers;
 
 import com.stock.model.User;
+import com.stock.repository.UserRepository;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import java.util.Optional;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserRepository userRepository,UserService userService) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
@@ -39,7 +42,7 @@ public class AuthController {
         if(bindingResult.hasErrors()){
             return "registration";
         }
-        Optional<User> userFromDb = userService.getUserByEmail(user.getEmail());
+        Optional<User> userFromDb = userRepository.findByEmail(user.getEmail());
         if (userFromDb.isPresent()) {
             model.addAttribute("message", "User exists!");
             return "registration";
