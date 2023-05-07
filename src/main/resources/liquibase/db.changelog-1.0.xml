@@ -127,7 +127,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="bytes" type="BLOB" >
+            <column name="bytes" type="BLOB">
                 <constraints nullable="false"/>
             </column>
 

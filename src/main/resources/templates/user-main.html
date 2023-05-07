@@ -18,15 +18,68 @@
     <form action="/api/v1/user/upload-photo" method="post" enctype="multipart/form-data">
         <input type="file" name="file" class="form-control">
         <button type="submit" class="btn btn-success">save</button>
-    </form> <br>
+    </form>
+    <br>
     <div style="display: inline-block;">
         <img th:if="${user.image != null}" th:src="'/images/' + ${user.image.getId}" height="300"/>
-        <img th:unless="${user.image != null}" src="/img/non-user-photo.png" alt="Preview image" height="300" style="vertical-align: middle;">
+        <img th:unless="${user.image != null}" src="/img/non-user-photo.png" alt="Preview image" height="300"
+             style="vertical-align: middle;">
     </div>
-    <div class="alert alert-info mt-2" style="display: inline-block; vertical-align: middle; margin-left: 10px;">
+    <div class="alert alert-info mt-2" style="display: inline-block; vertical-align: middle; margin-left: 10px; width: 600px; height: 300px;">
         <p th:text="'Username: ' + ${user.username}"/>
         <p th:text="'Email: ' + ${user.email}"/>
+        <button onclick="toggleDiv()" class="btn btn-success">Create Wallet</button>
+        <div id="myDiv" style="display: none; inline-block; vertical-align: middle; margin-top: 10px;">
+            <form action="/api/v1/user/account" method="post">
+                <input type="text" name="account_name" placeholder="Введіть назву гаманця" class="form-control">
+                <button type="submit" class="btn btn-success">Create</button>
+            </form>
+        </div>
+
+        <div class="container mt-50">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Wallets list</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <div th:each="wallet : ${user.accounts}">
+                    <tbody>
+                    <tr>
+                        <td>
+<!--                            <p th:text="${wallet.account_name}"/><br>-->
+                            <a th:text="${wallet.account_name}" th:href="'/api/v1/user/account/' + ${wallet.id}"/><br>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+<!--                                <form th:action="'/api/v1/blog/' + ${post.id} + '/remove'" method="post">-->
+<!--                                    <button class="btn btn-secondary" type="submit">Видалити</button>-->
+<!--                                </form>-->
+                                Видалити
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </div>
+            </table>
+        </div>
     </div>
+
+
+
+    <script>
+    function toggleDiv() {
+        var x = document.getElementById("myDiv");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    </script>
+
 </div>
 
 <div th:replace="~{blocks/footer :: footer}"></div>
