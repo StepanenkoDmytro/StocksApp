@@ -1,11 +1,13 @@
 package com.stock.model.account;
 
 import com.stock.model.BaseEntity;
+import com.stock.model.user.Status;
 import com.stock.model.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table(name = "accounts")
@@ -26,6 +28,13 @@ public class Account extends BaseEntity {
     @Column(name = "account_type")
     private AccountType account_type;
 
-    @Column(name = "balance")
+    @Column(name = "balance", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal balance;
+
+    @PrePersist
+    @Override
+    public void prePersist() {
+        super.prePersist();
+        balance = new BigDecimal(0);
+    }
 }
