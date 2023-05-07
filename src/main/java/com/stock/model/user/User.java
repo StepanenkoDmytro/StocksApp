@@ -1,8 +1,11 @@
-package com.stock.model;
+package com.stock.model.user;
 
+import com.stock.model.BaseEntity;
+import com.stock.model.account.Account;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,4 +32,17 @@ public class User extends BaseEntity {
             fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id")
     private Image image;
+
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+            CascadeType.REFRESH,CascadeType.MERGE},
+            mappedBy = "user")
+    private List<Account> accounts;
+
+    public void addAccount(Account account){
+        if(accounts == null) {
+            accounts = new ArrayList<>();
+        }
+        accounts.add(account);
+        account.setUser(this);
+    }
 }

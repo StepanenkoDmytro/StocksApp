@@ -1,9 +1,9 @@
 package com.stock.security;
 
 
-import com.stock.model.Role;
-import com.stock.model.Status;
-import com.stock.model.User;
+import com.stock.model.user.Role;
+import com.stock.model.user.Status;
+import com.stock.model.user.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

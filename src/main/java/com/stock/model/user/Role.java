@@ -1,4 +1,6 @@
-package com.stock.model;
+package com.stock.model.user;
+
+import com.stock.model.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;

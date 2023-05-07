@@ -1,4 +1,4 @@
-package com.stock.model;
+package com.stock.model.user;
 
 import lombok.Data;
 

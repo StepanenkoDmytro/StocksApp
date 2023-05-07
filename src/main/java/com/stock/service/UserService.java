@@ -1,7 +1,6 @@
 package com.stock.service;
 
-import com.stock.model.User;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.stock.model.user.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

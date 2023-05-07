@@ -1,7 +1,7 @@
 package com.stock.security;
 
-import com.stock.model.User;
-import com.stock.repository.UserRepository;
+import com.stock.model.user.User;
+import com.stock.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

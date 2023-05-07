@@ -1,7 +1,7 @@
 package com.stock.controllers;
 
-import com.stock.model.User;
-import com.stock.repository.UserRepository;
+import com.stock.model.user.User;
+import com.stock.repository.user.UserRepository;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

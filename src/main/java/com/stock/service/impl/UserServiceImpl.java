@@ -1,12 +1,12 @@
 package com.stock.service.impl;
 
 
-import com.stock.model.Image;
-import com.stock.model.Role;
-import com.stock.model.Status;
-import com.stock.model.User;
-import com.stock.repository.RoleRepository;
-import com.stock.repository.UserRepository;
+import com.stock.model.user.Image;
+import com.stock.model.user.Role;
+import com.stock.model.user.Status;
+import com.stock.model.user.User;
+import com.stock.repository.user.RoleRepository;
+import com.stock.repository.user.UserRepository;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

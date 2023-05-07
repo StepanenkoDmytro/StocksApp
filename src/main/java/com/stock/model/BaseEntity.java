@@ -1,5 +1,6 @@
 package com.stock.model;
 
+import com.stock.model.user.Status;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,4 +29,11 @@ public class BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @PrePersist
+    public void prePersist() {
+        created = new Date();
+        updated = new Date();
+        status = Status.ACTIVE;
+    }
 }

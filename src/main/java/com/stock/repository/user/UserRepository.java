@@ -1,6 +1,6 @@
-package com.stock.repository;
+package com.stock.repository.user;
 
-import com.stock.model.User;
+import com.stock.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
