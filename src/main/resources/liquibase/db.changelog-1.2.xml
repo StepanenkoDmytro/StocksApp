@@ -55,4 +55,102 @@
                                  referencedTableName="users"/>
     </changeSet>
 
+    <changeSet id="1.2.2" author="dmytro.stepanenko">
+        <createTable tableName="payments">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="beneficiary" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="beneficiary_acc_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="reference_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status_payment" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reason_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.2.3" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="payments"
+                                 constraintName="fk_payments_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.2.4" author="dmytro.stepanenko">
+        <createTable tableName="transacts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="transaction_type" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="source" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status_transact" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reason_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.2.5" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="transacts"
+                                 constraintName="fk_transacts_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
 </databaseChangeLog>

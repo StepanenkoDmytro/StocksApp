@@ -7,7 +7,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "accounts")
@@ -30,6 +32,32 @@ public class Account extends BaseEntity {
 
     @Column(name = "balance", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal balance;
+
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+            CascadeType.REFRESH,CascadeType.MERGE},
+            mappedBy = "account")
+    private List<Payment> payments;
+
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+            CascadeType.REFRESH,CascadeType.MERGE},
+            mappedBy = "account")
+    private List<Transact> transacts;
+
+    public void addTransact(Transact transact){
+        if(transacts == null){
+            transacts = new ArrayList<>();
+        }
+        transacts.add(transact);
+        transact.setAccount(this);
+    }
+
+    public void setPayment(Payment payment){
+        if(payments == null) {
+            payments = new ArrayList<>();
+        }
+        payments.add(payment);
+        payment.setAccount(this);
+    }
 
     @PrePersist
     @Override
