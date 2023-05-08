@@ -17,9 +17,30 @@
 </header>
 
 <div class="container">
-    <h2>Гаманець: [[${account.account_name}]]</h2>
-    <p>Тип аккаунту: [[${account.account_type}]]</p>
-    <h4>Баланс: [[${account.balance}]]</h4>
+    <h2 th:text="'Гаманець: ' + ${account.account_name}"></h2>
+    <p th:text="'Тип аккаунту: ' + ${account.account_type}"></p>
+    <h4 th:text="'Баланс: ' + ${account.balance} + '$'"></h4>
+
+    <button onclick="toggleDiv()" class="btn btn-success">Deposit</button>
+    <div id="myDiv" style="display: none; inline-block; vertical-align: middle; margin-top: 10px;">
+        <form action="/api/v1/user/account/deposit" method="post">
+            <input type="hidden" name="account_id" th:value="${account.id}">
+            <input type="text" name="deposit_amount" placeholder="Введіть суму депозиту" class="form-control">
+            <button type="submit" class="btn btn-success">Deposit</button>
+        </form>
+    </div>
+
+    <script>
+    function toggleDiv() {
+        var x = document.getElementById("myDiv");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    </script>
 </div>
 
 <div th:replace="~{blocks/footer :: footer}"></div>

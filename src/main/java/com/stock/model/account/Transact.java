@@ -1,5 +1,6 @@
 package com.stock.model.account;
 
+import com.stock.model.user.Status;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -31,4 +32,9 @@ public class Transact {
     @Column(name = "created")
     @CreatedDate
     private Date created;
+
+    @PrePersist
+    public void prePersist() {
+        created = new Date();
+    }
 }

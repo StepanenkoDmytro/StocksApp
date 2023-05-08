@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/api/v1/user/transact")
@@ -19,15 +20,6 @@ public class TransactController {
         this.paymentRepository = paymentRepository;
         this.transactRepository = transactRepository;
     }
-    @GetMapping("/deposit")
-    public String getDepositPage(){
 
-        return "deposit";
-    }
 
-    @PostMapping("/deposit")
-    public String deposit(){
-
-        return "redirect:/api/v1/user";
-    }
 }

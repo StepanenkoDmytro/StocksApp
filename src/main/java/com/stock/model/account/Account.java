@@ -1,14 +1,12 @@
 package com.stock.model.account;
 
 import com.stock.model.BaseEntity;
-import com.stock.model.user.Status;
 import com.stock.model.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
