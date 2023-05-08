@@ -3,6 +3,7 @@ package com.stock.model.user;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "images")
@@ -21,8 +22,9 @@ public class Image {
     @Column(name = "image_content_type")
     private String contentType;
     @Lob
-    @Column(name = "bytes")
+    @Column(name = "bytes", columnDefinition="LONGBLOB")
     private byte[] bytes;
+
     @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "image")
     private User user;
 }

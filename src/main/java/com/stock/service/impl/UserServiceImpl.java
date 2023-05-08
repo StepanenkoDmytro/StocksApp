@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         if (file.getSize() != 0) {
             image = toImageEntity(file);
             user.setImage(image);
+            image.setUser(user);
         }
         userRepository.save(user);
     }

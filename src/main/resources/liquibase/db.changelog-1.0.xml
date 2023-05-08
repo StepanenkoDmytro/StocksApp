@@ -127,10 +127,9 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="bytes" type="BLOB">
+            <column name="bytes" type="LONGBLOB">
                 <constraints nullable="false"/>
             </column>
-
         </createTable>
     </changeSet>
 
