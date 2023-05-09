@@ -41,6 +41,19 @@ public class Account extends BaseEntity {
             mappedBy = "account")
     private List<Transact> transacts;
 
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+            CascadeType.REFRESH,CascadeType.MERGE},
+            mappedBy = "account")
+    private List<AccountCoin> coins;
+
+    public void addCoins(AccountCoin coin) {
+        if(coins == null) {
+            coins = new ArrayList<>();
+        }
+        coins.add(coin);
+        coin.setAccount(this);
+    }
+
     public void addTransact(Transact transact){
         if(transacts == null){
             transacts = new ArrayList<>();

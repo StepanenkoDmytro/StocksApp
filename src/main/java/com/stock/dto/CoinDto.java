@@ -12,6 +12,7 @@ import java.math.RoundingMode;
 public class CoinDto {
     String id;
     String name;
+    String symbol;
     BigDecimal priceUSD;
     BigDecimal marketCapUsd;
 
@@ -22,6 +23,7 @@ public class CoinDto {
         return new CoinDto(
                 coin.getId(),
                 coin.getName(),
+                coin.getSymbol(),
                 valuePrice.setScale(2, RoundingMode.HALF_UP),
                 marketCapUsd.setScale(2, RoundingMode.HALF_UP)
                 );

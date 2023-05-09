@@ -3,7 +3,6 @@ package com.stock.model.user;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "images")

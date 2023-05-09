@@ -1,11 +1,13 @@
-package com.stock.controllers;
+package com.stock.rest;
 
 import com.stock.api.CoinMarket;
+import com.stock.dto.ClientCoin;
 import com.stock.dto.CoinDto;
 import com.stock.service.CoinService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -15,20 +17,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@Controller
-@RequestMapping("/api/v1/main")
-public class MainController {
+@RestController
+@RequestMapping("/api/v1/coins")
+@CrossOrigin
+public class CoinController {
     private final CoinService coinService;
 
-    public MainController(CoinService coinService) {
+    @Autowired
+    public CoinController(CoinService coinService) {
         this.coinService = coinService;
     }
 
     @GetMapping(value = {"/", ""})
-    public String main(@AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(required = false, defaultValue = "") String filter,
-                       @RequestParam Optional<Integer> page,
-                       Model model) {
+    public ResponseEntity<ClientCoin> main(@AuthenticationPrincipal UserDetails userDetails,
+                               @RequestParam(required = false, defaultValue = "") String filter,
+                               @RequestParam Optional<Integer> page) {
         int currentPage = page.orElse(1);
         int totalPages;
         int totalItems;
@@ -44,26 +47,19 @@ public class MainController {
             totalPages = 1;
             totalItems = coins.size();
         }
-
-        model.addAttribute("coins", coins);
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("filter", filter);
-        model.addAttribute("isAuthenticated", isAuthenticated);
-        return "main-list";
+        ClientCoin clientCoin = new ClientCoin(coins, totalPages, totalItems, currentPage);
+        return ResponseEntity.ok().body(clientCoin);
     }
 
     @GetMapping("/{coin_id}")
-    public String coin(@AuthenticationPrincipal UserDetails userDetails,
+    public ResponseEntity<CoinDto> coin(@AuthenticationPrincipal UserDetails userDetails,
                        @PathVariable(value = "coin_id") String coin_id,
                        Model model) {
         CoinDto coin = coinService.getByTicker(coin_id);
-        boolean isAuthenticated = userDetails != null;
-
-        model.addAttribute("coin", coin);
-        model.addAttribute("isAuthenticated", isAuthenticated);
-        return "coin";
+//        boolean isAuthenticated = userDetails != null;
+//
+//        model.addAttribute("coin", coin);
+//        model.addAttribute("isAuthenticated", isAuthenticated);
+        return ResponseEntity.ok().body(coin);
     }
 }

@@ -21,6 +21,26 @@
     </div>
 </div>
 
+<button onclick="toggleDiv()" class="btn btn-success">Deposit</button>
+<div id="myDiv" style="display: none; inline-block; vertical-align: middle; margin-top: 10px;">
+    <form action="/coin" method="post">
+        <input type="hidden" name="coin_id" th:value="${coin.id}">
+        <input type="text" name="amount" placeholder="Введіть суму купівлі" class="form-control">
+        <button type="submit" class="btn btn-success">Accept</button>
+    </form>
+</div>
+
+<script>
+    function toggleDiv() {
+        var x = document.getElementById("myDiv");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
+
 <div th:replace="~{blocks/footer :: footer}"></div>
 </body>
 </html>

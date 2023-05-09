@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(MAIN_ENDPOINT, ABOUT_ENDPOINT,AUTH_ENDPOINT).permitAll()
+                .antMatchers(MAIN_ENDPOINT, ABOUT_ENDPOINT,AUTH_ENDPOINT, "/api/v1/coins","/api/v1/coins/*").permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()

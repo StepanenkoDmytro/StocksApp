@@ -1,6 +1,7 @@
 package com.stock.model.account;
 
-import com.stock.model.user.Status;
+import com.stock.api.entity.Coin;
+import com.stock.dto.CoinDto;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -36,5 +37,15 @@ public class Transact {
     @PrePersist
     public void prePersist() {
         created = new Date();
+    }
+
+    public static Transact transactCOIN(String status, BigDecimal amount, CoinDto coin){
+        Transact transactLog = new Transact();
+        transactLog.setTransaction_type("BYU_COIN");
+        transactLog.setAmount(amount);
+        transactLog.setSource("online");
+        transactLog.setStatus(status);
+        transactLog.setReason_code("Buy_"+ coin.getId());
+        return transactLog;
     }
 }

@@ -137,7 +137,7 @@
             </column>
 
             <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
         </createTable>
@@ -147,6 +147,57 @@
         <addForeignKeyConstraint baseColumnNames="account_id"
                                  baseTableName="transacts"
                                  constraintName="fk_transacts_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.2.6" author="dmytro.stepanenko">
+        <createTable tableName="account_coins">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="id_coin" type="VARCHAR(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="symbol" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="amountCOIN" type="DECIMAL(10,10)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="amountUSD" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.2.7" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="account_coins"
+                                 constraintName="fk_account_coins_account_id"
                                  onDelete="CASCADE"
                                  onUpdate="RESTRICT"
                                  referencedColumnNames="id"
