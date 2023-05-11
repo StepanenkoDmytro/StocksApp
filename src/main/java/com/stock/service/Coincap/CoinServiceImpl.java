@@ -11,9 +11,9 @@ import com.stock.service.CoinService;
 import com.stock.service.TransactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,60 +46,63 @@ public class CoinServiceImpl implements CoinService {
         return CoinDto.mapCoinToDto(coin);
     }
 
+    @Override
     public BigDecimal getPriceByTicker(String ticker) {
         Coin coin = coinMarket.findByTicker(ticker);
         double price = Double.parseDouble(coin.getPriceUsd());
         return BigDecimal.valueOf(price);
     }
 
-    private boolean isContainsCoin(List<AccountCoin> coinsUser, AccountCoin coin) {
-        for (AccountCoin ac : coinsUser) {
-            if (ac.getId_coin().equals(coin.getId_coin())) {
-                return true;
-            }
+    @Override
+    @Transactional
+    public void updateCoinUser(BigDecimal amount, CoinDto coin, Account account) {
+        BigDecimal newBalance = account.getBalance().subtract(amount);
+        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
+
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            transactService.logRejected(amount, accountCoin, account);
+            return;
         }
-        return false;
+
+        List<AccountCoin> coinsUser = account.getCoins();
+
+        if (isContainsCoin(coinsUser, accountCoin)) {
+            updateExistingCoin(coinsUser, accountCoin);
+        } else {
+            addNewCoin(account, accountCoin);
+        }
+
+        accountRepository.changeAccountBalanceById(newBalance, account.getId());
+        transactService.logSuccess(amount, accountCoin, account);
+    }
+
+    private void updateExistingCoin(List<AccountCoin> coinsUser, AccountCoin accountCoin) {
+        AccountCoin existingCoin = getCoinFromUser(coinsUser, accountCoin);
+
+        BigDecimal newAmountCoin = existingCoin.getAmountCOIN().add(accountCoin.getAmountCOIN());
+        BigDecimal newAmountUSD = existingCoin.getAmountUSD().add(accountCoin.getAmountUSD());
+
+        existingCoin.setAmountCOIN(newAmountCoin);
+        existingCoin.setAmountUSD(newAmountUSD);
+
+        accountCoinRepository.save(existingCoin);
+    }
+
+    private void addNewCoin(Account account, AccountCoin accountCoin) {
+        account.addCoins(accountCoin);
+        accountCoinRepository.save(accountCoin);
+    }
+
+    private boolean isContainsCoin(List<AccountCoin> coinsUser, AccountCoin coin) {
+        return coinsUser.stream()
+                .anyMatch(c -> c.getId_coin().equals(coin.getId_coin()));
     }
 
     private AccountCoin getCoinFromUser(List<AccountCoin> coinsUser, AccountCoin coin) {
-        for (AccountCoin ac : coinsUser) {
-            if (ac.getId_coin().equals(coin.getId_coin())) {
-                return ac;
-            }
-        }
-        return coin;
+        return coinsUser.stream()
+                .filter(ac -> ac.getId_coin().equals(coin.getId_coin()))
+                .findFirst()
+                .orElse(coin);
     }
 
-    @Override
-    public void updateCoinUser(BigDecimal amount, CoinDto coin, Account account) {
-        BigDecimal newBalance = account.getBalance().subtract(amount);
-
-        if (newBalance.compareTo(BigDecimal.ZERO) >= 0) {
-
-
-            AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
-
-
-
-            List<AccountCoin> coinsUser = account.getCoins();
-            if (isContainsCoin(coinsUser, accountCoin)) {
-                AccountCoin c = getCoinFromUser(coinsUser, accountCoin);
-                BigDecimal newAmountCoin = c.getAmountCOIN().add(accountCoin.getAmountCOIN());
-                BigDecimal newAmountUSD = c.getAmountUSD().add(accountCoin.getAmountUSD());
-                c.setAmountCOIN(newAmountCoin);
-
-                c.setAmountUSD(newAmountUSD);
-
-                accountCoinRepository.save(c);
-            } else {
-                account.addCoins(accountCoin);
-                accountCoinRepository.save(accountCoin);
-            }
-
-            accountRepository.changeAccountBalanceById(newBalance, account.getId());
-            transactService.logSuccess(amount, coin, account);
-        } else {
-            transactService.logRejected(amount, coin, account);
-        }
-    }
 }

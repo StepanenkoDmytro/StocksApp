@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,7 @@ public class AccountCoin {
     @CreatedDate
     private Date created;
 
+
     public AccountCoin() {
     }
 
@@ -51,6 +53,7 @@ public class AccountCoin {
     public void prePersist() {
         created = new Date();
     }
+
 
     public static AccountCoin fromCoin(CoinDto coin, BigDecimal amountUSD){
         BigDecimal amountCOIN = CoinBuyHelper.convertCoinByAmount(amountUSD, coin.getPriceUSD());

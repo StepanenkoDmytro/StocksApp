@@ -39,13 +39,13 @@ public class Transact {
         created = new Date();
     }
 
-    public static Transact transactCOIN(String status, BigDecimal amount, CoinDto coin){
+    public static Transact transactCOIN(String status, BigDecimal amount, String coin){
         Transact transactLog = new Transact();
         transactLog.setTransaction_type("BYU_COIN");
         transactLog.setAmount(amount);
         transactLog.setSource("online");
         transactLog.setStatus(status);
-        transactLog.setReason_code("Buy_"+ coin.getId());
+        transactLog.setReason_code("Buy_"+ coin);
         return transactLog;
     }
 }
