@@ -3,7 +3,6 @@ package com.stock.controllers;
 import com.stock.helper.GenAccountNumber;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountType;
-import com.stock.model.account.Transact;
 import com.stock.model.user.User;
 import com.stock.repository.account.AccountRepository;
 import com.stock.repository.account.TransactRepository;
@@ -72,7 +71,7 @@ public class AccountController {
         long deposit = Long.parseLong(depositAmount);
         long accountId = Long.parseLong(accountID);
 
-        accountService.depositToAccount(user, accountId, BigDecimal.valueOf(deposit));
+        accountService.depositToAccountById(user, accountId, BigDecimal.valueOf(deposit));
         return "redirect:/api/v1/user/account/" + accountID;
     }
 }

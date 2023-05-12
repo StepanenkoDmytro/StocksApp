@@ -1,5 +1,7 @@
 package com.stock.service.impl;
 
+import com.stock.exceptions.AccountFetchException;
+import com.stock.exceptions.ImageNotFoundException;
 import com.stock.model.account.Account;
 import com.stock.model.account.Transact;
 import com.stock.model.user.User;
@@ -25,10 +27,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void depositToAccount(User user, Long accountID, BigDecimal deposit) {
+    public void depositToAccountById(User user, Long accountID, BigDecimal deposit) {
         BigDecimal balance = accountRepository.getAccountBalance(user.getId(), accountID);
         BigDecimal newBalance = balance.add( deposit );
-        Account account = accountRepository.findById(accountID).get();
+        Account account = accountRepository.findById(accountID).orElseThrow(
+                () -> new AccountFetchException(String.format("Account with id = %d not found", accountID)));
 
         accountRepository.changeAccountBalanceById(newBalance, accountID);
         transactService.logDepositSuccess(deposit, account);
