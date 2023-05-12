@@ -179,7 +179,7 @@
                 <constraints nullable="true"/>
             </column>
 
-            <column name="amountCOIN" type="DECIMAL(10,10)">
+            <column name="amountCOIN" type="DECIMAL(20,10)">
                 <constraints nullable="true"/>
             </column>
 

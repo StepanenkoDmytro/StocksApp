@@ -35,7 +35,7 @@ public class AccountCoin {
     @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal price;
 
-    @Column(name = "amountCOIN", columnDefinition = "DECIMAL(10,10)")
+    @Column(name = "amountCOIN", columnDefinition = "DECIMAL(20,10)")
     private BigDecimal amountCOIN;
 
     @Column(name = "amountUSD", columnDefinition = "DECIMAL(10,2)")

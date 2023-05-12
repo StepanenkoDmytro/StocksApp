@@ -3,11 +3,8 @@ package com.stock.controllers;
 import com.stock.dto.CoinDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;
-import com.stock.repository.account.AccountCoinRepository;
-import com.stock.repository.account.AccountRepository;
-import com.stock.repository.account.TransactRepository;
+import com.stock.service.AccountService;
 import com.stock.service.CoinService;
-import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,20 +17,13 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/coin")
 public class CoinPaymentController {
-    private final AccountRepository accountRepository;
-    private final UserService userService;
     private final CoinService coinService;
-    private final AccountCoinRepository accountCoinRepository;
-    private final TransactRepository transactRepository;
+    private final AccountService accountService;
 
     @Autowired
-    public CoinPaymentController(AccountRepository accountRepository, UserService userService, CoinService coinService, AccountCoinRepository accountCoinRepository,
-                                 TransactRepository transactRepository) {
-        this.accountRepository = accountRepository;
-        this.userService = userService;
+    public CoinPaymentController(CoinService coinService, AccountService accountService) {
         this.coinService = coinService;
-        this.accountCoinRepository = accountCoinRepository;
-        this.transactRepository = transactRepository;
+        this.accountService = accountService;
     }
 
     @PostMapping("")
@@ -42,7 +32,7 @@ public class CoinPaymentController {
                           @RequestParam("amount") String amount,
                           @AuthenticationPrincipal UserDetails userDetails) {
 
-        Account account = accountRepository.findById(1L).get();
+        Account account = accountService.getAccountById(1L);
         CoinDto coin = coinService.getByTicker(coin_id);
         BigDecimal amountUSD = CoinBuyHelper.convertToUSD(amount);
         coinService.updateCoinUser(amountUSD, coin, account);
