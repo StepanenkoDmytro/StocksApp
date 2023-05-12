@@ -60,7 +60,7 @@ public class CoinServiceImpl implements CoinService {
         AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-            transactService.logRejected(amount, accountCoin, account);
+            transactService.logCoinRejected(amount, accountCoin, account);
             return;
         }
 
@@ -73,7 +73,7 @@ public class CoinServiceImpl implements CoinService {
         }
 
         accountRepository.changeAccountBalanceById(newBalance, account.getId());
-        transactService.logSuccess(amount, accountCoin, account);
+        transactService.logCoinSuccess(amount, accountCoin, account);
     }
 
     @Transactional

@@ -4,19 +4,20 @@ import com.stock.helper.GenAccountNumber;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountType;
 import com.stock.model.account.Transact;
-import com.stock.model.user.Status;
 import com.stock.model.user.User;
 import com.stock.repository.account.AccountRepository;
 import com.stock.repository.account.TransactRepository;
+import com.stock.service.AccountService;
 import com.stock.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/api/v1/user/account")
@@ -25,12 +26,15 @@ public class AccountController {
     private final AccountRepository accountRepository;
     private final UserService userService;
     private final TransactRepository transactRepository;
+    private final AccountService accountService;
 
+    @Autowired
     public AccountController(AccountRepository accountRepository, UserService userService,
-                             TransactRepository transactRepository) {
+                             TransactRepository transactRepository, AccountService accountService) {
         this.accountRepository = accountRepository;
         this.userService = userService;
         this.transactRepository = transactRepository;
+        this.accountService = accountService;
     }
 
     @PostMapping("")
@@ -60,28 +64,15 @@ public class AccountController {
     }
 
     @PostMapping("/deposit")
+    @Transactional
     public String deposit(@RequestParam("deposit_amount") String depositAmount,
                           @RequestParam("account_id") String accountID,
                           @AuthenticationPrincipal UserDetails userDetails) {
         User user = userService.getUserByEmail(userDetails.getUsername());
-        Long deposit = Long.parseLong(depositAmount);
-        Long accountId = Long.parseLong(accountID);
+        long deposit = Long.parseLong(depositAmount);
+        long accountId = Long.parseLong(accountID);
 
-        BigDecimal balance = accountRepository.getAccountBalance(user.getId(), accountId);
-        BigDecimal newBalance = balance.add( BigDecimal.valueOf(deposit) );
-        Account account = accountRepository.findById(accountId).get();
-
-        accountRepository.changeAccountBalanceById(newBalance, accountId);
-        Transact transact = new Transact();
-        transact.setTransaction_type("deposit");
-        transact.setAmount(newBalance);
-        transact.setSource("online");
-        transact.setStatus("success");
-        transact.setReason_code("Deposit Transaction Successful");
-        transact.setAccount(account);
-        account.addTransact(transact);
-        transactRepository.save(transact);
-
+        accountService.depositToAccount(user, accountId, BigDecimal.valueOf(deposit));
         return "redirect:/api/v1/user/account/" + accountID;
     }
 }

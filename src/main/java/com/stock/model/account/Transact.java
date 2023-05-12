@@ -48,4 +48,14 @@ public class Transact {
         transactLog.setReason_code("Buy_"+ coin);
         return transactLog;
     }
+
+    public static Transact transactDeposit(BigDecimal deposit){
+        Transact transact = new Transact();
+        transact.setTransaction_type("deposit");
+        transact.setAmount(deposit);
+        transact.setSource("online");
+        transact.setStatus("success");
+        transact.setReason_code("Deposit Transaction Successful");
+        return transact;
+    }
 }
