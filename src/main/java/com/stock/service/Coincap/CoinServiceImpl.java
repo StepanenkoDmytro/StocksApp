@@ -76,6 +76,7 @@ public class CoinServiceImpl implements CoinService {
         transactService.logSuccess(amount, accountCoin, account);
     }
 
+    @Transactional
     private void updateExistingCoin(List<AccountCoin> coinsUser, AccountCoin accountCoin) {
         AccountCoin existingCoin = getCoinFromUser(coinsUser, accountCoin);
 
@@ -88,6 +89,7 @@ public class CoinServiceImpl implements CoinService {
         accountCoinRepository.save(existingCoin);
     }
 
+    @Transactional
     private void addNewCoin(Account account, AccountCoin accountCoin) {
         account.addCoins(accountCoin);
         accountCoinRepository.save(accountCoin);
