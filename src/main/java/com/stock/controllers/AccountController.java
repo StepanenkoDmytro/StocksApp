@@ -30,17 +30,9 @@ public class AccountController {
 
     @PostMapping("")
     public String createAccount(@AuthenticationPrincipal UserDetails userDetails,
-                                @RequestParam String account_name) {
-        Account account = new Account();
+                                @RequestParam String accountName) {
         User user = userService.getUserByEmail(userDetails.getUsername());
-
-        account.setAccount_name(account_name);
-        account.setAccount_type(AccountType.CryptoWallet);
-
-        account.setAccount_number(GenAccountNumber.generateAccountNumber());
-
-        user.addAccount(account);
-        userService.saveUser(user);
+        accountService.createAccount(accountName, user);
         return "redirect:/api/v1/user";
     }
 
