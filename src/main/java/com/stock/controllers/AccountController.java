@@ -4,8 +4,6 @@ import com.stock.helper.GenAccountNumber;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountType;
 import com.stock.model.user.User;
-import com.stock.repository.account.AccountRepository;
-import com.stock.repository.account.TransactRepository;
 import com.stock.service.AccountService;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +19,12 @@ import java.math.BigDecimal;
 @Controller
 @RequestMapping("/api/v1/user/account")
 public class AccountController {
-
-    private final AccountRepository accountRepository;
     private final UserService userService;
-    private final TransactRepository transactRepository;
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(AccountRepository accountRepository, UserService userService,
-                             TransactRepository transactRepository, AccountService accountService) {
-        this.accountRepository = accountRepository;
+    public AccountController(UserService userService, AccountService accountService) {
         this.userService = userService;
-        this.transactRepository = transactRepository;
         this.accountService = accountService;
     }
 
@@ -52,11 +44,11 @@ public class AccountController {
         return "redirect:/api/v1/user";
     }
 
-    @GetMapping("/{account_id}")
-    public String getData(@PathVariable Long account_id,
+    @GetMapping("/{accountID}")
+    public String getData(@PathVariable Long accountID,
                           @AuthenticationPrincipal UserDetails userDetails,
                           Model model) {
-        Account account = accountRepository.findById(account_id).get();
+        Account account = accountService.getAccountById(accountID);
         model.addAttribute("account", account);
         model.addAttribute("isAuthenticated", true);
         return "account";

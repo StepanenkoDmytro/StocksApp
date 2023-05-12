@@ -26,6 +26,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getAccountById(Long accountID){
+        Account account = accountRepository.findById(accountID).orElseThrow(
+                () -> new AccountFetchException(String.format("Account with id = %d not found", accountID)));
+        return account;
+    }
+
+    @Override
     @Transactional
     public void depositToAccountById(User user, Long accountID, BigDecimal deposit) {
         BigDecimal balance = accountRepository.getAccountBalance(user.getId(), accountID);
