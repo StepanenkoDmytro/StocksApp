@@ -1,8 +1,6 @@
 package com.stock.controllers;
 
-import com.stock.helper.GenAccountNumber;
 import com.stock.model.account.Account;
-import com.stock.model.account.AccountType;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.UserService;

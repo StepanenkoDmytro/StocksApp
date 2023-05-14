@@ -35,7 +35,7 @@ public class CoinPaymentController {
         Account account = accountService.getAccountById(1L);
         CoinDto coin = coinService.getByTicker(coin_id);
         BigDecimal amountUSD = CoinBuyHelper.convertToUSD(amount);
-        coinService.updateCoinUser(amountUSD, coin, account);
+        accountService.updateCoinUser(amountUSD, coin, account);
 
         return "redirect:/api/v1/main/" + coin.getId();
     }

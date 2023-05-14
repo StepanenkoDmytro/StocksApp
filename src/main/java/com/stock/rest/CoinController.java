@@ -31,7 +31,7 @@ public class CoinController {
     @GetMapping(value = {"/", ""})
     public ResponseEntity<ClientCoin> main(@AuthenticationPrincipal UserDetails userDetails,
                                @RequestParam(required = false, defaultValue = "") String filter,
-                               @RequestParam Optional<Integer> page) {
+                               @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(1);
         int totalPages;
         int totalItems;

@@ -11,5 +11,4 @@ public interface CoinService {
     List<CoinDto> getAllCoins(int page);
     CoinDto getByTicker(String ticker);
     BigDecimal getPriceByTicker(String ticker);
-    void updateCoinUser(BigDecimal amount,CoinDto coin, Account account);
 }
