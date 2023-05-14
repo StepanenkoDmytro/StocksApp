@@ -1,6 +1,6 @@
 package com.stock.repository.account;
 
-import com.stock.model.account.Transact;
+import com.stock.model.trasact.Transact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

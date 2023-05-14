@@ -2,7 +2,7 @@ package com.stock.service.impl;
 
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
-import com.stock.model.account.Transact;
+import com.stock.model.trasact.Transact;
 import com.stock.repository.account.TransactRepository;
 import com.stock.service.TransactService;
 import org.springframework.beans.factory.annotation.Autowired;

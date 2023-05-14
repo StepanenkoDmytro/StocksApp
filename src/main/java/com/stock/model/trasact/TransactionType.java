@@ -1,4 +1,4 @@
-package com.stock.model.account;
+package com.stock.model.trasact;
 
 public enum TransactionType {
     DEPOSIT_ACCOUNT,

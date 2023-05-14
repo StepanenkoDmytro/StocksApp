@@ -1,6 +1,8 @@
 package com.stock.model.account;
 
 import com.stock.model.BaseEntity;
+import com.stock.model.trasact.Payment;
+import com.stock.model.trasact.Transact;
 import com.stock.model.user.User;
 import lombok.Data;
 
