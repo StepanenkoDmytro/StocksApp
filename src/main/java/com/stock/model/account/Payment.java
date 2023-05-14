@@ -1,6 +1,5 @@
 package com.stock.model.account;
 
-import com.stock.model.BaseEntity;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 

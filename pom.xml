@@ -6,18 +6,27 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
+
 	<groupId>com.stock</groupId>
 	<artifactId>StockArchive</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>StockArchive</name>
-	<description>My investing project</description>
+	<description>My Investing Project</description>
+
 	<properties>
 		<java.version>17</java.version>
 		<mysql.connector.version>8.0.32</mysql.connector.version>
+		<springdoc.openapi.ui>1.6.15</springdoc.openapi.ui>
+		<lombok>1.18.26</lombok>
+		<junit.jupiter>5.8.1</junit.jupiter>
+		<okhttp>4.10.0</okhttp>
+		<liquibase.hibernate5>4.0.0</liquibase.hibernate5>
 	</properties>
+
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -53,19 +62,19 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.15</version>
+			<version>${springdoc.openapi.ui}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.26</version>
+			<version>${lombok}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.8.1</version>
+			<version>${junit.jupiter}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -77,15 +86,14 @@
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
-			<version>4.10.0</version>
+			<version>${okhttp}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.liquibase.ext</groupId>
 			<artifactId>liquibase-hibernate5</artifactId>
-			<version>4.0.0</version>
+			<version>${liquibase.hibernate5}</version>
 		</dependency>
-
 
 	</dependencies>
 

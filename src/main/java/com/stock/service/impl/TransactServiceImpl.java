@@ -1,6 +1,5 @@
 package com.stock.service.impl;
 
-import com.stock.dto.CoinDto;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
 import com.stock.model.account.Transact;
@@ -23,7 +22,7 @@ public class TransactServiceImpl implements TransactService {
 
     @Transactional
     public void logCoinSuccess(BigDecimal amount, AccountCoin coin, Account account) {
-        Transact log = Transact.transactCOIN("success", amount, coin.getId_coin());
+        Transact log = Transact.transactCOIN("success", amount, coin);
         account.addTransact(log);
 
 
@@ -32,7 +31,7 @@ public class TransactServiceImpl implements TransactService {
 
     @Transactional
     public void logCoinRejected(BigDecimal amount, AccountCoin coin, Account account) {
-        Transact log = Transact.transactCOIN("rejected", amount, coin.getId_coin());
+        Transact log = Transact.transactCOIN("rejected", amount, coin);
         account.addTransact(log);
 
         transactRepository.save(log);

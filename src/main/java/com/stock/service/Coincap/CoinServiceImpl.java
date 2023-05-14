@@ -3,9 +3,7 @@ package com.stock.service.Coincap;
 import com.stock.api.CoinMarket;
 import com.stock.api.entity.Coin;
 import com.stock.dto.CoinDto;
-import com.stock.repository.account.AccountRepository;
 import com.stock.service.CoinService;
-import com.stock.service.TransactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +14,10 @@ import java.util.stream.Collectors;
 @Service
 public class CoinServiceImpl implements CoinService {
     private final CoinMarket coinMarket;
-    private final TransactService transactService;
-    private final AccountRepository accountRepository;
 
     @Autowired
-    public CoinServiceImpl(CoinMarket coinMarket, TransactService transactService, AccountRepository accountRepository) {
+    public CoinServiceImpl(CoinMarket coinMarket) {
         this.coinMarket = coinMarket;
-        this.transactService = transactService;
-        this.accountRepository = accountRepository;
     }
 
     @Override

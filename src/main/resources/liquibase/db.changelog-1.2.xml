@@ -116,7 +116,7 @@
                 <constraints nullable="false" unique="false"/>
             </column>
 
-            <column name="transaction_type" type="VARCHAR(255)">
+            <column name="transaction_type" type="VARCHAR(50)">
                 <constraints nullable="false" unique="false"/>
             </column>
 
@@ -133,6 +133,10 @@
             </column>
 
             <column name="reason_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="purchase_details" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
 

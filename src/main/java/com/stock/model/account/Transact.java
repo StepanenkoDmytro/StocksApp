@@ -1,7 +1,5 @@
 package com.stock.model.account;
 
-import com.stock.api.entity.Coin;
-import com.stock.dto.CoinDto;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -21,15 +19,22 @@ public class Transact {
     @JoinColumn(name = "account_id")
     private Account account;
     @Column(name = "transaction_type")
-    private String transaction_type;
+    @Enumerated(EnumType.STRING)
+    private TransactionType transaction_type;
     @Column(name = "amount", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal amount;
     @Column(name = "source")
-    private String source;
+    @Enumerated(EnumType.STRING)
+    private Source source;
     @Column(name = "status_transact")
     private String status;
     @Column(name = "reason_code")
-    private String reason_code;
+    @Enumerated(EnumType.STRING)
+    private ReasonCode reason_code;
+
+    @Column(name = "purchase_details")
+    private String purchaseDetails;
+
     @Column(name = "created")
     @CreatedDate
     private Date created;
@@ -39,23 +44,25 @@ public class Transact {
         created = new Date();
     }
 
-    public static Transact transactCOIN(String status, BigDecimal amount, String coin){
+    public static Transact transactCOIN(String status, BigDecimal amount, AccountCoin coin){
         Transact transactLog = new Transact();
-        transactLog.setTransaction_type("BYU_COIN");
+        transactLog.setTransaction_type(TransactionType.BUY_CRYPTO);
         transactLog.setAmount(amount);
-        transactLog.setSource("online");
+        transactLog.setSource(Source.COINCAP);
         transactLog.setStatus(status);
-        transactLog.setReason_code("Buy_"+ coin);
+        transactLog.setReason_code(ReasonCode.BUY_CRYPTO_SUCCESS);
+        transactLog.setPurchaseDetails(coin.getName());
         return transactLog;
     }
 
     public static Transact transactDeposit(BigDecimal deposit){
         Transact transact = new Transact();
-        transact.setTransaction_type("deposit");
+        transact.setTransaction_type(TransactionType.DEPOSIT_ACCOUNT);
         transact.setAmount(deposit);
-        transact.setSource("online");
+        transact.setSource(Source.BIG_BANK);
         transact.setStatus("success");
-        transact.setReason_code("Deposit Transaction Successful");
+        transact.setReason_code(ReasonCode.DEPOSIT_SUCCESS);
+        transact.setPurchaseDetails("USD");
         return transact;
     }
 }
