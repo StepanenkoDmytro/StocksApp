@@ -36,14 +36,13 @@ public class CoinController {
         int totalPages;
         int totalItems;
         List<CoinDto> coins;
-        boolean isAuthenticated = userDetails != null;
 
-        if(StringUtils.isEmpty(filter)){
-            coins = coinService.getAllCoins(currentPage);
+        if(filter == null || filter.length() < 2){
+            coins = coinService.getAllCoins(currentPage, null);
             totalPages = CoinMarket.MAX_PAGES;
             totalItems = CoinMarket.MAX_ELEMENTS;
         } else {
-            coins = new ArrayList<>(Arrays.asList(coinService.getByTicker(filter)));
+            coins = coinService.getAllCoins(currentPage, filter);
             totalPages = 1;
             totalItems = coins.size();
         }

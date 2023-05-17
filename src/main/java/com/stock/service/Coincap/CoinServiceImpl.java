@@ -21,8 +21,13 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public List<CoinDto> getAllCoins(int page) {
-        List<Coin> list = coinMarket.findAll(page);
+    public List<CoinDto> getAllCoins(int page, String filter) {
+        List<Coin> list = coinMarket.findAll(page, filter);
+//        for(Coin c : list) {
+//            if(c.getMarketCapUsd() == null){
+//                System.out.println(c);
+//            }
+//        }
         return list.stream()
                 .map(CoinDto::mapCoinToDto)
                 .collect(Collectors.toList());

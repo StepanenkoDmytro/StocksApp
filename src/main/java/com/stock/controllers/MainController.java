@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,19 +29,22 @@ public class MainController {
     public String main(@AuthenticationPrincipal UserDetails userDetails,
                        @RequestParam(required = false, defaultValue = "") String filter,
                        @RequestParam Optional<Integer> page,
-                       Model model) {
+                       Model model,
+                       Principal principal) {
         int currentPage = page.orElse(1);
         int totalPages;
         int totalItems;
         List<CoinDto> coins;
         boolean isAuthenticated = userDetails != null;
 
+        System.out.println(principal);
         if(StringUtils.isEmpty(filter)){
-            coins = coinService.getAllCoins(currentPage);
+            coins = coinService.getAllCoins(currentPage, null);
             totalPages = CoinMarket.MAX_PAGES;
             totalItems = CoinMarket.MAX_ELEMENTS;
         } else {
-            coins = new ArrayList<>(Arrays.asList(coinService.getByTicker(filter)));
+//            coins = new ArrayList<>(Arrays.asList(coinService.getByTicker(filter)));
+            coins = coinService.getAllCoins(currentPage, filter);
             totalPages = 1;
             totalItems = coins.size();
         }

@@ -17,8 +17,15 @@ public class CoinDto {
     BigDecimal marketCapUsd;
 
     public static CoinDto mapCoinToDto(Coin coin) {
-        BigDecimal valuePrice = BigDecimal.valueOf(Double.parseDouble(coin.getPriceUsd()));
-        BigDecimal marketCapUsd = BigDecimal.valueOf(Double.parseDouble(coin.getMarketCapUsd()));
+        BigDecimal valuePrice;
+        BigDecimal marketCapUsd;
+        if(coin.getMarketCapUsd() != null) {
+            marketCapUsd = BigDecimal.valueOf(Double.parseDouble(coin.getMarketCapUsd()));
+            valuePrice = BigDecimal.valueOf(Double.parseDouble(coin.getPriceUsd()));
+        }else {
+            marketCapUsd = BigDecimal.ZERO;
+            valuePrice = BigDecimal.ZERO;
+        }
 
         return new CoinDto(
                 coin.getId(),

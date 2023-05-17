@@ -23,13 +23,14 @@ public class CoinMarket {
         this.requestHelper = requestHelper;
     }
 
-    public List<Coin> findAll(int page) {
-        HttpResponse<String> response = requestHelper.sendGetAllRequest(page);
+    public List<Coin> findAll(int page, String filter) {
+        HttpResponse<String> response = requestHelper.sendGetAllRequest(page, filter);
 
         ObjectMapper objectMapper = new ObjectMapper();
         CoinData data;
         try {
             data = objectMapper.readValue(response.body(), CoinData.class);
+            System.out.println(data.getData().size());
         } catch (JsonProcessingException e) {
             throw new RequestException("Failed to process data: " + e.getMessage());
         }

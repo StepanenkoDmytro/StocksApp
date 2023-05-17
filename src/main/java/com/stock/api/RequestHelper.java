@@ -5,6 +5,7 @@ import com.stock.exceptions.RequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -21,10 +22,15 @@ public class RequestHelper {
     @Value("${coincap.api.key}")
     private String API_KEY;
 
-    public HttpResponse<String> sendGetAllRequest(int page) {
+    public HttpResponse<String> sendGetAllRequest(int page, String filter) {
         page = page - 1;
-
-        String URL = BASE_URL + "?limit=" + CoinMarket.LIMIT + "&offset=" + page * CoinMarket.LIMIT;
+        String URL;
+        if(StringUtils.isEmpty(filter)) {
+            URL = BASE_URL + "?limit=" + CoinMarket.LIMIT + "&offset=" + page * CoinMarket.LIMIT;
+            System.out.println("I am here");
+        }else {
+            URL = BASE_URL + "?search=" + filter;
+        }
         URI uri = URI.create(URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
