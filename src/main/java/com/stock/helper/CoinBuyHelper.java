@@ -17,4 +17,6 @@ public class CoinBuyHelper {
 
         return BigDecimal.valueOf(amountUSD);
     }
+
+
 }

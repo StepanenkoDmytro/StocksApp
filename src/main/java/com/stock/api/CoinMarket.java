@@ -14,39 +14,34 @@ import java.util.List;
 @Component
 public class CoinMarket {
     private final RequestHelper requestHelper;
-    public static final int MAX_ELEMENTS = 1080;
-    public static final int LIMIT = 9;
-    public static final int MAX_PAGES = MAX_ELEMENTS/ LIMIT;
+    private final ObjectMapper objectMapper;
 
 
-    public CoinMarket(RequestHelper requestHelper) {
+    public CoinMarket(RequestHelper requestHelper, ObjectMapper objectMapper) {
         this.requestHelper = requestHelper;
+        this.objectMapper = objectMapper;
     }
 
-    public List<Coin> findAll(int page, String filter) {
-        HttpResponse<String> response = requestHelper.sendGetAllRequest(page, filter);
+    public List<Coin> findAll(int page) {
+        HttpResponse<String> response = requestHelper.sendGetAllRequest(page);
+        return processResponse(response, CoinData.class).getData();
+    }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CoinData data;
-        try {
-            data = objectMapper.readValue(response.body(), CoinData.class);
-            System.out.println(data.getData().size());
-        } catch (JsonProcessingException e) {
-            throw new RequestException("Failed to process data: " + e.getMessage());
-        }
-        return data.getData();
+    public List<Coin> findByFilter(String filter) {
+        HttpResponse<String> response = requestHelper.sendRequestByFilter(filter);
+        return processResponse(response, CoinData.class).getData();
     }
 
     public Coin findByTicker(String ticker) {
         HttpResponse<String> response = requestHelper.sendGetByTicker(ticker);
+        return processResponse(response, CoinWrapper.class).getData();
+    }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        CoinWrapper data;
+    private <T> T processResponse(HttpResponse<String> response, Class<T> responseType){
         try {
-            data = objectMapper.readValue(response.body(), CoinWrapper.class);
+            return objectMapper.readValue(response.body(), responseType);
         } catch (JsonProcessingException e) {
             throw new RequestException("Failed to process data: " + e.getMessage());
         }
-        return data.getData();
     }
 }

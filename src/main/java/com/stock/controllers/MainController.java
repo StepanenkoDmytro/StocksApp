@@ -1,7 +1,8 @@
 package com.stock.controllers;
 
-import com.stock.api.CoinMarket;
+import com.stock.api.RequestHelper;
 import com.stock.dto.CoinDto;
+import com.stock.dto.CoinsByFilter;
 import com.stock.service.CoinService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,14 +38,16 @@ public class MainController {
 
         System.out.println(principal);
         if(StringUtils.isEmpty(filter)){
-            coins = coinService.getAllCoins(currentPage, null);
-            totalPages = CoinMarket.MAX_PAGES;
-            totalItems = CoinMarket.MAX_ELEMENTS;
+            coins = coinService.getAllCoins(currentPage);
+            totalPages = RequestHelper.MAX_PAGES;
+            totalItems = RequestHelper.MAX_ELEMENTS;
         } else {
-//            coins = new ArrayList<>(Arrays.asList(coinService.getByTicker(filter)));
-            coins = coinService.getAllCoins(currentPage, filter);
-            totalPages = 1;
-            totalItems = coins.size();
+            CoinsByFilter coinsByFilter = coinService.getCoinsByFilter(currentPage, filter);
+            coins = coinsByFilter.getData();
+            totalItems = coinsByFilter.getTotalItems();
+
+            totalPages = (int) Math.ceil((double) totalItems / RequestHelper.PAGE_LIMIT);
+            System.out.println(totalItems + " / " + totalPages);
         }
 
         model.addAttribute("coins", coins);
