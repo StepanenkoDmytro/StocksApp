@@ -37,7 +37,7 @@ public class CoinServiceImpl implements CoinService {
         List<Coin> list = coinMarket.findByFilter(filter);
 
         int startIndex = page * RequestHelper.PAGE_LIMIT;
-        int endIndex = Math.min(startIndex + RequestHelper.PAGE_LIMIT, list.size());
+        int endIndex = Math.min(RequestHelper.PAGE_LIMIT, list.size() - startIndex);
 
         List<CoinDto> data = list.stream()
                 .skip(startIndex)

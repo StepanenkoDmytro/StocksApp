@@ -27,9 +27,9 @@ public class CoinController {
         this.coinService = coinService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/", ""})
     public ResponseEntity<ClientCoin> getAllCoins(@RequestParam(required = false, defaultValue = "") String filter,
-                                           @RequestParam("page") Optional<Integer> page) {
+                                                  @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(1);
         int totalPages;
         int totalItems;
@@ -42,6 +42,7 @@ public class CoinController {
         } else {
             CoinsByFilter coinsByFilter = coinService.getCoinsByFilter(currentPage, filter);
             coins = coinsByFilter.getData();
+            System.out.println(coins.size());
             totalItems = coinsByFilter.getTotalItems();
             totalPages = (int) Math.ceil((double) totalItems / RequestHelper.PAGE_LIMIT);
         }
