@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ClientCoin {
+public class CoinsForClient {
     List<CoinDto> data;
     int totalPages;
     int totalItems;

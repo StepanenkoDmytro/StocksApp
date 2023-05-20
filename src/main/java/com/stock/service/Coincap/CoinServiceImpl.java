@@ -3,8 +3,8 @@ package com.stock.service.Coincap;
 import com.stock.api.CoinMarket;
 import com.stock.api.RequestHelper;
 import com.stock.api.entity.Coin;
+import com.stock.dto.CoinsForClient;
 import com.stock.dto.CoinDto;
-import com.stock.dto.CoinsByFilter;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,29 +23,30 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public List<CoinDto> getAllCoins(int page) {
-        List<Coin> list = coinMarket.findAll(page);
-
-        return list.stream()
+    public CoinsForClient getAllCoins(int page) {
+        List<Coin> coinList = coinMarket.findAll(page);
+        List<CoinDto> data = coinList.stream()
                 .map(CoinDto::mapCoinToDto)
                 .collect(Collectors.toList());
+
+        return new CoinsForClient(data, RequestHelper.MAX_PAGES, RequestHelper.MAX_ELEMENTS, page);
     }
 
     @Override
-    public CoinsByFilter getCoinsByFilter(int page, String filter) {
-        page = page - 1;
-        List<Coin> list = coinMarket.findByFilter(filter);
+    public CoinsForClient getCoinsByFilter(int page, String filter) {
+        List<Coin> coinList = coinMarket.findByFilter(filter);
+        int totalPages = (int) Math.ceil((double) coinList.size() / RequestHelper.PAGE_LIMIT);
 
-        int startIndex = page * RequestHelper.PAGE_LIMIT;
-        int endIndex = Math.min(RequestHelper.PAGE_LIMIT, list.size() - startIndex);
+        int startIndex = (page - 1) * RequestHelper.PAGE_LIMIT;
+        int endIndex = Math.min(RequestHelper.PAGE_LIMIT, coinList.size() - startIndex);
 
-        List<CoinDto> data = list.stream()
+        List<CoinDto> data = coinList.stream()
                 .skip(startIndex)
                 .limit(endIndex)
                 .map(CoinDto::mapCoinToDto)
                 .collect(Collectors.toList());
 
-        return new CoinsByFilter(data, list.size());
+        return new CoinsForClient(data, totalPages, coinList.size(), page);
     }
 
     @Override
