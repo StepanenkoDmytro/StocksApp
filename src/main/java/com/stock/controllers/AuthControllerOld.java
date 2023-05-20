@@ -15,14 +15,14 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/v1/auth")
-public class AuthController {
+@RequestMapping("/api/auth")
+public class AuthControllerOld {
 
     private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
-    public AuthController(UserRepository userRepository,UserService userService) {
+    public AuthControllerOld(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
@@ -36,6 +36,7 @@ public class AuthController {
     public String registration() {
         return "registration";
     }
+
 
     @PostMapping("/registration")
     public String addUser(@Valid User user, Model model, BindingResult bindingResult) {

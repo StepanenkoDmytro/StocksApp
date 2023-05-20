@@ -11,6 +11,8 @@ public interface UserService {
     List<User> getAllUsers();
     User getUserByEmail(String email);
     Optional<User> getUserById(long id);
+    boolean isUserExistByEmail(String email);
+    boolean isUserExistByUsername(String username);
     void registration(User user);
     void saveUser(User user, MultipartFile file) throws IOException;
     void saveUser(User user);

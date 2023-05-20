@@ -9,8 +9,6 @@ import com.stock.repository.user.RoleRepository;
 import com.stock.repository.user.UserRepository;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,17 +22,13 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-
     UserRepository userRepository;
-    UserDetailsService userDetailsService;
     private final RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
                            RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.userDetailsService = userDetailsService;
         this.roleRepository = roleRepository;
     }
 
@@ -52,6 +46,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public boolean isUserExistByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean isUserExistByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     @Override

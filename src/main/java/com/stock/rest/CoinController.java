@@ -23,7 +23,7 @@ public class CoinController {
         this.coinService = coinService;
     }
 
-    @GetMapping({"/", ""})
+    @GetMapping("")
     public ResponseEntity<CoinsForClient> getAllCoins(@RequestParam(required = false, defaultValue = "") String filter,
                                                       @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(1);

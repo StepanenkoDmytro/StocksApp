@@ -13,7 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 
-@PropertySource("classpath:api_keys.properties")
+@PropertySource("classpath:security-keys.properties")
 @Component
 public class RequestHelper {
     public static final int MAX_ELEMENTS = 1080;
