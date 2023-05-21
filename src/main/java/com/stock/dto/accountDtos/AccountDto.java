@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 @Data
 public class AccountDto {
-    private String account_name;
-    private String account_type;
+    private String accountName;
+    private String accountType;
     private BigDecimal balance;
     private List<AccountCoinDto> coins;
 
-    public AccountDto(String account_name, String account_type, BigDecimal balance, List<AccountCoinDto> coins) {
-        this.account_name = account_name;
-        this.account_type = account_type;
+    public AccountDto(String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins) {
+        this.accountName = accountName;
+        this.accountType = accountType;
         this.balance = balance;
         this.coins = coins;
     }

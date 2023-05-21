@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 public class UserDto {
     private String username;
     private String email;
+    private Long imageID;
     private List<AccountDto> accounts;
 
-    public UserDto(String username, String email, List<AccountDto> accounts) {
+    public UserDto(Long imageID, String username, String email, List<AccountDto> accounts) {
+        this.imageID = imageID;
         this.username = username;
         this.email = email;
         this.accounts = accounts;
@@ -22,6 +24,7 @@ public class UserDto {
 
     public static UserDto mapUserToUserDto(User user) {
         return new UserDto(
+                user.getImage().getId(),
                 user.getUsername(),
                 user.getEmail(),
                 mapAccountsListToDto(user.getAccounts())

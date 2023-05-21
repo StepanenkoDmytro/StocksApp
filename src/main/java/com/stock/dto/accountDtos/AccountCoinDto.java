@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class AccountCoinDto {
-    private String id_coin;
+    private String idCoin;
     private String name;
 
-    public AccountCoinDto(String id_coin, String name) {
-        this.id_coin = id_coin;
+    public AccountCoinDto(String idCoin, String name) {
+        this.idCoin = idCoin;
         this.name = name;
     }
 
