@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface UserService {
     List<User> getAllUsers();
     User getUserByEmail(String email);
+    User getUserByUsername(String username);
     Optional<User> getUserById(long id);
     boolean isUserExistByEmail(String email);
     boolean isUserExistByUsername(String username);

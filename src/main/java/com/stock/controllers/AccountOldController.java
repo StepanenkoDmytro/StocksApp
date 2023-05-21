@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @Controller
-@RequestMapping("/api/v1/user/account")
-public class AccountController {
+@RequestMapping("/api/user/account")
+public class AccountOldController {
     private final UserService userService;
     private final AccountService accountService;
 
     @Autowired
-    public AccountController(UserService userService, AccountService accountService) {
+    public AccountOldController(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
     }
