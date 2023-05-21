@@ -2,6 +2,7 @@ package com.stock.rest;
 
 import com.stock.dto.AuthDto;
 import com.stock.dto.SignUpDto;
+import com.stock.dto.UserDto;
 import com.stock.model.user.User;
 import com.stock.security.jwt.JwtTokenProvider;
 import com.stock.service.UserService;
@@ -40,8 +41,8 @@ public class AuthController {
 
             String token = jwtTokenProvider.createToken(user);
 
-            Map<String, String> response = new HashMap<>();
-            response.put("email", email);
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", UserDto.mapUserToUserDto(user));
             response.put("token", token);
             return ResponseEntity.ok(response);
         }

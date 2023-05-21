@@ -26,9 +26,9 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping("")
-    public ResponseEntity<UserDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
-        User user = userService.getUserByUsername(userDetails.getUsername());
-        return ResponseEntity.ok(new UserDto(user.getUsername()));
-    }
+//    @GetMapping("")
+//    public ResponseEntity<UserDto> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+//        User user = userService.getUserByUsername(userDetails.getUsername());
+//        return ResponseEntity.ok(new UserDto(user.getUsername()));
+//    }
 }

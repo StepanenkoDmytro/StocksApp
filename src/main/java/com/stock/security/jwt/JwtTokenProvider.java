@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
 import java.util.Date;
@@ -53,8 +52,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String resolveToken(ServletRequest servletRequest){
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
+    public String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
         if(bearerToken != null && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring(7);
@@ -85,4 +83,5 @@ public class JwtTokenProvider {
                 .map(Role::getName)
                 .collect(Collectors.toList());
     }
+
 }
