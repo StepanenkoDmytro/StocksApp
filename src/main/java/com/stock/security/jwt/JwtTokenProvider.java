@@ -40,7 +40,7 @@ public class JwtTokenProvider {
     }
 
     public String createToken(User user){
-        Claims claims = Jwts.claims().setSubject(user.getUsername());
+        Claims claims = Jwts.claims().setSubject(user.getEmail());
         claims.put("roles", getRoleNames(user.getRoles()));
 
         Date now = new Date();
@@ -76,8 +76,8 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    private String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).getBody().getSubject();
+    public String getUsername(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
     private List<String> getRoleNames(List<Role> roles) {
