@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 
 @Data
 public class AccountDto {
+    private Long id;
     private String accountName;
     private String accountType;
     private BigDecimal balance;
     private List<AccountCoinDto> coins;
 
-    public AccountDto(String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins) {
+    public AccountDto(Long id ,String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins) {
+        this.id = id;
         this.accountName = accountName;
         this.accountType = accountType;
         this.balance = balance;
@@ -25,6 +27,7 @@ public class AccountDto {
 
     public static AccountDto mapAccount(Account account) {
         return new AccountDto(
+                account.getId(),
                 account.getAccount_name(),
                 account.getAccount_type().name(),
                 account.getBalance(),

@@ -3,17 +3,29 @@ package com.stock.dto.accountDtos;
 import com.stock.model.account.AccountCoin;
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.math.BigDecimal;
+
 @Data
 public class AccountCoinDto {
     private String idCoin;
     private String name;
+    private BigDecimal amountCOIN;
 
-    public AccountCoinDto(String idCoin, String name) {
+    private BigDecimal amountUSD;
+
+    public AccountCoinDto(String idCoin, String name, BigDecimal amountCOIN, BigDecimal amountUSD) {
         this.idCoin = idCoin;
         this.name = name;
+        this.amountCOIN = amountCOIN;
+        this.amountUSD = amountUSD;
     }
 
     public static AccountCoinDto mapAccountCoin(AccountCoin coin){
-        return new AccountCoinDto(coin.getId_coin(),coin.getName());
+        return new AccountCoinDto(
+                coin.getId_coin(),
+                coin.getName(),
+                coin.getAmountCOIN(),
+                coin.getAmountUSD());
     }
 }
