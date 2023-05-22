@@ -6,10 +6,6 @@ import com.stock.dto.UserDto;
 import com.stock.model.user.User;
 import com.stock.security.jwt.JwtTokenProvider;
 import com.stock.service.UserService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -19,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,21 +71,20 @@ public class AuthController {
     }
 
     @PostMapping("refresh-token")
-    public ResponseEntity resolveToken(@RequestBody String token) {
-        System.out.println("Should refresh: " + token);
-        if (jwtTokenProvider.isValidateToken(token)) {
+    public ResponseEntity refreshToken(@RequestBody String token) {
+
+        if (token != null && jwtTokenProvider.isTokenExpired(token)) {
             String email = jwtTokenProvider.getUsername(token);
             User user = userService.getUserByEmail(email);
-            System.out.println("I am in if");
+
             String newToken = jwtTokenProvider.createToken(user);
 
             Map<String, Object> response = new HashMap<>();
             response.put("user", UserDto.mapUserToUserDto(user));
-            response.put("token", token);
+            response.put("token", newToken);
 
             return ResponseEntity.ok(response);
         }
-        System.out.println("I am UNAUTHORIZED");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token is expired or invalid");
     }
 }

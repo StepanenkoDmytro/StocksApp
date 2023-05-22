@@ -60,29 +60,20 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token){
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
-        }
-    }
     public boolean isValidateToken(String token){
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
     }
-
-    public Jws<Claims> getClaimsForUserByToken(String token) {
+    public boolean isTokenExpired(String token){
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-            return claims;
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthenticationException("JWT token is expired or invalid");
+            return false;
         }
     }
 
@@ -100,5 +91,4 @@ public class JwtTokenProvider {
                 .map(Role::getName)
                 .collect(Collectors.toList());
     }
-
 }
