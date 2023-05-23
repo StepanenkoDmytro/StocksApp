@@ -1,6 +1,7 @@
 package com.stock.service;
 
 import com.stock.dto.CoinDto;
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.model.account.Account;
 import com.stock.model.user.User;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 public interface AccountService {
     Account getAccountById(Long accountID);
     void createAccount(String accountName, User user);
-    void depositToAccountById(User user, Long accountID, BigDecimal deposit);
+    AccountDto depositToAccountById(User user, Long accountID, BigDecimal deposit);
 
     void updateCoinUser(BigDecimal amount, CoinDto coin, Account account);
 }

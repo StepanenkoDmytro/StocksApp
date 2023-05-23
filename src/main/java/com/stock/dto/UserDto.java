@@ -23,8 +23,14 @@ public class UserDto {
     }
 
     public static UserDto mapUserToUserDto(User user) {
+        long imageId;
+        if(user.getImage() == null) {
+            imageId = 0;
+        }else {
+            imageId = user.getImage().getId();
+        }
         return new UserDto(
-                user.getImage().getId(),
+                imageId,
                 user.getUsername(),
                 user.getEmail(),
                 mapAccountsListToDto(user.getAccounts())

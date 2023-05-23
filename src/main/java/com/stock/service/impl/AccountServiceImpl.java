@@ -1,6 +1,7 @@
 package com.stock.service.impl;
 
 import com.stock.dto.CoinDto;
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.exceptions.AccountFetchException;
 import com.stock.helper.GenAccountNumber;
 import com.stock.model.account.Account;
@@ -109,7 +110,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void depositToAccountById(User user, Long accountID, BigDecimal deposit) {
+    public AccountDto depositToAccountById(User user, Long accountID, BigDecimal deposit) {
         BigDecimal balance = accountRepository.getAccountBalance(user.getId(), accountID);
         BigDecimal newBalance = balance.add( deposit );
         Account account = accountRepository.findById(accountID).orElseThrow(
@@ -117,5 +118,6 @@ public class AccountServiceImpl implements AccountService {
 
         accountRepository.changeAccountBalanceById(newBalance, accountID);
         transactService.logDepositSuccess(deposit, account);
+        return AccountDto.mapAccount(account);
     }
 }
