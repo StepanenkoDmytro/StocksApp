@@ -25,7 +25,6 @@ public class TransactServiceImpl implements TransactService {
         Transact log = Transact.transactCOIN("success", amount, coin);
         account.addTransact(log);
 
-
         transactRepository.save(log);
     }
 

@@ -61,6 +61,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
             <column name="account_id" type="BIGINT">
                 <constraints nullable="false" unique="false"/>
             </column>
@@ -110,6 +114,10 @@
         <createTable tableName="transacts">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
             </column>
 
             <column name="account_id" type="BIGINT">

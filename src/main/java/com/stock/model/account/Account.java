@@ -60,16 +60,18 @@ public class Account extends BaseEntity {
         if(transacts == null){
             transacts = new ArrayList<>();
         }
-        transacts.add(transact);
+        transact.setUserID(user.getId());
         transact.setAccount(this);
+        transacts.add(transact);
     }
 
     public void setPayment(Payment payment){
         if(payments == null) {
             payments = new ArrayList<>();
         }
-        payments.add(payment);
+        payment.setUserID(user.getId());
         payment.setAccount(this);
+        payments.add(payment);
     }
 
     @PrePersist
