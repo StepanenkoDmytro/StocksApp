@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class TransactServiceImpl implements TransactService {
@@ -18,6 +19,11 @@ public class TransactServiceImpl implements TransactService {
     @Autowired
     public TransactServiceImpl(TransactRepository transactRepository) {
         this.transactRepository = transactRepository;
+    }
+
+    @Override
+    public List<Transact> getTransactsByUserID(Long id) {
+        return transactRepository.findByUserId(id);
     }
 
     @Transactional

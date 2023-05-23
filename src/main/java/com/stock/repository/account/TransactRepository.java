@@ -9,8 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public interface TransactRepository extends JpaRepository<Transact, Long> {
+    @Query("SELECT t FROM Transact t WHERE t.userID = :userID")
+    List<Transact> findByUserId(Long userID);
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO transacts(account_id, transaction_type, amount, source, status_transact, reason_code, created)" +

@@ -34,7 +34,7 @@ public class Transact {
     private String status;
     @Column(name = "reason_code")
     @Enumerated(EnumType.STRING)
-    private ReasonCode reason_code;
+    private ReasonCode reasonCode;
 
     @Column(name = "purchase_details")
     private String purchaseDetails;
@@ -54,7 +54,7 @@ public class Transact {
         transactLog.setAmount(amount);
         transactLog.setSource(Source.COINCAP);
         transactLog.setStatus(status);
-        transactLog.setReason_code(ReasonCode.BUY_CRYPTO_SUCCESS);
+        transactLog.setReasonCode(ReasonCode.BUY_CRYPTO_SUCCESS);
         transactLog.setPurchaseDetails(coin.getName());
         return transactLog;
     }
@@ -65,7 +65,7 @@ public class Transact {
         transact.setAmount(deposit);
         transact.setSource(Source.BIG_BANK);
         transact.setStatus("success");
-        transact.setReason_code(ReasonCode.DEPOSIT_SUCCESS);
+        transact.setReasonCode(ReasonCode.DEPOSIT_SUCCESS);
         transact.setPurchaseDetails("USD");
         return transact;
     }

@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 
 @Data
 public class UserDto {
+    private Long id;
     private String username;
     private String email;
     private Long imageID;
     private List<AccountDto> accounts;
 
-    public UserDto(Long imageID, String username, String email, List<AccountDto> accounts) {
+    public UserDto(Long id ,Long imageID, String username, String email, List<AccountDto> accounts) {
+        this.id = id;
         this.imageID = imageID;
         this.username = username;
         this.email = email;
@@ -30,6 +32,7 @@ public class UserDto {
             imageId = user.getImage().getId();
         }
         return new UserDto(
+                user.getId(),
                 imageId,
                 user.getUsername(),
                 user.getEmail(),
