@@ -3,6 +3,8 @@ package com.stock.rest;
 import com.stock.dto.CoinBuy;
 import com.stock.dto.CoinsForClient;
 import com.stock.dto.CoinDto;
+import com.stock.dto.PieCoinsPrice;
+import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;
 import com.stock.service.AccountService;
@@ -16,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -63,5 +66,11 @@ public class CoinController {
             return ResponseEntity.ok().body(HttpStatus.ACCEPTED);
         }
         return ResponseEntity.badRequest().body("Incorrect data");
+    }
+
+    @GetMapping("/price-for-list")
+    public ResponseEntity getPriceCoinsById(@RequestBody List<AccountCoinDto> coinsList){
+        List<PieCoinsPrice> priceCoins = coinService.getPriceCoinsByList(coinsList);
+        return ResponseEntity.ok(priceCoins);
     }
 }

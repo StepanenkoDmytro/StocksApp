@@ -2,6 +2,7 @@ package com.stock.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stock.dto.CoinDto;
 import com.stock.exceptions.RequestException;
 import com.stock.api.entity.Coin;
 import com.stock.api.wrappers.CoinData;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class CoinMarket {
@@ -35,6 +37,14 @@ public class CoinMarket {
     public Coin findByTicker(String ticker) {
         HttpResponse<String> response = requestHelper.sendGetByTicker(ticker);
         return processResponse(response, CoinWrapper.class).getData();
+    }
+
+    public List<CoinDto> findByTikersList(List<String> coinsList) {
+        HttpResponse<String> response = requestHelper.sendGetCoinsByList(coinsList);
+        List<Coin> data = processResponse(response, CoinData.class).getData();
+        return data.stream()
+                .map(CoinDto::mapCoinToDto)
+                .collect(Collectors.toList());
     }
 
     private <T> T processResponse(HttpResponse<String> response, Class<T> responseType){

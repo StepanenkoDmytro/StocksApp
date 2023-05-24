@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 
 @PropertySource("classpath:security-keys.properties")
@@ -37,6 +38,12 @@ public class RequestHelper {
 
     public HttpResponse<String> sendGetByTicker(String ticker) {
         String requestTicker = String.format("%s/%s",BASE_URL, ticker);
+        return sendRequest(requestTicker);
+    }
+
+    public HttpResponse<String> sendGetCoinsByList(List<String> coinsList) {
+        String coins = String.join(",", coinsList);
+        String requestTicker = String.format("%s?ids=%s",BASE_URL, coins);
         return sendRequest(requestTicker);
     }
 
