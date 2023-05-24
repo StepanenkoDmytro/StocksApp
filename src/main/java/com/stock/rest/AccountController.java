@@ -7,6 +7,7 @@ import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +34,7 @@ public class AccountController {
                                         @AuthenticationPrincipal UserDetails userDetails){
         User user = userService.getUserByUsername(userDetails.getUsername());
         accountService.createAccount(accountDto.getNewAccountName(), user);
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
     @PostMapping("deposit")
@@ -44,5 +45,11 @@ public class AccountController {
         AccountDto accountDto = accountService.depositToAccountById(user, deposit.getAccountId(), BigDecimal.valueOf(deposit.getDepositAmount()));
         //дописати методу accountService.depositToAccountById якийсь exception, щоб користувач дізнався про помилку
         return ResponseEntity.ok(accountDto);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteAccount(@PathVariable Long id) {
+        accountService.deleteAccountById(id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
     }
 }

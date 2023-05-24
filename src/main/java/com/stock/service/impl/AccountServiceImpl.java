@@ -120,4 +120,9 @@ public class AccountServiceImpl implements AccountService {
         transactService.logDepositSuccess(deposit, account);
         return AccountDto.mapAccount(account);
     }
+
+    @Override
+    public void deleteAccountById(Long accountID) {
+        accountRepository.deleteById(accountID);
+    }
 }
