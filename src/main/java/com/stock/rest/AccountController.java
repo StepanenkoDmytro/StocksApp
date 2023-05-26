@@ -3,22 +3,16 @@ package com.stock.rest;
 import com.stock.dto.DepositDTO;
 import com.stock.dto.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
-import com.stock.exceptions.ImageNotFoundException;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 
 @RestController

@@ -1,11 +1,14 @@
 package com.stock.model.account;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.stock.dto.CoinDto;
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.helper.CoinBuyHelper;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,6 +20,7 @@ public class AccountCoin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "account_id")
@@ -65,5 +69,20 @@ public class AccountCoin {
         accountCoin.setAmountUSD(amountUSD);
 
         return accountCoin;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountCoin{" +
+                "id=" + id +
+//                ", account=" + account.getAccount_name() +
+                ", id_coin='" + id_coin + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", amountCOIN=" + amountCOIN +
+                ", amountUSD=" + amountUSD +
+                ", created=" + created +
+                '}';
     }
 }

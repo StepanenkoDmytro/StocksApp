@@ -2,7 +2,6 @@ package com.stock.dto.accountDtos;
 
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
-import com.stock.model.account.AccountType;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -37,6 +36,6 @@ public class AccountDto {
     private static List<AccountCoinDto> mapAccountCoins(List<AccountCoin> coins) {
         return coins.stream()
                 .map(AccountCoinDto::mapAccountCoin)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

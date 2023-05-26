@@ -45,24 +45,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void updateCoinUser(BigDecimal amount, CoinDto coin, Account account) {
-        BigDecimal newBalance = account.getBalance().subtract(amount);
-        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
-
-        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-            transactService.logCoinRejected(amount, accountCoin, account);
-            return;
-        }
-
-        List<AccountCoin> coinsUser = account.getCoins();
-
-        if (isContainsCoin(coinsUser, accountCoin)) {
-            updateExistingCoin(coinsUser, accountCoin);
-        } else {
-            addNewCoin(account, accountCoin);
-        }
-
-        accountRepository.changeAccountBalanceById(newBalance, account.getId());
-        transactService.logCoinSuccess(amount, accountCoin, account);
+//        BigDecimal newBalance = account.getBalance().subtract(amount);
+//        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
+//
+//        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+//            transactService.logCoinRejected(amount, accountCoin, account);
+//            return;
+//        }
+//
+//        List<AccountCoin> coinsUser = account.getCoins();
+//
+//        if (isContainsCoin(coinsUser, accountCoin)) {
+//            updateExistingCoin(coinsUser, accountCoin);
+//        } else {
+//            addNewCoin(account, accountCoin);
+//        }
+//
+//        accountRepository.changeAccountBalanceById(newBalance, account.getId());
+//        transactService.logCoinSuccess(amount, accountCoin, account);
     }
 
     @Transactional
@@ -118,7 +118,8 @@ public class AccountServiceImpl implements AccountService {
 
         accountRepository.changeAccountBalanceById(newBalance, accountID);
         transactService.logDepositSuccess(deposit, account);
-        return AccountDto.mapAccount(account);
+        Account accountById = getAccountById(accountID);
+        return AccountDto.mapAccount(accountById);
     }
 
     @Override

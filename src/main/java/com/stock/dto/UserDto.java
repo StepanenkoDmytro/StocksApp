@@ -6,6 +6,7 @@ import com.stock.model.user.User;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -40,7 +41,7 @@ public class UserDto {
                 );
     }
 
-    private static List<AccountDto> mapAccountsListToDto(List<Account> accounts){
+    public static List<AccountDto> mapAccountsListToDto(List<Account> accounts){
         return accounts.stream()
                 .map(AccountDto::mapAccount)
                 .collect(Collectors.toList());

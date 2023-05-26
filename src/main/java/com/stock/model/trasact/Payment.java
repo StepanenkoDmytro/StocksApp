@@ -1,5 +1,6 @@
 package com.stock.model.trasact;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.stock.model.account.Account;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,6 +18,7 @@ public class Payment {
     private Long id;
     @Column(name = "user_id")
     private Long userID;
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "account_id")

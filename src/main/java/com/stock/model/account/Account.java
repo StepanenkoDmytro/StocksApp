@@ -1,21 +1,26 @@
 package com.stock.model.account;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stock.model.BaseEntity;
 import com.stock.model.trasact.Payment;
 import com.stock.model.trasact.Transact;
 import com.stock.model.user.User;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "accounts")
-@Data
 public class Account extends BaseEntity {
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
+//    @JsonBackReference
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private User user;
@@ -36,17 +41,24 @@ public class Account extends BaseEntity {
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH,CascadeType.MERGE},
             mappedBy = "account")
+    @JsonManagedReference
     private List<Payment> payments;
 
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH,CascadeType.MERGE},
             mappedBy = "account")
+    @JsonManagedReference
     private List<Transact> transacts;
 
+    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH,CascadeType.MERGE},
             mappedBy = "account")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<AccountCoin> coins;
+
+    public Account() {
+    }
 
     public void addCoins(AccountCoin coin) {
         if(coins == null) {
@@ -79,5 +91,15 @@ public class Account extends BaseEntity {
     public void prePersist() {
         super.prePersist();
         balance = new BigDecimal(0);
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                ", account_number='" + account_number + '\'' +
+                ", account_name='" + account_name + '\'' +
+                ", account_type=" + account_type +
+                ", balance=" + balance +
+                '}';
     }
 }

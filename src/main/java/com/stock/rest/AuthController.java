@@ -40,21 +40,18 @@ public class AuthController {
 
     @PostMapping("sign-in")
     public ResponseEntity login(@RequestBody AuthDto authDto) {
-        User user = userService.getUserByEmail(authDto.getEmail());
+        String email = authDto.getEmail();
 
-        if (user != null) {
-            String email = user.getEmail();
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
 
-            String token = jwtTokenProvider.createToken(user);
+        User user = userService.getFullUserByEmail(email);
+        String token = jwtTokenProvider.createToken(user);
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("user", UserDto.mapUserToUserDto(user));
-            response.put("token", token);
-            return ResponseEntity.ok(response);
-        }
-        return ResponseEntity.notFound().build();
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", UserDto.mapUserToUserDto(user));
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("sign-up")
@@ -72,10 +69,9 @@ public class AuthController {
 
     @PostMapping("refresh-token")
     public ResponseEntity refreshToken(@RequestBody String token) {
-
         if (token != null && jwtTokenProvider.isTokenExpired(token)) {
             String email = jwtTokenProvider.getUsername(token);
-            User user = userService.getUserByEmail(email);
+            User user = userService.getFullUserByEmail(email);
 
             String newToken = jwtTokenProvider.createToken(user);
 
