@@ -1,7 +1,7 @@
 package com.stock.rest;
 
-import com.stock.dto.DepositDTO;
-import com.stock.dto.NewAccountDto;
+import com.stock.dto.accountDtos.DepositDto;
+import com.stock.dto.accountDtos.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
@@ -38,7 +38,7 @@ public class AccountController {
 
     @PostMapping("deposit")
     @Transactional
-    public ResponseEntity<AccountDto> deposit(@RequestBody DepositDTO deposit,
+    public ResponseEntity<AccountDto> deposit(@RequestBody DepositDto deposit,
                                   @AuthenticationPrincipal UserDetails userDetails){
         User user = userService.getUserByUsername(userDetails.getUsername());
         AccountDto accountDto = accountService.depositToAccountById(user, deposit.getAccountId(), BigDecimal.valueOf(deposit.getDepositAmount()));

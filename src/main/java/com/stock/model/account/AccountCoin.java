@@ -1,14 +1,12 @@
 package com.stock.model.account;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.stock.dto.CoinDto;
-import com.stock.dto.accountDtos.AccountDto;
+import com.stock.dto.coins.CoinDto;
 import com.stock.helper.CoinBuyHelper;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 

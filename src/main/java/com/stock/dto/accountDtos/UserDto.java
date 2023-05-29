@@ -1,12 +1,10 @@
-package com.stock.dto;
+package com.stock.dto.accountDtos;
 
-import com.stock.dto.accountDtos.AccountDto;
 import com.stock.model.account.Account;
 import com.stock.model.user.User;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data

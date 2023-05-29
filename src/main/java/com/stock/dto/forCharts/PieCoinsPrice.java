@@ -1,4 +1,4 @@
-package com.stock.dto;
+package com.stock.dto.forCharts;
 
 import lombok.Data;
 

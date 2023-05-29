@@ -1,8 +1,8 @@
 package com.stock.rest;
 
-import com.stock.dto.AuthDto;
-import com.stock.dto.SignUpDto;
-import com.stock.dto.UserDto;
+import com.stock.dto.auth.AuthDto;
+import com.stock.dto.auth.SignUpDto;
+import com.stock.dto.accountDtos.UserDto;
 import com.stock.model.user.User;
 import com.stock.security.jwt.JwtTokenProvider;
 import com.stock.service.UserService;

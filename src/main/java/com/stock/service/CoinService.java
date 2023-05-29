@@ -1,9 +1,9 @@
 package com.stock.service;
 
 
-import com.stock.dto.CoinsForClient;
-import com.stock.dto.CoinDto;
-import com.stock.dto.PieCoinsPrice;
+import com.stock.dto.coins.CoinsForClient;
+import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.PieCoinsPrice;
 import com.stock.dto.accountDtos.AccountCoinDto;
 
 import java.math.BigDecimal;

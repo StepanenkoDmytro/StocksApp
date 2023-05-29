@@ -1,4 +1,4 @@
-package com.stock.dto;
+package com.stock.dto.trasact;
 
 import com.stock.model.trasact.Transact;
 import lombok.Data;

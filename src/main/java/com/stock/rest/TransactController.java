@@ -1,7 +1,6 @@
 package com.stock.rest;
 
-import com.stock.dto.TransactDto;
-import com.stock.model.trasact.Transact;
+import com.stock.dto.trasact.TransactDto;
 import com.stock.service.TransactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

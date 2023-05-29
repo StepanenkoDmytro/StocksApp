@@ -1,4 +1,4 @@
-package com.stock.dto;
+package com.stock.dto.coins;
 
 import com.stock.api.entity.Coin;
 import lombok.AllArgsConstructor;

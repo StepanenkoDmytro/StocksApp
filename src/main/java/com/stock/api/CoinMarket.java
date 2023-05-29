@@ -2,7 +2,7 @@ package com.stock.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stock.dto.CoinDto;
+import com.stock.dto.coins.CoinDto;
 import com.stock.exceptions.RequestException;
 import com.stock.api.entity.Coin;
 import com.stock.api.wrappers.CoinData;

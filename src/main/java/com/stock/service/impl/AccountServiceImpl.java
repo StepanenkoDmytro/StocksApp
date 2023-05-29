@@ -1,6 +1,6 @@
 package com.stock.service.impl;
 
-import com.stock.dto.CoinDto;
+import com.stock.dto.coins.CoinDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.exceptions.AccountFetchException;
 import com.stock.helper.GenAccountNumber;

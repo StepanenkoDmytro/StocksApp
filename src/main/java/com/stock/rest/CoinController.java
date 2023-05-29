@@ -1,9 +1,9 @@
 package com.stock.rest;
 
-import com.stock.dto.CoinBuy;
-import com.stock.dto.CoinsForClient;
-import com.stock.dto.CoinDto;
-import com.stock.dto.PieCoinsPrice;
+import com.stock.dto.coins.CoinBuy;
+import com.stock.dto.coins.CoinsForClient;
+import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.PieCoinsPrice;
 import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;

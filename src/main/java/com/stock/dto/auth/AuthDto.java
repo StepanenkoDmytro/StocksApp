@@ -1,4 +1,4 @@
-package com.stock.dto;
+package com.stock.dto.auth;
 
 import lombok.Data;
 

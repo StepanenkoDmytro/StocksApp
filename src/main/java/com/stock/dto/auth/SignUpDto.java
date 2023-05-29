@@ -1,9 +1,7 @@
-package com.stock.dto;
+package com.stock.dto.auth;
 
 import com.stock.model.user.User;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class SignUpDto {
