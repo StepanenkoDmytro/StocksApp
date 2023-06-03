@@ -12,5 +12,5 @@ public interface AccountService {
     void createAccount(String accountName, User user);
     AccountDto depositToAccountById(User user, Long accountID, BigDecimal deposit);
     void deleteAccountById(Long accountID);
-    void updateCoinUser(BigDecimal amount, CoinDto coin, Account account);
+    AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account);
 }

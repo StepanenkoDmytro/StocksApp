@@ -8,7 +8,6 @@ import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
 import com.stock.model.account.AccountType;
 import com.stock.model.user.User;
-import com.stock.repository.account.AccountCoinRepository;
 import com.stock.repository.account.AccountRepository;
 import com.stock.service.AccountService;
 import com.stock.service.TransactService;
@@ -25,15 +24,11 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactService transactService;
     private final UserService userService;
-
-    private final AccountCoinRepository accountCoinRepository;
-
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, TransactService transactService, UserService userService, AccountCoinRepository accountCoinRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, TransactService transactService, UserService userService) {
         this.accountRepository = accountRepository;
         this.transactService = transactService;
         this.userService = userService;
-        this.accountCoinRepository = accountCoinRepository;
     }
 
     @Override
@@ -44,29 +39,31 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void updateCoinUser(BigDecimal amount, CoinDto coin, Account account) {
-//        BigDecimal newBalance = account.getBalance().subtract(amount);
-//        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
-//
-//        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-//            transactService.logCoinRejected(amount, accountCoin, account);
-//            return;
-//        }
-//
-//        List<AccountCoin> coinsUser = account.getCoins();
-//
-//        if (isContainsCoin(coinsUser, accountCoin)) {
-//            updateExistingCoin(coinsUser, accountCoin);
-//        } else {
-//            addNewCoin(account, accountCoin);
-//        }
-//
-//        accountRepository.changeAccountBalanceById(newBalance, account.getId());
-//        transactService.logCoinSuccess(amount, accountCoin, account);
+    public AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account) {
+        BigDecimal newBalance = account.getBalance().subtract(amount);
+        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
+
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+            transactService.logCoinRejected(amount, accountCoin, account);
+            return AccountDto.mapAccount(account);
+        }
+
+        if (isContainsCoin(account, accountCoin)) {
+            updateExistingCoin(account, accountCoin);
+        } else {
+            addNewCoin(account, accountCoin);
+        }
+
+        account.setBalance(newBalance);
+
+        accountRepository.save(account);
+        transactService.logCoinSuccess(amount, accountCoin, account);
+
+        return AccountDto.mapAccount(account);
     }
 
-    @Transactional
-    private void updateExistingCoin(List<AccountCoin> coinsUser, AccountCoin accountCoin) {
+    private void updateExistingCoin(Account account, AccountCoin accountCoin) {
+        List<AccountCoin> coinsUser = account.getCoins();
         AccountCoin existingCoin = getCoinFromUser(coinsUser, accountCoin);
 
         BigDecimal newAmountCoin = existingCoin.getAmountCOIN().add(accountCoin.getAmountCOIN());
@@ -74,17 +71,14 @@ public class AccountServiceImpl implements AccountService {
 
         existingCoin.setAmountCOIN(newAmountCoin);
         existingCoin.setAmountUSD(newAmountUSD);
-
-        accountCoinRepository.save(existingCoin);
     }
 
-    @Transactional
     private void addNewCoin(Account account, AccountCoin accountCoin) {
         account.addCoins(accountCoin);
-        accountCoinRepository.save(accountCoin);
     }
 
-    private boolean isContainsCoin(List<AccountCoin> coinsUser, AccountCoin coin) {
+    private boolean isContainsCoin(Account account, AccountCoin coin) {
+        List<AccountCoin> coinsUser = account.getCoins();
         return coinsUser.stream()
                 .anyMatch(c -> c.getId_coin().equals(coin.getId_coin()));
     }
