@@ -51,8 +51,7 @@ public class Account extends BaseEntity {
     private List<Transact> transacts;
 
     @JsonManagedReference
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
-            CascadeType.REFRESH,CascadeType.MERGE},
+    @OneToMany(cascade = CascadeType.ALL,
             mappedBy = "account")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<AccountCoin> coins;

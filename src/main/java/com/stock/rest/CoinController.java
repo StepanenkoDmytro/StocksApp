@@ -1,5 +1,6 @@
 package com.stock.rest;
 
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.CoinBuy;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
@@ -10,7 +11,6 @@ import com.stock.model.account.Account;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,19 +57,22 @@ public class CoinController {
     }
 
     @PostMapping("/{coin_id}")
-    public ResponseEntity buyCoin(@RequestBody CoinBuy coinBuy) {
-        if(coinBuy.getAccountID() != null) {
-            Account account = accountService.getAccountById(coinBuy.getAccountID());
-            CoinDto coin = coinService.getByTicker(coinBuy.getCoinId());
-            BigDecimal amountUSD = CoinBuyHelper.convertToUSD(coinBuy.getAmount());
-            accountService.updateCoinUser(amountUSD, coin, account);
-            return ResponseEntity.ok().body(HttpStatus.ACCEPTED);
-        }
-        return ResponseEntity.badRequest().body("Incorrect data");
+    public ResponseEntity<AccountDto> buyCoin(@RequestBody CoinBuy coinBuy) {
+//        Account account = null;
+//        if(coinBuy.getAccountID() != null) {
+
+        Account account = accountService.getAccountById(coinBuy.getAccountID());
+        CoinDto coin = coinService.getByTicker(coinBuy.getCoinId());
+        BigDecimal amountUSD = CoinBuyHelper.convertToUSD(coinBuy.getAmount());
+
+        AccountDto updatedAccount = accountService.processCoinBuy(amountUSD, coin, account);
+        return ResponseEntity.ok(updatedAccount);
+//        }
+//        return ResponseEntity.badRequest().body(AccountDto.mapAccount(account));
     }
 
     @GetMapping("/price-for-list")
-    public ResponseEntity getPriceCoinsById(@RequestBody List<AccountCoinDto> coinsList){
+    public ResponseEntity getPriceCoinsById(@RequestBody List<AccountCoinDto> coinsList) {
         List<PieCoinsPrice> priceCoins = coinService.getPriceCoinsByList(coinsList);
         return ResponseEntity.ok(priceCoins);
     }
