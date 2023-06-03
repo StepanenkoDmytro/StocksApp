@@ -23,13 +23,14 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:security-keys.properties")
 public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
-    @Value("${jwt.token.secret}")
+    private final long validityInMilliseconds;
     private String secret;
-    @Value("${jwt.token.expired}")
-    private long validityInMilliseconds;
-
     @Autowired
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
+    public JwtTokenProvider(UserDetailsService userDetailsService,
+                            @Value("${jwt.token.secret}") String secret,
+                            @Value("${jwt.token.expired}") long validityInMilliseconds) {
+        this.secret = secret;
+        this.validityInMilliseconds = validityInMilliseconds;
         this.userDetailsService = userDetailsService;
     }
 
@@ -78,11 +79,11 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token){
-        UserDetails userDetails = userDetailsService.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getEmailFromToken(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    public String getEmailFromToken(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 

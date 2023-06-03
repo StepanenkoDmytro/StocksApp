@@ -13,13 +13,9 @@ public class CoinBuyHelper {
     }
 
     public static BigDecimal convertToUSD(String amount){
-        double amountUSD = Double.parseDouble(amount);
-
-        return BigDecimal.valueOf(amountUSD);
+        return new BigDecimal(amount);
     }
     public static BigDecimal convertToUSD(Long amount){
         return BigDecimal.valueOf(amount);
     }
-
-
 }

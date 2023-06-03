@@ -15,9 +15,6 @@ public class SignUpDto {
         user.setEmail(signUpDTO.getEmail());
         user.setPassword(signUpDTO.getPassword());
 
-//        Date date = new Date();
-//        user.setCreated(date);
-//        user.setUpdated(date);
         return user;
     }
 }

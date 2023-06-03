@@ -70,7 +70,7 @@ public class AuthController {
     @PostMapping("refresh-token")
     public ResponseEntity refreshToken(@RequestBody String token) {
         if (token != null && jwtTokenProvider.isTokenExpired(token)) {
-            String email = jwtTokenProvider.getUsername(token);
+            String email = jwtTokenProvider.getEmailFromToken(token);
             User user = userService.getFullUserByEmail(email);
 
             String newToken = jwtTokenProvider.createToken(user);
