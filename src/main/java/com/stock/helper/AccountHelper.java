@@ -2,7 +2,7 @@ package com.stock.helper;
 
 import java.util.Random;
 
-public class GenAccountNumber {
+public class AccountHelper {
     public static String generateAccountNumber(){
         int accountNumber;
         Random random = new Random();

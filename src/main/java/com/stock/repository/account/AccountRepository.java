@@ -14,7 +14,7 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> getUserAccountsById(Long id);
 
-    @Query(value = "SELECT sum(balance) FROM accounts WHERE user_id = :user_ID", nativeQuery = true)
+    @Query(value = "SELECT sum(balance) FROM accounts WHERE user_id = :userID", nativeQuery = true)
     BigDecimal getTotalBalance(@Param("userID")Long userID);
 
     @Query(value = "SELECT balance FROM accounts WHERE user_id = :userID AND id = :accountID", nativeQuery = true)
