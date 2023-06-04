@@ -1,4 +1,4 @@
-package com.stock.api;
+package com.stock.api.impl;
 
 
 import com.stock.exceptions.RequestException;
@@ -16,34 +16,35 @@ import java.util.List;
 
 @PropertySource("classpath:security-keys.properties")
 @Component
-public class RequestHelper {
+public class RequestManager {
     public static final int MAX_ELEMENTS = 1080;
     public static final int PAGE_LIMIT = 9;
     public static final int MAX_PAGES = MAX_ELEMENTS / PAGE_LIMIT;
     private static final String BASE_URL = "https://api.coincap.io/v2/assets";
     private final HttpClient client = HttpClient.newHttpClient();
     @Value("${coincap.api.key}")
-    private String API_KEY;
+    private String apiKey;
+
 
     public HttpResponse<String> sendGetAllRequest(int page) {
         page = page - 1;
-        String URL = String.format("%s?limit=%d&offset=%d", BASE_URL, PAGE_LIMIT, page * PAGE_LIMIT);
-        return sendRequest(URL);
+        String url = String.format("%s?limit=%d&offset=%d", BASE_URL, PAGE_LIMIT, page * PAGE_LIMIT);
+        return sendRequest(url);
     }
 
     public HttpResponse<String> sendRequestByFilter(String filter) {
-        String URL =String.format("%s?search=%s", BASE_URL, filter);
-        return sendRequest(URL);
+        String url = String.format("%s?search=%s", BASE_URL, filter);
+        return sendRequest(url);
     }
 
     public HttpResponse<String> sendGetByTicker(String ticker) {
-        String requestTicker = String.format("%s/%s",BASE_URL, ticker);
+        String requestTicker = String.format("%s/%s", BASE_URL, ticker);
         return sendRequest(requestTicker);
     }
 
     public HttpResponse<String> sendGetCoinsByList(List<String> coinsList) {
         String coins = String.join(",", coinsList);
-        String requestTicker = String.format("%s?ids=%s",BASE_URL, coins);
+        String requestTicker = String.format("%s?ids=%s", BASE_URL, coins);
         return sendRequest(requestTicker);
     }
 
@@ -53,16 +54,19 @@ public class RequestHelper {
                 .GET()
                 .uri(uri)
                 .headers("Accept-Encoding", "deflate")
-                .headers("Authorization", API_KEY)
+                .headers("Authorization", apiKey)
                 .build();
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
-                throw new RequestException("Failed to retrieve data: " + response.body());
+                throw new RequestException("Unexpected status code: " + response.body());
             }
             return response;
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RequestException("Request was interrupted", e);
+        } catch (IOException e) {
             throw new RequestException("Failed to retrieve data: " + e.getMessage());
         }
     }

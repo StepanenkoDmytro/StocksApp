@@ -1,7 +1,7 @@
-package com.stock.service.Coincap;
+package com.stock.service.impl;
 
 import com.stock.api.CoinMarket;
-import com.stock.api.RequestHelper;
+import com.stock.api.impl.RequestManager;
 import com.stock.api.entity.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CoinServiceImpl implements CoinService {
@@ -29,38 +28,38 @@ public class CoinServiceImpl implements CoinService {
         List<Coin> coinList = coinMarket.findAll(page);
         List<CoinDto> data = coinList.stream()
                 .map(CoinDto::mapCoinToDto)
-                .collect(Collectors.toList());
+                .toList();
 
-        return new CoinsForClient(data, RequestHelper.MAX_PAGES, RequestHelper.MAX_ELEMENTS, page);
+        return new CoinsForClient(data, RequestManager.MAX_PAGES, RequestManager.MAX_ELEMENTS, page);
     }
 
     @Override
     public CoinsForClient getCoinsByFilter(int page, String filter) {
         List<Coin> coinList = coinMarket.findByFilter(filter);
-        int totalPages = (int) Math.ceil((double) coinList.size() / RequestHelper.PAGE_LIMIT);
+        int totalPages = (int) Math.ceil((double) coinList.size() / RequestManager.PAGE_LIMIT);
 
-        int startIndex = (page - 1) * RequestHelper.PAGE_LIMIT;
-        int endIndex = Math.min(RequestHelper.PAGE_LIMIT, coinList.size() - startIndex);
+        int startIndex = (page - 1) * RequestManager.PAGE_LIMIT;
+        int endIndex = Math.min(RequestManager.PAGE_LIMIT, coinList.size() - startIndex);
 
         List<CoinDto> data = coinList.stream()
                 .skip(startIndex)
                 .limit(endIndex)
                 .map(CoinDto::mapCoinToDto)
-                .collect(Collectors.toList());
+                .toList();
 
         return new CoinsForClient(data, totalPages, coinList.size(), page);
     }
 
     public List<PieCoinsPrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
         List<String> coinsName = coins.stream()
-                .map(coin -> coin.getIdCoin())
-                .collect(Collectors.toList());
+                .map(AccountCoinDto::getIdCoin)
+                .toList();
 
         List<CoinDto> priceList = coinMarket.findByTikersList(coinsName);
 
         return priceList.stream()
                 .map(coin -> new PieCoinsPrice(coin.getName(), coin.getPriceUSD()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
