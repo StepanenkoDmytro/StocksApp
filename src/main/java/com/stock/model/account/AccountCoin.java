@@ -25,7 +25,7 @@ public class AccountCoin {
     private Account account;
 
     @Column(name = "id_coin")
-    private String id_coin;
+    private String idCoin;
 
     @Column(name = "symbol")
     private String symbol;
@@ -59,7 +59,7 @@ public class AccountCoin {
         BigDecimal amountCOIN = CoinBuyHelper.convertCoinByAmount(amountUSD, coin.getPriceUSD());
 
         AccountCoin accountCoin = new AccountCoin();
-        accountCoin.setId_coin(coin.getId());
+        accountCoin.setIdCoin(coin.getId());
         accountCoin.setName(coin.getName());
         accountCoin.setSymbol(coin.getSymbol());
         accountCoin.setPrice(coin.getPriceUSD());
@@ -74,7 +74,7 @@ public class AccountCoin {
         return "AccountCoin{" +
                 "id=" + id +
 //                ", account=" + account.getAccount_name() +
-                ", id_coin='" + id_coin + '\'' +
+                ", id_coin='" + idCoin + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +

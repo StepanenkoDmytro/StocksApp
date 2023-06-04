@@ -10,7 +10,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +25,14 @@ public class Account extends BaseEntity {
     private User user;
 
     @Column(name = "account_number")
-    private String account_number;
+    private String accountNumber;
 
     @Column(name = "account_name")
-    private String account_name;
+    private String accountName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
-    private AccountType account_type;
+    private AccountType accountType;
 
     @Column(name = "balance", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal balance;
@@ -95,9 +94,9 @@ public class Account extends BaseEntity {
     @Override
     public String toString() {
         return "Account{" +
-                ", account_number='" + account_number + '\'' +
-                ", account_name='" + account_name + '\'' +
-                ", account_type=" + account_type +
+                ", account_number='" + accountNumber + '\'' +
+                ", account_name='" + accountName + '\'' +
+                ", account_type=" + accountType +
                 ", balance=" + balance +
                 '}';
     }

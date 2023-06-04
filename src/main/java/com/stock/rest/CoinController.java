@@ -11,6 +11,7 @@ import com.stock.model.account.Account;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,17 +59,17 @@ public class CoinController {
 
     @PostMapping("/{coin_id}")
     public ResponseEntity<AccountDto> buyCoin(@RequestBody CoinBuy coinBuy) {
-//        Account account = null;
-//        if(coinBuy.getAccountID() != null) {
-
-        Account account = accountService.getAccountById(coinBuy.getAccountID());
-        CoinDto coin = coinService.getByTicker(coinBuy.getCoinId());
         BigDecimal amountUSD = CoinBuyHelper.convertToUSD(coinBuy.getAmount());
+        if(amountUSD.compareTo(BigDecimal.TEN) > 0) {
+            Account account = accountService.getAccountById(coinBuy.getAccountID());
+            CoinDto coin = coinService.getByTicker(coinBuy.getCoinId());
 
-        AccountDto updatedAccount = accountService.processCoinBuy(amountUSD, coin, account);
-        return ResponseEntity.ok(updatedAccount);
-//        }
-//        return ResponseEntity.badRequest().body(AccountDto.mapAccount(account));
+
+            AccountDto updatedAccount = accountService.processCoinBuy(amountUSD, coin, account);
+            return ResponseEntity.ok(updatedAccount);
+        }
+        //коли буде працювати фронт - зробити просто валідацію amount
+        return ResponseEntity.badRequest().body(null);
     }
 
     @GetMapping("/price-for-list")

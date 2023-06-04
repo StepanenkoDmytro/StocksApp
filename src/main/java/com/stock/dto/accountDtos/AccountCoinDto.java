@@ -3,7 +3,6 @@ package com.stock.dto.accountDtos;
 import com.stock.model.account.AccountCoin;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 
 @Data
@@ -23,7 +22,7 @@ public class AccountCoinDto {
 
     public static AccountCoinDto mapAccountCoin(AccountCoin coin){
         return new AccountCoinDto(
-                coin.getId_coin(),
+                coin.getIdCoin(),
                 coin.getName(),
                 coin.getAmountCOIN(),
                 coin.getAmountUSD());

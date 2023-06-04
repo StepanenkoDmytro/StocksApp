@@ -40,6 +40,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account) {
+        if(account == null || coin == null) {
+            throw new AccountFetchException("In processCoinBuy account or coin is null");
+        }
+
         BigDecimal newBalance = account.getBalance().subtract(amount);
         AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
 
@@ -80,12 +84,12 @@ public class AccountServiceImpl implements AccountService {
     private boolean isContainsCoin(Account account, AccountCoin coin) {
         List<AccountCoin> coinsUser = account.getCoins();
         return coinsUser.stream()
-                .anyMatch(c -> c.getId_coin().equals(coin.getId_coin()));
+                .anyMatch(c -> c.getIdCoin().equals(coin.getIdCoin()));
     }
 
     private AccountCoin getCoinFromUser(List<AccountCoin> coinsUser, AccountCoin coin) {
         return coinsUser.stream()
-                .filter(ac -> ac.getId_coin().equals(coin.getId_coin()))
+                .filter(ac -> ac.getIdCoin().equals(coin.getIdCoin()))
                 .findFirst()
                 .orElse(coin);
     }
@@ -93,10 +97,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount(String accountName, User user){
         Account account = new Account();
-        account.setAccount_name(accountName);
-        account.setAccount_type(AccountType.CryptoWallet);
+        account.setAccountName(accountName);
+        account.setAccountType(AccountType.CryptoWallet);
 
-        account.setAccount_number(GenAccountNumber.generateAccountNumber());
+        account.setAccountNumber(GenAccountNumber.generateAccountNumber());
 
         user.addAccount(account);
         userService.saveUser(user);

@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class AccountDto {
@@ -27,8 +26,8 @@ public class AccountDto {
     public static AccountDto mapAccount(Account account) {
         return new AccountDto(
                 account.getId(),
-                account.getAccount_name(),
-                account.getAccount_type().name(),
+                account.getAccountName(),
+                account.getAccountType().name(),
                 account.getBalance(),
                 mapAccountCoins(account.getCoins()));
     }
