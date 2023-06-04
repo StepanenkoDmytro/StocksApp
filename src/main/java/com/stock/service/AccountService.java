@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public interface AccountService {
     Account getAccountById(Long accountID);
     void createAccount(String accountName, User user);
-    AccountDto depositToAccountById(User user, Long accountID, BigDecimal deposit);
+    AccountDto depositToAccountById(Long accountID, BigDecimal deposit);
     void deleteAccountById(Long accountID);
     AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account);
 }

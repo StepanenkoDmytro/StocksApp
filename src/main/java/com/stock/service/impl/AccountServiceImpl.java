@@ -3,7 +3,7 @@ package com.stock.service.impl;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.exceptions.AccountFetchException;
-import com.stock.helper.GenAccountNumber;
+import com.stock.helper.AccountHelper;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
 import com.stock.model.account.AccountType;
@@ -24,6 +24,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactService transactService;
     private final UserService userService;
+
     @Autowired
     public AccountServiceImpl(AccountRepository accountRepository, TransactService transactService, UserService userService) {
         this.accountRepository = accountRepository;
@@ -32,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account getAccountById(Long accountID){
+    public Account getAccountById(Long accountID) {
         return accountRepository.findById(accountID).orElseThrow(() ->
                 new AccountFetchException(String.format("Account with id = %d not found", accountID)));
     }
@@ -40,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account) {
-        if(account == null || coin == null) {
+        if (account == null || coin == null) {
             throw new AccountFetchException("In processCoinBuy account or coin is null");
         }
 
@@ -64,6 +65,39 @@ public class AccountServiceImpl implements AccountService {
         transactService.logCoinSuccess(amount, accountCoin, account);
 
         return AccountDto.mapAccount(account);
+    }
+
+    @Override
+    public void createAccount(String accountName, User user) {
+        //зробити валідацію
+        Account account = new Account();
+        account.setAccountName(accountName);
+        account.setAccountType(AccountType.CryptoWallet);
+
+        account.setAccountNumber(AccountHelper.generateAccountNumber());
+
+        user.addAccount(account);
+        userService.saveUser(user);
+    }
+
+    @Override
+    @Transactional
+    public AccountDto depositToAccountById(Long accountID, BigDecimal deposit) {
+        Account account = getAccountById(accountID);
+        //в майбутньому додати перевірку на статус акаунту
+        BigDecimal balance = account.getBalance();
+        BigDecimal newBalance = balance.add(deposit);
+
+        account.setBalance(newBalance);
+
+        accountRepository.save(account);
+        transactService.logDepositSuccess(deposit, account);
+        return AccountDto.mapAccount(account);
+    }
+
+    @Override
+    public void deleteAccountById(Long accountID) {
+        accountRepository.deleteById(accountID);
     }
 
     private void updateExistingCoin(Account account, AccountCoin accountCoin) {
@@ -92,36 +126,5 @@ public class AccountServiceImpl implements AccountService {
                 .filter(ac -> ac.getIdCoin().equals(coin.getIdCoin()))
                 .findFirst()
                 .orElse(coin);
-    }
-
-    @Override
-    public void createAccount(String accountName, User user){
-        Account account = new Account();
-        account.setAccountName(accountName);
-        account.setAccountType(AccountType.CryptoWallet);
-
-        account.setAccountNumber(GenAccountNumber.generateAccountNumber());
-
-        user.addAccount(account);
-        userService.saveUser(user);
-    }
-
-    @Override
-    @Transactional
-    public AccountDto depositToAccountById(User user, Long accountID, BigDecimal deposit) {
-        BigDecimal balance = accountRepository.getAccountBalance(user.getId(), accountID);
-        BigDecimal newBalance = balance.add( deposit );
-        Account account = accountRepository.findById(accountID).orElseThrow(
-                () -> new AccountFetchException(String.format("Account with id = %d not found", accountID)));
-
-        accountRepository.changeAccountBalanceById(newBalance, accountID);
-        transactService.logDepositSuccess(deposit, account);
-        Account accountById = getAccountById(accountID);
-        return AccountDto.mapAccount(accountById);
-    }
-
-    @Override
-    public void deleteAccountById(Long accountID) {
-        accountRepository.deleteById(accountID);
     }
 }

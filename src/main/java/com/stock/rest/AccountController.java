@@ -31,6 +31,7 @@ public class AccountController {
     @PostMapping("create")
     public ResponseEntity createAccount(@RequestBody NewAccountDto accountDto,
                                         @AuthenticationPrincipal UserDetails userDetails){
+        //спитати в Алекса як краще, повернути юзера з новим списком аккаунтів, або просто новий аккаунт
         User user = userService.getUserByUsername(userDetails.getUsername());
         accountService.createAccount(accountDto.getNewAccountName(), user);
         return ResponseEntity.ok().body(HttpStatus.OK);
@@ -40,8 +41,7 @@ public class AccountController {
     @Transactional
     public ResponseEntity<AccountDto> deposit(@RequestBody DepositDto deposit,
                                   @AuthenticationPrincipal UserDetails userDetails){
-        User user = userService.getUserByUsername(userDetails.getUsername());
-        AccountDto accountDto = accountService.depositToAccountById(user, deposit.getAccountId(), BigDecimal.valueOf(deposit.getDepositAmount()));
+        AccountDto accountDto = accountService.depositToAccountById(deposit.getAccountId(), BigDecimal.valueOf(deposit.getDepositAmount()));
         //дописати методу accountService.depositToAccountById якийсь exception, щоб користувач дізнався про помилку
         return ResponseEntity.ok(accountDto);
     }
