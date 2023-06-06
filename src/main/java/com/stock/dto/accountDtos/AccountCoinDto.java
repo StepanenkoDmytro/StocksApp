@@ -9,13 +9,14 @@ import java.math.BigDecimal;
 public class AccountCoinDto {
     private String idCoin;
     private String name;
+    private String symbol;
     private BigDecimal amountCOIN;
-
     private BigDecimal amountUSD;
 
-    public AccountCoinDto(String idCoin, String name, BigDecimal amountCOIN, BigDecimal amountUSD) {
+    public AccountCoinDto(String idCoin, String name, String symbol, BigDecimal amountCOIN, BigDecimal amountUSD) {
         this.idCoin = idCoin;
         this.name = name;
+        this.symbol = symbol;
         this.amountCOIN = amountCOIN;
         this.amountUSD = amountUSD;
     }
@@ -24,6 +25,7 @@ public class AccountCoinDto {
         return new AccountCoinDto(
                 coin.getIdCoin(),
                 coin.getName(),
+                coin.getSymbol(),
                 coin.getAmountCOIN(),
                 coin.getAmountUSD());
     }

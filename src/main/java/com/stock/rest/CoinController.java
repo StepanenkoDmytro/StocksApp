@@ -4,14 +4,11 @@ import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.CoinBuy;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
-import com.stock.dto.forCharts.PieCoinsPrice;
-import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -70,11 +66,5 @@ public class CoinController {
         }
         //коли буде працювати фронт - зробити просто валідацію amount
         return ResponseEntity.badRequest().body(null);
-    }
-
-    @GetMapping("/price-for-list")
-    public ResponseEntity getPriceCoinsById(@RequestBody List<AccountCoinDto> coinsList) {
-        List<PieCoinsPrice> priceCoins = coinService.getPriceCoinsByList(coinsList);
-        return ResponseEntity.ok(priceCoins);
     }
 }

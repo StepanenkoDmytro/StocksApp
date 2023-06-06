@@ -3,8 +3,11 @@ package com.stock.rest;
 import com.stock.dto.accountDtos.DepositDto;
 import com.stock.dto.accountDtos.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
+import com.stock.dto.forCharts.PieCoinPrice;
+import com.stock.dto.forCharts.PieCoinsData;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
+import com.stock.service.CoinService;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/account/")
@@ -21,11 +26,13 @@ import java.math.BigDecimal;
 public class AccountController {
     private final UserService userService;
     private final AccountService accountService;
+    private final CoinService coinService;
 
     @Autowired
-    public AccountController(UserService userService, AccountService accountService) {
+    public AccountController(UserService userService, AccountService accountService, CoinService coinService) {
         this.userService = userService;
         this.accountService = accountService;
+        this.coinService = coinService;
     }
 
     @PostMapping("create")
@@ -52,7 +59,18 @@ public class AccountController {
         return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
-//зробити цю функцію пізніше
+    @PostMapping("/price-for-list")
+    public ResponseEntity getPieCoinPrice(@RequestBody AccountDto account) {
+//        Account account = accountService.getAccountById(accountID);
+        List<PieCoinPrice> priceCoins = coinService.getPriceCoinsByList(account.getCoins());
+        BigDecimal totalBalance = priceCoins.stream()
+                .map(PieCoinPrice::getValue)
+                .reduce(account.getBalance(), BigDecimal::add)
+                .setScale(0, RoundingMode.HALF_UP);
+        return ResponseEntity.ok(new PieCoinsData(priceCoins, totalBalance));
+    }
+
+// зробити цю функцію пізніше
 //    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 //    public String addPhoto(@AuthenticationPrincipal UserDetails userDetails,
 //                           @RequestParam("file") MultipartFile file,

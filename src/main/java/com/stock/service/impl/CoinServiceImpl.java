@@ -5,8 +5,9 @@ import com.stock.api.impl.RequestManager;
 import com.stock.api.entity.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
-import com.stock.dto.forCharts.PieCoinsPrice;
+import com.stock.dto.forCharts.PieCoinPrice;
 import com.stock.dto.accountDtos.AccountCoinDto;
+import com.stock.model.account.AccountCoin;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,15 +51,12 @@ public class CoinServiceImpl implements CoinService {
         return new CoinsForClient(data, totalPages, coinList.size(), page);
     }
 
-    public List<PieCoinsPrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
-        List<String> coinsName = coins.stream()
-                .map(AccountCoinDto::getIdCoin)
-                .toList();
-
-        List<CoinDto> priceList = coinMarket.findByTikersList(coinsName);
-
-        return priceList.stream()
-                .map(coin -> new PieCoinsPrice(coin.getName(), coin.getPriceUSD()))
+    public List<PieCoinPrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
+        return coins.stream()
+                .map(coin -> {
+                    BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getAmountCOIN());
+                    return new PieCoinPrice(coin.getSymbol(), actualPrice);
+                })
                 .toList();
     }
 

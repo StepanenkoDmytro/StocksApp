@@ -15,7 +15,7 @@ public class AccountDto {
     private BigDecimal balance;
     private List<AccountCoinDto> coins;
 
-    public AccountDto(Long id ,String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins) {
+    public AccountDto(Long id , String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins) {
         this.id = id;
         this.accountName = accountName;
         this.accountType = accountType;

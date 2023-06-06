@@ -4,6 +4,7 @@ import com.stock.model.account.Account;
 import com.stock.model.user.User;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ public class UserDto {
     private String email;
     private Long imageID;
     private List<AccountDto> accounts;
+    private BigDecimal totalBalance;
 
     public UserDto(Long id ,Long imageID, String username, String email, List<AccountDto> accounts) {
         this.id = id;
@@ -42,6 +44,6 @@ public class UserDto {
     public static List<AccountDto> mapAccountsListToDto(List<Account> accounts){
         return accounts.stream()
                 .map(AccountDto::mapAccount)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
