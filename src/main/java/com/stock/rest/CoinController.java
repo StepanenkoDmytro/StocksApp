@@ -1,9 +1,12 @@
 package com.stock.rest;
 
+import com.stock.api.AlphaVantageMarket;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.CoinBuy;
+import com.stock.dto.coins.CoinDetails;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.CandlesDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;
 import com.stock.service.AccountService;
@@ -16,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,11 +28,13 @@ import java.util.Optional;
 public class CoinController {
     private final CoinService coinService;
     private final AccountService accountService;
+    private final AlphaVantageMarket alphaVantageMarket;
 
     @Autowired
-    public CoinController(CoinService coinService, AccountService accountService) {
+    public CoinController(CoinService coinService, AccountService accountService, AlphaVantageMarket alphaVantageMarket) {
         this.coinService = coinService;
         this.accountService = accountService;
+        this.alphaVantageMarket = alphaVantageMarket;
     }
 
     @GetMapping("")
@@ -47,10 +53,11 @@ public class CoinController {
     }
 
     @GetMapping("/{coin_id}")
-    public ResponseEntity<CoinDto> getCoin(@AuthenticationPrincipal UserDetails userDetails,
-                                           @PathVariable(value = "coin_id") String coin_id) {
-        CoinDto coin = coinService.getByTicker(coin_id);
-        return ResponseEntity.ok(coin);
+    public ResponseEntity<CoinDetails> getCoinWithCandles(@AuthenticationPrincipal UserDetails userDetails,
+                                                          @PathVariable(value = "coin_id") String coinID) {
+        CoinDto coin = coinService.getByTicker(coinID);
+        List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
+        return ResponseEntity.ok(new CoinDetails(coin, candles));
     }
 
     @PostMapping("/{coin_id}")

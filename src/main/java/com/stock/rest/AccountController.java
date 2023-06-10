@@ -3,8 +3,10 @@ package com.stock.rest;
 import com.stock.dto.accountDtos.DepositDto;
 import com.stock.dto.accountDtos.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
+import com.stock.dto.accountDtos.UserDto;
 import com.stock.dto.forCharts.PieCoinPrice;
 import com.stock.dto.forCharts.PieCoinsData;
+import com.stock.model.account.AccountType;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
@@ -39,9 +41,11 @@ public class AccountController {
     public ResponseEntity createAccount(@RequestBody NewAccountDto accountDto,
                                         @AuthenticationPrincipal UserDetails userDetails){
         //спитати в Алекса як краще, повернути юзера з новим списком аккаунтів, або просто новий аккаунт
+
+
         User user = userService.getUserByUsername(userDetails.getUsername());
-        accountService.createAccount(accountDto.getNewAccountName(), user);
-        return ResponseEntity.ok().body(HttpStatus.OK);
+        accountService.createAccount(accountDto.getNewAccountName(), accountDto.getAccountType(), user);
+        return ResponseEntity.ok(UserDto.mapUserToUserDto(user));
     }
 
     @PostMapping("deposit")

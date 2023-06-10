@@ -187,9 +187,9 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="price" type="DECIMAL(10,2)">
-                <constraints nullable="true"/>
-            </column>
+<!--            <column name="price" type="DECIMAL(10,2)">-->
+<!--                <constraints nullable="true"/>-->
+<!--            </column>-->
 
             <column name="amountCOIN" type="DECIMAL(20,10)">
                 <constraints nullable="true"/>
@@ -210,6 +210,77 @@
         <addForeignKeyConstraint baseColumnNames="account_id"
                                  baseTableName="account_coins"
                                  constraintName="fk_account_coins_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.2.8" author="dmytro.stepanenko">
+        <createTable tableName="account_stocks">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="symbol" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="asset_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="exchange" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="buy_price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="count_stocks" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="country" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sector" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="industry" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="dividend_yield" type="DECIMAL(5,4)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.2.9" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="account_stocks"
+                                 constraintName="fk_account_stocks_account_id"
                                  onDelete="CASCADE"
                                  onUpdate="RESTRICT"
                                  referencedColumnNames="id"

@@ -18,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "accounts")
 public class Account extends BaseEntity {
-//    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "user_id")
@@ -50,12 +49,24 @@ public class Account extends BaseEntity {
     private List<Transact> transacts;
 
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "account")
     @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
     private List<AccountCoin> coins;
 
+    @JsonManagedReference
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "account")
+    private List<AccountStock> stocks;
+
     public Account() {
+    }
+
+    public void addStocks(AccountStock stock) {
+        if(stock == null) {
+            stocks = new ArrayList<>();
+        }
+        stocks.add(stock);
+        stock.setAccount(this);
     }
 
     public void addCoins(AccountCoin coin) {

@@ -7,13 +7,15 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "account_coins")
 @Data
-public class AccountCoin {
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class AccountCoin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,7 +25,6 @@ public class AccountCoin {
             CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "account_id")
     private Account account;
-
     @Column(name = "id_coin")
     private String idCoin;
 
@@ -32,8 +33,8 @@ public class AccountCoin {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
-    private BigDecimal price;
+//    @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
+//    private BigDecimal price;
 
     @Column(name = "amountCOIN", columnDefinition = "DECIMAL(20,10)")
     private BigDecimal amountCOIN;
@@ -62,7 +63,6 @@ public class AccountCoin {
         accountCoin.setIdCoin(coin.getId());
         accountCoin.setName(coin.getName());
         accountCoin.setSymbol(coin.getSymbol());
-        accountCoin.setPrice(coin.getPriceUSD());
         accountCoin.setAmountCOIN(amountCOIN);
         accountCoin.setAmountUSD(amountUSD);
 
@@ -72,12 +72,12 @@ public class AccountCoin {
     @Override
     public String toString() {
         return "AccountCoin{" +
-                "id=" + id +
+//                "id=" + id +
 //                ", account=" + account.getAccount_name() +
                 ", id_coin='" + idCoin + '\'' +
                 ", symbol='" + symbol + '\'' +
                 ", name='" + name + '\'' +
-                ", price=" + price +
+//                ", price=" + price +
                 ", amountCOIN=" + amountCOIN +
                 ", amountUSD=" + amountUSD +
                 ", created=" + created +

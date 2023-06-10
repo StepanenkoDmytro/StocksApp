@@ -2,6 +2,7 @@ package com.stock.service.impl;
 
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
+import com.stock.model.account.AccountStock;
 import com.stock.model.trasact.Transact;
 import com.stock.repository.account.TransactRepository;
 import com.stock.service.TransactService;
@@ -37,6 +38,22 @@ public class TransactServiceImpl implements TransactService {
     @Transactional
     public void logCoinRejected(BigDecimal amount, AccountCoin coin, Account account) {
         Transact log = Transact.transactCOIN("rejected", amount, coin);
+        account.addTransact(log);
+
+        transactRepository.save(log);
+    }
+
+    @Override
+    public void logStockSuccess(BigDecimal purchasePrice, AccountStock stock, Account account) {
+        Transact log = Transact.transactSTOCK("rejected", purchasePrice, stock);
+        account.addTransact(log);
+
+        transactRepository.save(log);
+    }
+
+    @Override
+    public void logStockRejected(BigDecimal purchasePrice, AccountStock stock, Account account) {
+        Transact log = Transact.transactSTOCK("rejected", purchasePrice, stock);
         account.addTransact(log);
 
         transactRepository.save(log);

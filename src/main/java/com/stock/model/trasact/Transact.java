@@ -3,6 +3,7 @@ package com.stock.model.trasact;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
+import com.stock.model.account.AccountStock;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -58,6 +59,17 @@ public class Transact {
         transactLog.setStatus(status);
         transactLog.setReasonCode(ReasonCode.BUY_CRYPTO_SUCCESS);
         transactLog.setPurchaseDetails(coin.getName());
+        return transactLog;
+    }
+
+    public static Transact transactSTOCK(String status, BigDecimal purchasePrice, AccountStock stock){
+        Transact transactLog = new Transact();
+        transactLog.setTransaction_type(TransactionType.BUY_STOCKS);
+        transactLog.setAmount(purchasePrice);
+        transactLog.setSource(Source.BIG_BANK);
+        transactLog.setStatus(status);
+        transactLog.setReasonCode(ReasonCode.BUY_STOCKS_FAILED);
+        transactLog.setPurchaseDetails(stock.getName());
         return transactLog;
     }
 

@@ -145,9 +145,10 @@ class AccountServiceTest {
     @Tag("createAccount")
     void createAccountSuccessfully() {
         String accountName = "Test Name";
+        String accountType = "CryptoWallet";
         User user = new User();
 
-        accountService.createAccount(accountName, user);
+        accountService.createAccount(accountName, accountType,user);
         List<Account> accountList = user.getAccounts();
 
         assertNotNull(user.getAccounts());
