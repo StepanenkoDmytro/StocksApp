@@ -1,7 +1,7 @@
 package com.stock.api.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stock.api.entity.Coin;
+import com.stock.api.entity.coinCap.Coin;
 import lombok.Data;
 
 @Data

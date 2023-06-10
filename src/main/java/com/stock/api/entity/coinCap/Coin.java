@@ -1,4 +1,4 @@
-package com.stock.api.entity;
+package com.stock.api.entity.coinCap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

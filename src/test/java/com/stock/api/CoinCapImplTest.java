@@ -1,4 +1,4 @@
-package com.stock.service.coincap;
+package com.stock.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stock.api.wrappers.CoinData;
@@ -11,12 +11,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @SpringBootTest
-public class CoinCapTest {
+public class CoinCapImplTest {
 
     @Test
     void getAssets() throws IOException, InterruptedException {
@@ -36,6 +33,24 @@ public class CoinCapTest {
 
         System.out.println(data.getData());
 
+    }
+    @Test
+    void fearIndex() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://fear-and-greed-index.p.rapidapi.com/v1/fgi"))
+                .header("X-RapidAPI-Key", "8ce1155150mshedb9ae8f466e99cp182d93jsn79a86660c015")
+                .header("X-RapidAPI-Host", "fear-and-greed-index.p.rapidapi.com")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = null;
+        try {
+            response = HttpClient.newHttpClient().send(request, BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(response.body());
     }
 }
 

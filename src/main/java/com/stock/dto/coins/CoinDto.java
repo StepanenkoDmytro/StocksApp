@@ -1,6 +1,6 @@
 package com.stock.dto.coins;
 
-import com.stock.api.entity.Coin;
+import com.stock.api.entity.coinCap.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,11 +10,11 @@ import java.math.RoundingMode;
 @Data
 @AllArgsConstructor
 public class CoinDto {
-    String id;
-    String name;
-    String symbol;
-    BigDecimal priceUSD;
-    BigDecimal marketCapUsd;
+    private String id;
+    private String name;
+    private String symbol;
+    private BigDecimal priceUSD;
+    private BigDecimal marketCapUsd;
 
     public static CoinDto mapCoinToDto(Coin coin) {
         BigDecimal valuePrice;

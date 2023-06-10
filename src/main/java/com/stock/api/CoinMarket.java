@@ -1,7 +1,8 @@
 package com.stock.api;
 
-import com.stock.api.entity.Coin;
+import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.CandlesDto;
 
 import java.util.List;
 
@@ -10,4 +11,5 @@ public interface CoinMarket {
     List<Coin> findByFilter(String filter);
     Coin findByTicker(String ticker);
     List<CoinDto> findByTikersList(List<String> coinsList);
+    List<CandlesDto> findCandlesDataByBaseAndQuoteCoins(String baseID, String quoteID);
 }

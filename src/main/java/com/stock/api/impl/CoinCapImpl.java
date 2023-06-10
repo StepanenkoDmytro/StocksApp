@@ -3,24 +3,28 @@ package com.stock.api.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stock.api.CoinMarket;
+import com.stock.api.entity.coinCap.Candle;
+import com.stock.api.wrappers.CandlesData;
 import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.CandlesDto;
 import com.stock.exceptions.RequestException;
-import com.stock.api.entity.Coin;
+import com.stock.api.entity.coinCap.Coin;
 import com.stock.api.wrappers.CoinData;
 import com.stock.api.wrappers.CoinWrapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
-public class CoinMarketImpl implements CoinMarket {
+public class CoinCapImpl implements CoinMarket {
     private final RequestManager requestManager;
     private final ObjectMapper objectMapper;
 
-
-    public CoinMarketImpl(RequestManager requestManager, ObjectMapper objectMapper) {
+    @Autowired
+    public CoinCapImpl(RequestManager requestManager, ObjectMapper objectMapper) {
         this.requestManager = requestManager;
         this.objectMapper = objectMapper;
     }
@@ -45,7 +49,16 @@ public class CoinMarketImpl implements CoinMarket {
         List<Coin> data = processResponse(response, CoinData.class).getData();
         return data.stream()
                 .map(CoinDto::mapCoinToDto)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public List<CandlesDto> findCandlesDataByBaseAndQuoteCoins(String baseID, String quoteID){
+        HttpResponse<String> response = requestManager.sendGetCandlesForBaseAndQuoteCoins(baseID, quoteID);
+        List<Candle> data = processResponse(response, CandlesData.class).getData();
+//        return data.stream()
+//                .map(CandlesDto::mapCandlesDto)
+//                .toList();
+        return new ArrayList<>();
     }
 
     private <T> T processResponse(HttpResponse<String> response, Class<T> responseType){

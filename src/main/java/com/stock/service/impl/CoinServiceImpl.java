@@ -2,12 +2,12 @@ package com.stock.service.impl;
 
 import com.stock.api.CoinMarket;
 import com.stock.api.impl.RequestManager;
-import com.stock.api.entity.Coin;
+import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
+import com.stock.dto.forCharts.CandlesDto;
 import com.stock.dto.forCharts.PieCoinPrice;
 import com.stock.dto.accountDtos.AccountCoinDto;
-import com.stock.model.account.AccountCoin;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +51,7 @@ public class CoinServiceImpl implements CoinService {
         return new CoinsForClient(data, totalPages, coinList.size(), page);
     }
 
+    @Override
     public List<PieCoinPrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
         return coins.stream()
                 .map(coin -> {
@@ -71,5 +72,9 @@ public class CoinServiceImpl implements CoinService {
         Coin coin = coinMarket.findByTicker(ticker);
         double price = Double.parseDouble(coin.getPriceUsd());
         return BigDecimal.valueOf(price);
+    }
+
+    public List<CandlesDto> getCandles(String baseID, String quoteID) {
+        return coinMarket.findCandlesDataByBaseAndQuoteCoins(baseID, quoteID);
     }
 }
