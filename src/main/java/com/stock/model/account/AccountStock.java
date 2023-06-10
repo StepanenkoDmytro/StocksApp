@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "account_stocks")
@@ -59,5 +60,37 @@ public class AccountStock {
         stock.setDividendYield(company.getDividendYield());
         stock.setCountStocks(count);
         return stock;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountStock that = (AccountStock) o;
+        return Objects.equals(symbol, that.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol);
+    }
+
+    @Override
+    public String toString() {
+        return "AccountStock{" +
+//                "id=" + id +
+//                ", account=" + account +
+                ", symbol='" + symbol + '\'' +
+                ", assetType='" + assetType + '\'' +
+                ", name='" + name + '\'' +
+                ", exchange='" + exchange + '\'' +
+                ", currency='" + currency + '\'' +
+                ", buyPrice=" + buyPrice +
+                ", countStocks=" + countStocks +
+                ", country='" + country + '\'' +
+                ", sector='" + sector + '\'' +
+                ", industry='" + industry + '\'' +
+                ", dividendYield=" + dividendYield +
+                '}';
     }
 }

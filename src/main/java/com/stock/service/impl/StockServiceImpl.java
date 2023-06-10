@@ -4,7 +4,7 @@ import com.stock.api.AlphaVantageMarket;
 import com.stock.api.FinnhubMarket;
 import com.stock.api.entity.alphaVantage.stock.Company;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
-import com.stock.api.impl.RequestManager;
+import com.stock.helper.RequestManager;
 import com.stock.dto.stocks.CompaniesForClient;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;

@@ -12,6 +12,18 @@ public class Company {
     private String delistingDate;
     private String status;
 
+    public static Company mapFromStringArray(String[] values) {
+        Company company = new Company();
+        company.setSymbol(values[0]);
+        company.setName(values[1]);
+        company.setExchange(values[2]);
+        company.setAssetType(values[3]);
+        company.setIpoDate(values[4]);
+        company.setDelistingDate(values[5]);
+        company.setStatus(values[6]);
+        return company;
+    }
+
     @Override
     public String toString() {
         return "{" +

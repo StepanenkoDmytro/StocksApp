@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "account_coins")
@@ -69,6 +70,18 @@ public class AccountCoin implements Serializable {
         return accountCoin;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountCoin that = (AccountCoin) o;
+        return Objects.equals(idCoin, that.idCoin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCoin);
+    }
     @Override
     public String toString() {
         return "AccountCoin{" +

@@ -1,7 +1,7 @@
 package com.stock.service.impl;
 
 import com.stock.api.CoinMarket;
-import com.stock.api.impl.RequestManager;
+import com.stock.helper.RequestManager;
 import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;

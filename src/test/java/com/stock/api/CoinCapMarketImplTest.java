@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
 @SpringBootTest
-public class CoinCapImplTest {
+public class CoinCapMarketImplTest {
 
     @Test
     void getAssets() throws IOException, InterruptedException {

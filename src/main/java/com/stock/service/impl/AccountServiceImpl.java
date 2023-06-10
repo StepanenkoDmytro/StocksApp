@@ -55,8 +55,8 @@ public class AccountServiceImpl implements AccountService {
             transactService.logCoinRejected(amount, accountCoin, account);
             return AccountDto.mapAccount(account);
         }
-
-        if (isContainsCoin(account, accountCoin)) {
+        List<AccountCoin> coins = account.getCoins();
+        if (isContainsItem(coins, accountCoin)) {
             updateExistingCoin(account, accountCoin);
         } else {
             addNewCoin(account, accountCoin);
@@ -86,7 +86,8 @@ public class AccountServiceImpl implements AccountService {
             return AccountDto.mapAccount(account);
         }
 
-        if (isContainsStock(account, accountStock)) {
+        List<AccountStock> stocks = account.getStocks();
+        if (isContainsItem(stocks, accountStock)) {
             updateExistingStock(account, accountStock);
         } else {
             addNewStock(account, accountStock);
@@ -135,7 +136,7 @@ public class AccountServiceImpl implements AccountService {
 
     private void updateExistingCoin(Account account, AccountCoin accountCoin) {
         List<AccountCoin> coinsUser = account.getCoins();
-        AccountCoin existingCoin = getCoinFromUser(coinsUser, accountCoin);
+        AccountCoin existingCoin = getItemFromUser(coinsUser, accountCoin);
 
         BigDecimal newAmountCoin = existingCoin.getAmountCOIN().add(accountCoin.getAmountCOIN());
         BigDecimal newAmountUSD = existingCoin.getAmountUSD().add(accountCoin.getAmountUSD());
@@ -144,32 +145,9 @@ public class AccountServiceImpl implements AccountService {
         existingCoin.setAmountUSD(newAmountUSD);
     }
 
-    private void addNewCoin(Account account, AccountCoin accountCoin) {
-        account.addCoins(accountCoin);
-    }
-
-    private boolean isContainsCoin(Account account, AccountCoin coin) {
-        List<AccountCoin> coinsUser = account.getCoins();
-        return coinsUser.stream()
-                .anyMatch(c -> c.getIdCoin().equals(coin.getIdCoin()));
-    }
-
-    private boolean isContainsStock(Account account, AccountStock stock) {
-        List<AccountStock> stocksUser = account.getStocks();
-        return stocksUser.stream()
-                .anyMatch(c -> c.getSymbol().equals(stock.getSymbol()));
-    }
-
-    private AccountCoin getCoinFromUser(List<AccountCoin> coinsUser, AccountCoin coin) {
-        return coinsUser.stream()
-                .filter(ac -> ac.getIdCoin().equals(coin.getIdCoin()))
-                .findFirst()
-                .orElse(coin);
-    }
-
     private void updateExistingStock(Account account, AccountStock newStock) {
         List<AccountStock> stocksUser = account.getStocks();
-        AccountStock existingStock = getStockFromUser(stocksUser, newStock);
+        AccountStock existingStock = getItemFromUser(stocksUser, newStock);
 
         int newCountStocks = existingStock.getCountStocks() + newStock.getCountStocks();
         BigDecimal newPriceStocks = existingStock.getBuyPrice()
@@ -180,11 +158,19 @@ public class AccountServiceImpl implements AccountService {
         existingStock.setBuyPrice(newPriceStocks);
     }
 
-    private AccountStock getStockFromUser(List<AccountStock> stocksUser, AccountStock stock) {
-        return stocksUser.stream()
-                .filter(as -> as.getSymbol().equals(stock.getSymbol()))
+    private <T> T getItemFromUser(List<T> items, T item) {
+        return items.stream()
+                .filter(i -> i.equals(item))
                 .findFirst()
-                .orElse(stock);
+                .orElse(item);
+    }
+
+    private boolean isContainsItem(List<?> items, Object item) {
+        return items.contains(item);
+    }
+
+    private void addNewCoin(Account account, AccountCoin accountCoin) {
+        account.addCoins(accountCoin);
     }
 
     private void addNewStock(Account account, AccountStock accountStock) {
