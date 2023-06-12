@@ -4,6 +4,8 @@ import com.stock.api.AlphaVantageMarket;
 import com.stock.api.FinnhubMarket;
 import com.stock.api.entity.alphaVantage.stock.Company;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.dto.accountDtos.AccountStockDto;
+import com.stock.dto.forCharts.PiePrice;
 import com.stock.helper.RequestManager;
 import com.stock.dto.stocks.CompaniesForClient;
 import com.stock.dto.stocks.CompanyDto;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,5 +50,19 @@ public class StockServiceImpl implements StockService {
         OverviewCompany company = alphaVantageMarket.findCompanyByTicker(symbol);
         BigDecimal price = finnhubMarket.findPriceStockByTicker(symbol);
         return OverviewCompanyDto.mapToDto(company, price);
+    }
+
+    @Override
+    public List<PiePrice> getPriceStocksByList(List<AccountStockDto> stocks) {
+        if (stocks == null) {
+            return new ArrayList<>();
+        }
+        return stocks.stream()
+                .map(stock -> {
+                    System.out.println(stock.getSymbol());
+                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
+                    return new PiePrice(stock.getSymbol(), actualStocksPrice);
+                })
+                .toList();
     }
 }

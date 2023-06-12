@@ -6,7 +6,7 @@ import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.forCharts.CandlesDto;
-import com.stock.dto.forCharts.PieCoinPrice;
+import com.stock.dto.forCharts.PiePrice;
 import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +52,11 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public List<PieCoinPrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
+    public List<PiePrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
         return coins.stream()
                 .map(coin -> {
                     BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getAmountCOIN());
-                    return new PieCoinPrice(coin.getSymbol(), actualPrice);
+                    return new PiePrice(coin.getSymbol(), actualPrice);
                 })
                 .toList();
     }

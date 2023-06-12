@@ -4,12 +4,12 @@ import com.stock.dto.accountDtos.DepositDto;
 import com.stock.dto.accountDtos.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.UserDto;
-import com.stock.dto.forCharts.PieCoinPrice;
-import com.stock.dto.forCharts.PieCoinsData;
-import com.stock.model.account.AccountType;
+import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.forCharts.PieData;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
+import com.stock.service.StockService;
 import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +29,14 @@ public class AccountController {
     private final UserService userService;
     private final AccountService accountService;
     private final CoinService coinService;
+    private final StockService stockService;
 
     @Autowired
-    public AccountController(UserService userService, AccountService accountService, CoinService coinService) {
+    public AccountController(UserService userService, AccountService accountService, CoinService coinService, StockService stockService) {
         this.userService = userService;
         this.accountService = accountService;
         this.coinService = coinService;
+        this.stockService = stockService;
     }
 
     @PostMapping("create")
@@ -52,9 +54,15 @@ public class AccountController {
     @Transactional
     public ResponseEntity<AccountDto> deposit(@RequestBody DepositDto deposit,
                                   @AuthenticationPrincipal UserDetails userDetails){
-        AccountDto accountDto = accountService.depositToAccountById(deposit.getAccountId(), BigDecimal.valueOf(deposit.getDepositAmount()));
+        AccountDto accountDto = accountService.depositToAccountById(deposit.getAccountID(), BigDecimal.valueOf(deposit.getDepositAmount()));
         //дописати методу accountService.depositToAccountById якийсь exception, щоб користувач дізнався про помилку
         return ResponseEntity.ok(accountDto);
+    }
+
+    @GetMapping("/{accountID}")
+    public ResponseEntity<AccountDto> getAccountById(@PathVariable Long accountID) {
+        AccountDto account = AccountDto.mapAccount(accountService.getAccountById(accountID));
+        return ResponseEntity.ok(account);
     }
 
     @DeleteMapping("{id}")
@@ -64,14 +72,25 @@ public class AccountController {
     }
 
     @PostMapping("/price-for-list")
-    public ResponseEntity getPieCoinPrice(@RequestBody AccountDto account) {
-//        Account account = accountService.getAccountById(accountID);
-        List<PieCoinPrice> priceCoins = coinService.getPriceCoinsByList(account.getCoins());
-        BigDecimal totalBalance = priceCoins.stream()
-                .map(PieCoinPrice::getValue)
-                .reduce(account.getBalance(), BigDecimal::add)
-                .setScale(0, RoundingMode.HALF_UP);
-        return ResponseEntity.ok(new PieCoinsData(priceCoins, totalBalance));
+    public ResponseEntity<PieData> getPieCoinPrice(@RequestBody AccountDto account) {
+        System.out.println(account);
+        PieData pieData = null;
+        if(account.getAccountType().equals("CryptoWallet")) {
+            List<PiePrice> priceCoins = coinService.getPriceCoinsByList(account.getCoins());
+            BigDecimal totalBalance = priceCoins.stream()
+                    .map(PiePrice::getValue)
+                    .reduce(account.getBalance(), BigDecimal::add)
+                    .setScale(0, RoundingMode.HALF_UP);
+            pieData = new PieData(priceCoins, totalBalance);
+        } else if (account.getAccountType().equals("StockWallet")) {
+            List<PiePrice> priceStocks = stockService.getPriceStocksByList(account.getStocks());
+            BigDecimal totalBalance = priceStocks.stream()
+                    .map(PiePrice::getValue)
+                    .reduce(account.getBalance(), BigDecimal::add)
+                    .setScale(0, RoundingMode.HALF_UP);
+            pieData = new PieData(priceStocks, totalBalance);
+        }
+        return ResponseEntity.ok(pieData);
     }
 
 // зробити цю функцію пізніше

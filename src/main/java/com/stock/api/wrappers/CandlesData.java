@@ -12,12 +12,4 @@ public class CandlesData {
     private List<Candle> data;
     @JsonProperty("timestamp")
     private long timestamp;
-
-    @Override
-    public String toString() {
-        return "{" +
-                "data=" + data +
-                ", timestamp=" + timestamp +
-                '}';
-    }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class PieCoinsData {
-    private List<PieCoinPrice> pieCoins;
+public class PieData {
+    private List<PiePrice> data;
     private BigDecimal totalBalance;
 }
