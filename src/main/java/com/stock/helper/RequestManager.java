@@ -22,8 +22,6 @@ public class RequestManager {
     public static final int PAGE_LIMIT = 9;
     public static final int MAX_PAGES = MAX_ELEMENTS / PAGE_LIMIT;
     private final HttpClient client = HttpClient.newHttpClient();
-    @Value("${coincap.api.key}")
-    private String apiKey;
 
     public HttpResponse<String> sendHttpRequestWithHeaderApiKey(String url, String apiKey) {
         URI uri = URI.create(url);
@@ -47,7 +45,7 @@ public class RequestManager {
         }
     }
 
-    public HttpResponse<String> sendHttpRequestWithParamApiKey(String url, String apiKey) {
+    public HttpResponse<String> sendHttpRequestWithParamApiKey(String url) {
         URI uri = URI.create(url);
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
@@ -59,6 +57,29 @@ public class RequestManager {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
                 throw new RequestException("Unexpected status code: " + response.body());
+            }
+            return response;
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RequestException("Request was interrupted", e);
+        } catch (IOException e) {
+            throw new RequestException("Failed to retrieve data: " + e.getMessage());
+        }
+    }
+
+    public HttpResponse<String> sendHttpRequestWithHeaderXRapidAPIKey(String url, String apiKey) {
+        URI uri = URI.create(url);
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(uri)
+                .headers("Accept-Encoding", "gzip, deflate, br")
+                .headers("X-RapidAPI-Key", apiKey)
+                .headers("X-RapidAPI-Host", "yh-finance.p.rapidapi.com")
+                .build();
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() != 200) {
+                throw new RequestException("Unexpected status code: " + response.statusCode());
             }
             return response;
         } catch (InterruptedException e) {

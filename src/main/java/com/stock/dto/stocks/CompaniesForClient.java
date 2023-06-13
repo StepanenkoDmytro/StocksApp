@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CompaniesForClient {
     List<CompanyDto> data;
-    int totalPages;
-    int totalItems;
-    int currentPage;
+//    int totalPages;
+//    int totalItems;
+//    int currentPage;
 }

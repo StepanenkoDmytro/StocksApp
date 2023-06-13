@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
-import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
 @Component
@@ -35,7 +34,7 @@ public class FinnhubMarketImpl implements FinnhubMarket {
                 .build()
                 .toUriString();
 
-        HttpResponse<String> response = requestManager.sendHttpRequestWithParamApiKey(url, apiKey);
+        HttpResponse<String> response = requestManager.sendHttpRequestWithParamApiKey(url);
         FinnhubWrapper data = responseMapper.convertCustomResponse(response, FinnhubWrapper.class);
         return data.getCurrentPrice();
     }

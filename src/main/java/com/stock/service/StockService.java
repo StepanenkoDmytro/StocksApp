@@ -11,4 +11,7 @@ public interface StockService {
     CompaniesForClient getAll(int page);
     OverviewCompanyDto getCompanyBySymbol(String symbol);
     List<PiePrice> getPriceStocksByList(List<AccountStockDto> stocks);
+    CompaniesForClient getGainersMovers();
+    CompaniesForClient getLosersMovers();
+    CompaniesForClient getActivesMovers();
 }
