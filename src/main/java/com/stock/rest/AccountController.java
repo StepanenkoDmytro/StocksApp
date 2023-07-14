@@ -4,8 +4,7 @@ import com.stock.dto.accountDtos.DepositDto;
 import com.stock.dto.accountDtos.NewAccountDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.UserDto;
-import com.stock.dto.forCharts.PiePrice;
-import com.stock.dto.forCharts.PieData;
+import com.stock.dto.forCharts.PieChartData;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;
@@ -19,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/account/")
@@ -43,8 +40,6 @@ public class AccountController {
     public ResponseEntity createAccount(@RequestBody NewAccountDto accountDto,
                                         @AuthenticationPrincipal UserDetails userDetails){
         //спитати в Алекса як краще, повернути юзера з новим списком аккаунтів, або просто новий аккаунт
-
-
         User user = userService.getUserByUsername(userDetails.getUsername());
         accountService.createAccount(accountDto.getNewAccountName(), accountDto.getAccountType(), user);
         return ResponseEntity.ok(UserDto.mapUserToUserDto(user));
@@ -72,25 +67,9 @@ public class AccountController {
     }
 
     @PostMapping("/price-for-list")
-    public ResponseEntity<PieData> getPieCoinPrice(@RequestBody AccountDto account) {
-        System.out.println(account);
-        PieData pieData = null;
-        if(account.getAccountType().equals("CryptoWallet")) {
-            List<PiePrice> priceCoins = coinService.getPriceCoinsByList(account.getCoins());
-            BigDecimal totalBalance = priceCoins.stream()
-                    .map(PiePrice::getValue)
-                    .reduce(account.getBalance(), BigDecimal::add)
-                    .setScale(0, RoundingMode.HALF_UP);
-            pieData = new PieData(priceCoins, totalBalance);
-        } else if (account.getAccountType().equals("StockWallet")) {
-            List<PiePrice> priceStocks = stockService.getPriceAccountStocksByList(account.getStocks());
-            BigDecimal totalBalance = priceStocks.stream()
-                    .map(PiePrice::getValue)
-                    .reduce(account.getBalance(), BigDecimal::add)
-                    .setScale(0, RoundingMode.HALF_UP);
-            pieData = new PieData(priceStocks, totalBalance);
-        }
-        return ResponseEntity.ok(pieData);
+    public ResponseEntity<PieChartData> getPieCoinPrice(@RequestBody AccountDto account) {
+        PieChartData pieChartData = accountService.getPieChartData(account);
+        return ResponseEntity.ok(pieChartData);
     }
 
 // зробити цю функцію пізніше

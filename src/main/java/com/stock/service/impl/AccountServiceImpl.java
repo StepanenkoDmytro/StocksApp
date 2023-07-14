@@ -2,6 +2,8 @@ package com.stock.service.impl;
 
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.accountDtos.AccountDto;
+import com.stock.dto.forCharts.PieChartData;
+import com.stock.dto.forCharts.PiePrice;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.exceptions.AccountFetchException;
 import com.stock.helper.AccountHelper;
@@ -11,9 +13,7 @@ import com.stock.model.account.AccountStock;
 import com.stock.model.account.AccountType;
 import com.stock.model.user.User;
 import com.stock.repository.account.AccountRepository;
-import com.stock.service.AccountService;
-import com.stock.service.TransactService;
-import com.stock.service.UserService;
+import com.stock.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,12 +27,16 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactService transactService;
     private final UserService userService;
+    private final StockService stockService;
+    private final CoinService coinService;
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository, TransactService transactService, UserService userService) {
+    public AccountServiceImpl(AccountRepository accountRepository, TransactService transactService, UserService userService, StockService stockService, CoinService coinService) {
         this.accountRepository = accountRepository;
         this.transactService = transactService;
         this.userService = userService;
+        this.stockService = stockService;
+        this.coinService = coinService;
     }
 
     @Override
@@ -97,6 +101,19 @@ public class AccountServiceImpl implements AccountService {
         transactService.logStockSuccess(purchasePrice, accountStock, account);
 
         return AccountDto.mapAccount(account);
+    }
+
+    @Override
+    public PieChartData getPieChartData(AccountDto account) {
+        List<PiePrice> prices = null;
+
+        if(account.getAccountType().equals("CryptoWallet")) {
+            prices = coinService.getPriceAccountCoinsByList(account);
+        } else if (account.getAccountType().equals("StockWallet")) {
+            prices = stockService.getPriceAccountStocksByList(account);
+        }
+
+        return new PieChartData(prices);
     }
 
     @Override
@@ -175,5 +192,11 @@ public class AccountServiceImpl implements AccountService {
 
     private void addNewStock(Account account, AccountStock accountStock) {
         account.addStocks(accountStock);
+    }
+    private BigDecimal calculateTotalBalance(List<PiePrice> priceList) {
+        return priceList.stream()
+                .map(PiePrice::getValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(0, RoundingMode.HALF_UP);
     }
 }

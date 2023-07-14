@@ -6,6 +6,7 @@ import com.stock.api.YHFinanceMarket;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
 import com.stock.api.entity.yahooFinance.Mover;
 import com.stock.api.entity.yahooFinance.YHQuote;
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.dto.forCharts.PiePrice;
 import com.stock.dto.stocks.CompanyDto;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StockServiceImpl implements StockService {
@@ -47,7 +49,6 @@ public class StockServiceImpl implements StockService {
         } else {
             OverviewCompany companyAPI = alphaVantageMarket.findCompanyByTicker(symbol);
             if (companyAPI.getName() != null) {
-//                System.out.println(symbol);
                 Company newCompany = Company.mapOverviewCompany(companyAPI);
                 newCompany.setUpdated(new Date());
                 companyRepository.save(newCompany);
@@ -60,16 +61,23 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<PiePrice> getPriceAccountStocksByList(List<AccountStockDto> stocks) {
-        if (stocks == null) {
+    public List<PiePrice> getPriceAccountStocksByList(AccountDto account) {
+        if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
         }
-        return stocks.stream()
+
+        List<AccountStockDto> stocks = account.getStocks();
+
+        List<PiePrice> prices = stocks.stream()
                 .map(stock -> {
                     BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
                     return new PiePrice(stock.getName(), actualStocksPrice);
                 })
-                .toList();
+                .collect(Collectors.toList());
+
+        PiePrice freeUSD = new PiePrice("USD", account.getBalance());
+        prices.add(freeUSD);
+        return prices;
     }
     @Override
     public List<PiePrice> getPriceStocksByList(List<AccountStockDto> stocks) {

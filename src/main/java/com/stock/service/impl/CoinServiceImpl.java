@@ -1,6 +1,7 @@
 package com.stock.service.impl;
 
 import com.stock.api.CoinMarket;
+import com.stock.dto.accountDtos.AccountDto;
 import com.stock.helper.RequestManager;
 import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CoinServiceImpl implements CoinService {
@@ -52,13 +55,22 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public List<PiePrice> getPriceCoinsByList(List<AccountCoinDto> coins) {
-        return coins.stream()
+    public List<PiePrice> getPriceAccountCoinsByList(AccountDto account) {
+        if (account == null || account.getStocks() == null) {
+            return new ArrayList<>();
+        }
+
+        List<AccountCoinDto> coins = account.getCoins();
+        List<PiePrice> prices = coins.stream()
                 .map(coin -> {
                     BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getAmountCOIN());
                     return new PiePrice(coin.getSymbol(), actualPrice);
                 })
-                .toList();
+                .collect(Collectors.toList());
+
+        PiePrice freeUSD = new PiePrice("USD", account.getBalance());
+        prices.add(freeUSD);
+        return prices;
     }
 
     @Override

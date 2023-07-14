@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,9 +31,7 @@ public class StockController {
 
     @GetMapping("/movers/{type}")
     public ResponseEntity<List<CompanyDto>> getActivesCompanies(@PathVariable("type") String type) {
-//        System.out.println(type);
         List<CompanyDto> movers = stockService.getMovers(type);
-//        System.out.println(movers);
         return ResponseEntity.ok(movers);
     }
 
@@ -46,7 +43,6 @@ public class StockController {
 
     @PostMapping("/buyStock")
     public ResponseEntity<AccountDto> buyStock(@RequestBody StockBuyDetails buyDetails) {
-        System.out.println(buyDetails);
         OverviewCompanyDto stock = buyDetails.getActiveStock();
         BigDecimal price = stock.getPrice();
         int countStocks = buyDetails.getData().getCountStocks();
