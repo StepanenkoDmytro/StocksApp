@@ -72,14 +72,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public AccountDto processStockBuy(OverviewCompanyDto stock, int count, Account account) {
+    public AccountDto processStockBuy(OverviewCompanyDto stock, BigDecimal price, int count, Account account) {
         if (account == null || stock == null) {
             throw new AccountFetchException("In processStockBuy account or stock is null");
         }
-        BigDecimal purchasePrice = stock.getPrice().multiply(BigDecimal.valueOf(count));
+        BigDecimal purchasePrice = price.multiply(BigDecimal.valueOf(count));
 
         BigDecimal newBalance = account.getBalance().subtract(purchasePrice);
-        AccountStock accountStock = AccountStock.fromCompany(stock, count);
+        AccountStock accountStock = AccountStock.fromCompany(stock, count, price);
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             transactService.logStockRejected(purchasePrice, accountStock, account);

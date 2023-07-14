@@ -14,5 +14,5 @@ public interface AccountService {
     AccountDto depositToAccountById(Long accountID, BigDecimal deposit);
     void deleteAccountById(Long accountID);
     AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account);
-    AccountDto processStockBuy(OverviewCompanyDto stock, int count, Account account);
+    AccountDto processStockBuy(OverviewCompanyDto stock, BigDecimal price, int count, Account account);
 }

@@ -83,7 +83,7 @@ public class AccountController {
                     .setScale(0, RoundingMode.HALF_UP);
             pieData = new PieData(priceCoins, totalBalance);
         } else if (account.getAccountType().equals("StockWallet")) {
-            List<PiePrice> priceStocks = stockService.getPriceStocksByList(account.getStocks());
+            List<PiePrice> priceStocks = stockService.getPriceAccountStocksByList(account.getStocks());
             BigDecimal totalBalance = priceStocks.stream()
                     .map(PiePrice::getValue)
                     .reduce(account.getBalance(), BigDecimal::add)
