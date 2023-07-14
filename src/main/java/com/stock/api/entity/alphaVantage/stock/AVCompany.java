@@ -3,7 +3,7 @@ package com.stock.api.entity.alphaVantage.stock;
 import lombok.Data;
 
 @Data
-public class Company {
+public class AVCompany {
     private String symbol;
     private String name;
     private String exchange;
@@ -12,16 +12,16 @@ public class Company {
     private String delistingDate;
     private String status;
 
-    public static Company mapFromStringArray(String[] values) {
-        Company company = new Company();
-        company.setSymbol(values[0]);
-        company.setName(values[1]);
-        company.setExchange(values[2]);
-        company.setAssetType(values[3]);
-        company.setIpoDate(values[4]);
-        company.setDelistingDate(values[5]);
-        company.setStatus(values[6]);
-        return company;
+    public static AVCompany mapFromStringArray(String[] values) {
+        AVCompany AVCompany = new AVCompany();
+        AVCompany.setSymbol(values[0]);
+        AVCompany.setName(values[1]);
+        AVCompany.setExchange(values[2]);
+        AVCompany.setAssetType(values[3]);
+        AVCompany.setIpoDate(values[4]);
+        AVCompany.setDelistingDate(values[5]);
+        AVCompany.setStatus(values[6]);
+        return AVCompany;
     }
 
     @Override

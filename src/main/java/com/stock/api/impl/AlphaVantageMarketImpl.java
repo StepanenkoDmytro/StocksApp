@@ -1,15 +1,15 @@
 package com.stock.api.impl;
 
 import com.stock.api.AlphaVantageMarket;
-import com.stock.api.entity.alphaVantage.stock.Company;
+import com.stock.api.entity.alphaVantage.stock.AVCompany;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
 import com.stock.api.wrappers.QuoteData;
+import com.stock.dto.analytic.DataPrice;
 import com.stock.dto.forCharts.CandlesDto;
 import com.stock.helper.RequestManager;
 import com.stock.helper.ResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,7 +48,21 @@ public class AlphaVantageMarketImpl implements AlphaVantageMarket {
     }
 
     @Override
-    public List<Company> findAllCompanies() {
+    public List<DataPrice> findWeeklyPricesById(String coinSymbol) {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL_ALPHA_VANTAGE)
+                .queryParam("function", "TIME_SERIES_WEEKLY")
+                .queryParam("symbol", coinSymbol)
+//                .queryParam("market", "CNY")
+                .queryParam("apikey", apiKey)
+                .build()
+                .toUriString();
+
+        HttpResponse<String> response = requestManager.sendHttpRequestWithParamApiKey(url);
+        return responseMapper.convertDataPriceResponse(response);
+    }
+
+    @Override
+    public List<AVCompany> findAllCompanies() {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL_ALPHA_VANTAGE)
                 .queryParam("function", "LISTING_STATUS")
                 .queryParam("apikey", apiKey)

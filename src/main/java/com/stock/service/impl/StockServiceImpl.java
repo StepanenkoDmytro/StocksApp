@@ -3,16 +3,15 @@ package com.stock.service.impl;
 import com.stock.api.AlphaVantageMarket;
 import com.stock.api.FinnhubMarket;
 import com.stock.api.YHFinanceMarket;
-import com.stock.api.entity.alphaVantage.stock.Company;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
 import com.stock.api.entity.yahooFinance.Mover;
 import com.stock.api.entity.yahooFinance.YHQuote;
 import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.dto.forCharts.PiePrice;
-import com.stock.helper.RequestManager;
-import com.stock.dto.stocks.CompaniesForClient;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
+import com.stock.model.stock.Company;
+import com.stock.repository.stock.CompanyRepository;
 import com.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,45 +19,58 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StockServiceImpl implements StockService {
     private final AlphaVantageMarket alphaVantageMarket;
     private final FinnhubMarket finnhubMarket;
     private final YHFinanceMarket yhFinanceMarket;
+    private final CompanyRepository companyRepository;
 
     @Autowired
-    public StockServiceImpl(AlphaVantageMarket alphaVantageMarket, FinnhubMarket finnhubMarket, YHFinanceMarket yhFinanceMarket) {
+    public StockServiceImpl(AlphaVantageMarket alphaVantageMarket, FinnhubMarket finnhubMarket, YHFinanceMarket yhFinanceMarket, CompanyRepository companyRepository) {
         this.alphaVantageMarket = alphaVantageMarket;
         this.finnhubMarket = finnhubMarket;
         this.yhFinanceMarket = yhFinanceMarket;
+        this.companyRepository = companyRepository;
     }
 
     @Override
-    public CompaniesForClient getAll(int page) {
-//        List<Company> allCompanies = alphaVantageMarket.findAllCompanies();
-//        int totalPages = (int) Math.ceil((double) allCompanies.size() / RequestManager.PAGE_LIMIT);
-//
-//        int startIndex = (page - 1) * RequestManager.PAGE_LIMIT;
-//        int endIndex = Math.min(RequestManager.PAGE_LIMIT, allCompanies.size() - startIndex);
-//        List<CompanyDto> data = allCompanies.stream()
-//                .skip(startIndex)
-//                .limit(endIndex)
-//                .map(CompanyDto::mapCompany)
-//                .toList();
-//
-//        return new CompaniesForClient(data, totalPages, data.size(), page);
-        return null;
+    public CompanyDto getCompanyBySymbol(String symbol) {
+        Optional<Company> companyDB = companyRepository.findBySymbol(symbol);
+        CompanyDto result;
+        if (companyDB.isPresent()) {
+            result = CompanyDto.mapCompany(companyDB.get());
+        } else {
+            OverviewCompany companyAPI = alphaVantageMarket.findCompanyByTicker(symbol);
+            if (companyAPI.getName() != null) {
+//                System.out.println(symbol);
+                Company newCompany = Company.mapOverviewCompany(companyAPI);
+                newCompany.setUpdated(new Date());
+                companyRepository.save(newCompany);
+                result = CompanyDto.mapCompany(newCompany);
+            } else {
+                result = new CompanyDto(symbol, "not_found", "not_found", "not_found");
+            }
+        }
+        return result;
     }
 
     @Override
-    public OverviewCompanyDto getCompanyBySymbol(String symbol) {
-        OverviewCompany company = alphaVantageMarket.findCompanyByTicker(symbol);
-        BigDecimal price = finnhubMarket.findPriceStockByTicker(symbol);
-        return OverviewCompanyDto.mapToDto(company, price);
+    public List<PiePrice> getPriceAccountStocksByList(List<AccountStockDto> stocks) {
+        if (stocks == null) {
+            return new ArrayList<>();
+        }
+        return stocks.stream()
+                .map(stock -> {
+                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
+                    return new PiePrice(stock.getName(), actualStocksPrice);
+                })
+                .toList();
     }
-
     @Override
     public List<PiePrice> getPriceStocksByList(List<AccountStockDto> stocks) {
         if (stocks == null) {
@@ -66,85 +78,43 @@ public class StockServiceImpl implements StockService {
         }
         return stocks.stream()
                 .map(stock -> {
-                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
+                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol());
                     return new PiePrice(stock.getSymbol(), actualStocksPrice);
                 })
                 .toList();
     }
 
     @Override
-    @Cacheable(value = "getGainersMovers")
-    public CompaniesForClient getGainersMovers() {
+    @Cacheable(value = "getMovers", key = "#typeOfMover")
+    public List<CompanyDto> getMovers(String typeOfMover) {
         List<Mover> movers = yhFinanceMarket.getMovers();
-        List<OverviewCompanyDto> mostActives = new ArrayList<>();
-        for (Mover mover : movers) {
-            if (mover.getCanonicalName().equals("DAY_GAINERS")) {
-                getCompaniesByMovers(mover, mostActives);
-            }
-        }
-        List<CompanyDto> result = mostActives.stream()
-                .map(CompanyDto::mapOverviewCompany)
+//        Mover mover1 = movers.get(0);
+//        System.out.println(mover1);
+//        System.out.println(movers);
+        Optional<List<YHQuote>> first = movers.stream()
+                .filter(mover -> mover.getCanonicalName().equals(typeOfMover))
+                .map(Mover::getQuotes)
+                .findFirst();
+        List<List<YHQuote>> lists = movers.stream()
+                .filter(mover -> mover.getCanonicalName().equals(typeOfMover))
+                .map(Mover::getQuotes)
                 .toList();
-        return new CompaniesForClient(result);
+//        System.out.println(lists);
+        return first.orElseGet(ArrayList::new)
+                .stream()
+                .map(yhQuote -> getCompanyBySymbol(yhQuote.getSymbol()))
+                .toList();
     }
 
     @Override
-    @Cacheable(value = "getLosersMovers")
-    public CompaniesForClient getLosersMovers() {
-        List<Mover> movers = yhFinanceMarket.getMovers();
-        List<OverviewCompanyDto> mostActives = new ArrayList<>();
-        for (Mover mover : movers) {
-            if (mover.getCanonicalName().equals("DAY_LOSERS")) {
-                getCompaniesByMovers(mover, mostActives);
-            }
-        }
-        List<CompanyDto> result = mostActives.stream()
-                .map(CompanyDto::mapOverviewCompany)
-                .toList();
-        return new CompaniesForClient(result);
+    @Cacheable(value = "getOverviewCompany", key = "#ticker")
+    public OverviewCompanyDto getOverviewCompanyBySymbol(String ticker) {
+        OverviewCompany company = alphaVantageMarket.findCompanyByTicker(ticker);
+
+        OverviewCompanyDto companyDto = OverviewCompanyDto.mapOverviewCompany(company);
+
+        BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(ticker);
+        companyDto.setPrice(actualStocksPrice);
+        return companyDto;
     }
-
-    @Override
-    @Cacheable(value = "getActivesMovers")
-    public CompaniesForClient getActivesMovers() {
-        List<Mover> movers = yhFinanceMarket.getMovers();
-        List<OverviewCompanyDto> mostActives = new ArrayList<>();
-        for (Mover mover : movers) {
-            if (mover.getCanonicalName().equals("MOST_ACTIVES")) {
-                getCompaniesByMovers(mover, mostActives);
-            }
-        }
-        List<CompanyDto> result = mostActives.stream()
-                .map(CompanyDto::mapOverviewCompany)
-                .toList();
-
-        return new CompaniesForClient(result);
-    }
-
-    private List<OverviewCompanyDto> getCompaniesByMovers(Mover mover, List<OverviewCompanyDto> listByTag) {
-        List<YHQuote> quotes = mover.getQuotes();
-        for(YHQuote quote : quotes) {
-            OverviewCompanyDto companyBySymbol = getCompanyBySymbol(quote.getSymbol());
-            listByTag.add(companyBySymbol);
-        }
-        return listByTag;
-    }
-    //    @Override
-//    public MoversCompanies getMovers() {
-//
-//
-//        List<OverviewCompanyDto> dayGainers = new ArrayList<>();
-//        List<OverviewCompanyDto> dayLosers = new ArrayList<>();
-//        List<OverviewCompanyDto> mostActives = new ArrayList<>();
-//
-//
-//            else if (mover.getCanonicalName().equals("DAY_GAINERS")) {
-//                getCompaniesByMovers(mover, dayGainers);
-//            } else if (mover.getCanonicalName().equals("DAY_LOSERS")) {
-//                getCompaniesByMovers(mover, dayLosers);
-//            }
-//        }
-//        return new MoversCompanies(dayGainers, dayLosers, mostActives);
-//    }
-
 }

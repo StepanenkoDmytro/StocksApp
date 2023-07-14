@@ -1,0 +1,56 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.3.0" author="dmytro.stepanenko">
+        <createTable tableName="companies">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="symbol" type="VARCHAR(55)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="asset_type" type="VARCHAR(55)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="exchange" type="VARCHAR(55)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(5)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="country" type="VARCHAR(100)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="sector" type="VARCHAR(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="industry" type="VARCHAR(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="dividend_yield" type="DECIMAL(5,4)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+            <column name="market_capitalization" type="DECIMAL(15,0)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

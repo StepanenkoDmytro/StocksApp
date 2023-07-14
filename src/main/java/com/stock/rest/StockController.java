@@ -1,18 +1,22 @@
 package com.stock.rest;
 
 import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.stocks.CompaniesForClient;
+import com.stock.dto.accountDtos.AccountStockDto;
+import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.dto.stocks.StockBuyDetails;
 import com.stock.model.account.Account;
-import com.stock.repository.account.AccountRepository;
+import com.stock.model.account.AccountStock;
 import com.stock.service.AccountService;
 import com.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stocks")
@@ -26,55 +30,41 @@ public class StockController {
         this.accountService = accountService;
     }
 
-//    @GetMapping("")
-//    public ResponseEntity<CompaniesForClient> getAllCompanies(@RequestParam("page") Optional<Integer> page) {
-//        int currentPage = page.orElse(1);
-//        CompaniesForClient companies = stockService.getAll(currentPage);//        List<CompanyDto> companyMocks = new ArrayList<>(Arrays.asList(
-////                new CompanyDto("AA", "Tesla Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AB", "Tabacco Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AC", "AliBABA Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AD", "NASDAQ Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AE", "MOTOROLA Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AF", "BURITO Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AG", "HYU Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AD", "PEZDA Company", "NASDAQ", "STOCK"),
-////                new CompanyDto("AD", "SKOVORODA Company", "NASDAQ", "STOCK")
-////        ));
-////        CompaniesForClient mock = new CompaniesForClient(companyMocks, 100, 900, 1);
-//        return ResponseEntity.ok(companies);
-//    }
-    @GetMapping("/actives")
-    public ResponseEntity<CompaniesForClient> getActivesCompanies() {
-        CompaniesForClient companies = stockService.getActivesMovers();
-        return ResponseEntity.ok(companies);
-    }
-
-    @GetMapping("/gainers")
-    public ResponseEntity<CompaniesForClient> getGainersCompanies() {
-        CompaniesForClient companies = stockService.getGainersMovers();
-        return ResponseEntity.ok(companies);
-    }
-
-    @GetMapping("/losers")
-    public ResponseEntity<CompaniesForClient> getLosersCompanies() {
-        CompaniesForClient companies = stockService.getLosersMovers();
-        return ResponseEntity.ok(companies);
+    @GetMapping("/movers/{type}")
+    public ResponseEntity<List<CompanyDto>> getActivesCompanies(@PathVariable("type") String type) {
+//        System.out.println(type);
+        List<CompanyDto> movers = stockService.getMovers(type);
+//        System.out.println(movers);
+        return ResponseEntity.ok(movers);
     }
 
     @GetMapping("/{symbol}")
     public ResponseEntity<OverviewCompanyDto> getCompanyBySymbol(@PathVariable("symbol") String symbol) {
-        OverviewCompanyDto company = stockService.getCompanyBySymbol(symbol);
+        OverviewCompanyDto company = stockService.getOverviewCompanyBySymbol(symbol);
         return ResponseEntity.ok(company);
     }
 
     @PostMapping("/buyStock")
     public ResponseEntity<AccountDto> buyStock(@RequestBody StockBuyDetails buyDetails) {
+        System.out.println(buyDetails);
         OverviewCompanyDto stock = buyDetails.getActiveStock();
+        BigDecimal price = stock.getPrice();
         int countStocks = buyDetails.getData().getCountStocks();
         long accountID = buyDetails.getData().getAccountID();
         Account account = accountService.getAccountById(accountID);
 
-        AccountDto updatedAccount = accountService.processStockBuy(stock, countStocks, account);
+        AccountDto updatedAccount = accountService.processStockBuy(stock, price, countStocks, account);
         return ResponseEntity.ok(updatedAccount);
+    }
+
+    @PostMapping("/price-list")
+    public ResponseEntity<List<PiePrice>> priceList(@RequestBody AccountDto account) {
+        //зробити метод через веб-сокети
+        List<AccountStockDto> stocks = account.getStocks();
+        if(!stocks.isEmpty()) {
+            List<PiePrice> priceStocksByList = stockService.getPriceStocksByList(stocks);
+            return ResponseEntity.ok(priceStocksByList);
+        }
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -67,14 +67,20 @@ public class RequestManager {
         }
     }
 
-    public HttpResponse<String> sendHttpRequestWithHeaderXRapidAPIKey(String url, String apiKey) {
-        URI uri = URI.create(url);
+    public HttpResponse<String> sendHttpRequestWithHeaderXRapidAPIKey(String url, String apiKey, String host) {
+//        URI uri = URI.create(url);
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .GET()
+//                .uri(uri)
+//                .headers("Accept-Encoding", "gzip, deflate, br")
+//                .headers("X-RapidAPI-Key", apiKey)
+//                .headers("X-RapidAPI-Host", host)
+//                .build();
         HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(uri)
-                .headers("Accept-Encoding", "gzip, deflate, br")
-                .headers("X-RapidAPI-Key", apiKey)
-                .headers("X-RapidAPI-Host", "yh-finance.p.rapidapi.com")
+                .uri(URI.create(url))
+                .header("X-RapidAPI-Key", apiKey)
+                .header("X-RapidAPI-Host", host)
+                .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

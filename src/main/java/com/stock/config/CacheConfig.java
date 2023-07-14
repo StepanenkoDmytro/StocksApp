@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.SimpleCacheErrorHandler;
+import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,16 +17,32 @@ import java.util.concurrent.TimeUnit;
 @EnableCaching
 public class CacheConfig extends CachingConfigurerSupport {
 
-    @Bean("caffeineCacheManager")
+
+    @Bean(name = "caffeineCacheManager")
     @Override
     public CacheManager cacheManager() {
-        Caffeine<Object, Object> caffeine = Caffeine.newBuilder()
-                .expireAfterWrite(3600, TimeUnit.SECONDS);
+        Caffeine<Object, Object> moversCaffeine = Caffeine.newBuilder();
+//        moversCaffeine.expireAfterWrite(2, TimeUnit.MINUTES);
+        moversCaffeine.expireAfterWrite(6, TimeUnit.HOURS);
+        CaffeineCacheManager moversCacheManager = new CaffeineCacheManager("getMovers");
+        moversCacheManager.setCaffeine(moversCaffeine);
 
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCaffeine(caffeine);
+        Caffeine<Object, Object> overviewCompanyMoversCaffeine = Caffeine.newBuilder();
+//        overviewCompanyMoversCaffeine.expireAfterWrite(1, TimeUnit.MINUTES);
+        overviewCompanyMoversCaffeine.expireAfterWrite(1, TimeUnit.DAYS);
+        CaffeineCacheManager overviewCompanyCacheManager = new CaffeineCacheManager("getOverviewCompany");
+        overviewCompanyCacheManager.setCaffeine(overviewCompanyMoversCaffeine);
 
-        return cacheManager;
+        Caffeine<Object, Object> stockPriceCaffeine = Caffeine.newBuilder();
+        stockPriceCaffeine.expireAfterWrite(1, TimeUnit.MINUTES);
+//        stockPriceCaffeine.expireAfterWrite(20, TimeUnit.SECONDS);
+        CaffeineCacheManager stockPriceCacheManager = new CaffeineCacheManager("getStockPrice");
+        stockPriceCacheManager.setCaffeine(stockPriceCaffeine);
+
+        return new CompositeCacheManager(
+                moversCacheManager,
+                overviewCompanyCacheManager,
+                stockPriceCacheManager);
     }
 
     @Bean

@@ -1,7 +1,9 @@
 package com.stock.dto.stocks;
 
-import com.stock.api.entity.alphaVantage.stock.Company;
-import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.api.entity.alphaVantage.stock.AVCompany;
+import com.stock.api.entity.finnhub.FinnhubCompany;
+import com.stock.api.entity.twelveData.TwelveCompany;
+import com.stock.model.stock.Company;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,15 +14,41 @@ import java.math.BigDecimal;
 public class CompanyDto {
     private String symbol;
     private String name;
-    private BigDecimal price;
+//    private BigDecimal price;
     private String exchange;
     private String assetType;
 
-    public CompanyDto(String symbol, String name, String exchange, String assetType) {
-        this.symbol = symbol;
-        this.name = name;
-        this.exchange = exchange;
-        this.assetType = assetType;
+    public static CompanyDto mapAVCompany(AVCompany avCompany) {
+        return new CompanyDto(
+                avCompany.getSymbol(),
+                avCompany.getName(),
+                avCompany.getExchange(),
+                avCompany.getAssetType());
+    }
+
+    public static CompanyDto mapOverviewCompany(OverviewCompanyDto company) {
+        return new CompanyDto(
+                company.getSymbol(),
+                company.getName(),
+//                company.getPrice(),
+                company.getExchange(),
+                company.getAssetType());
+    }
+
+    public static CompanyDto mapFinnhubCompany(FinnhubCompany company) {
+        return new CompanyDto(
+                company.getTicker(),
+                company.getName(),
+                company.getExchange(),
+                "Common Stock");
+    }
+
+    public static CompanyDto mapTwelveCompany(TwelveCompany company) {
+        return new CompanyDto(
+                company.getSymbol(),
+                company.getName(),
+                company.getExchange(),
+                company.getType());
     }
 
     public static CompanyDto mapCompany(Company company) {
@@ -30,14 +58,4 @@ public class CompanyDto {
                 company.getExchange(),
                 company.getAssetType());
     }
-
-    public static CompanyDto mapOverviewCompany(OverviewCompanyDto company) {
-        return new CompanyDto(
-                company.getSymbol(),
-                company.getName(),
-                company.getPrice(),
-                company.getExchange(),
-                company.getAssetType());
-    }
-
 }

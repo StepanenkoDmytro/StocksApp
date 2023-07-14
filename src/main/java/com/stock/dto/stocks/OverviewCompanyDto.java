@@ -23,7 +23,25 @@ public class OverviewCompanyDto {
     private String dividendDate;
     private String exDividendDate;
 
-    public static OverviewCompanyDto mapToDto(OverviewCompany company, BigDecimal price) {
+    public OverviewCompanyDto() {
+    }
+    public OverviewCompanyDto(String symbol, String assetType, String name, String exchange, String currency, String country, String sector, String industry, String marketCapitalization, BigDecimal dividendYield, String dividendDate, String exDividendDate) {
+        this.symbol = symbol;
+        this.assetType = assetType;
+        this.name = name;
+        this.exchange = exchange;
+
+        this.currency = currency;
+        this.country = country;
+        this.sector = sector;
+        this.industry = industry;
+        this.marketCapitalization = marketCapitalization;
+        this.dividendYield = dividendYield;
+        this.dividendDate = dividendDate;
+        this.exDividendDate = exDividendDate;
+    }
+
+    public static OverviewCompanyDto mapOverviewCompany(OverviewCompany company) {
         BigDecimal dividendYield;
         if(company.getDividendYield() == null || company.getDividendYield().isEmpty()) {
             dividendYield = BigDecimal.ZERO;
@@ -35,7 +53,6 @@ public class OverviewCompanyDto {
                 company.getSymbol(),
                 company.getAssetType(),
                 company.getName(),
-                price,
                 company.getExchange(),
                 company.getCurrency(),
                 company.getCountry(),

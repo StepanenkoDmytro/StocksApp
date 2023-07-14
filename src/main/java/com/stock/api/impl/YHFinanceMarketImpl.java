@@ -16,6 +16,7 @@ import java.util.List;
 
 @Component
 public class YHFinanceMarketImpl implements YHFinanceMarket {
+    private static final String YAHOO_RapidAPI_Host = "yh-finance.p.rapidapi.com";
     private static final String BASE_URL_YAHOO = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/v2/get-movers";
     private final RequestManager requestManager;
     private final ResponseMapper responseMapper;
@@ -39,9 +40,9 @@ public class YHFinanceMarketImpl implements YHFinanceMarket {
                 .build()
                 .toUriString();
 
-        HttpResponse<String> response = requestManager.sendHttpRequestWithHeaderXRapidAPIKey(url, apiKey);
+        HttpResponse<String> response = requestManager.sendHttpRequestWithHeaderXRapidAPIKey(url, apiKey, YAHOO_RapidAPI_Host);
         MoversWrapper moversData = responseMapper.convertCustomResponse(response, MoversWrapper.class);
-        System.out.println(moversData.getFinance().getResult());
+//        System.out.println(moversData.getFinance().getResult());
         return moversData.getFinance().getResult();
     }
 

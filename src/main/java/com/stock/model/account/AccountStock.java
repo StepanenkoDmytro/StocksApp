@@ -46,14 +46,14 @@ public class AccountStock {
     @Column(name = "dividend_yield")
     private BigDecimal dividendYield;
 
-    public static AccountStock fromCompany(OverviewCompanyDto company, int count) {
+    public static AccountStock fromCompany(OverviewCompanyDto company, int count, BigDecimal price) {
         AccountStock stock = new AccountStock();
         stock.setSymbol(company.getSymbol());
         stock.setAssetType(company.getAssetType());
         stock.setName(company.getName());
         stock.setExchange(company.getExchange());
         stock.setCurrency(company.getCurrency());
-        stock.setBuyPrice(company.getPrice());
+        stock.setBuyPrice(price);
         stock.setCountry(company.getCountry());
         stock.setSector(company.getSector());
         stock.setIndustry(company.getIndustry());
