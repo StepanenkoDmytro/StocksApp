@@ -63,7 +63,7 @@ public class CoinServiceImpl implements CoinService {
         List<AccountCoinDto> coins = account.getCoins();
         List<PricesData> prices = coins.stream()
                 .map(coin -> {
-                    BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getAmountCOIN());
+                    BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getCountCoin());
                     return new PricesData(coin.getSymbol(), actualPrice);
                 })
                 .collect(Collectors.toList());

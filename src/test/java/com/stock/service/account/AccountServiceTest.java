@@ -65,14 +65,14 @@ class AccountServiceTest {
         accountTest.setCoins(Collections.singletonList(existingCoin));
 
         BigDecimal expectedBalance = accountTest.getBalance().subtract(amount);
-        BigDecimal expectedAmountUSD = existingCoin.getAmountUSD();
+        BigDecimal expectedAmountUSD = existingCoin.getAvgPrice();
         AccountDto result = accountService.processCoinBuy(amount, coinTest, accountTest);
         AccountCoinDto resultCoin = result.getCoins().get(0);
 
         assertNotNull(result);
         assertNotEquals(expectedBalance, result.getBalance());
         assertEquals(1, result.getCoins().size());
-        assertEquals(expectedAmountUSD, resultCoin.getAmountUSD());
+        assertEquals(expectedAmountUSD, resultCoin.getAvgPrice());
 
         verify(transactService, times(1)).logCoinRejected(any(BigDecimal.class), any(AccountCoin.class), any(Account.class));
         verify(accountRepository, never()).save(any(Account.class));
@@ -87,7 +87,7 @@ class AccountServiceTest {
         accountTest.setCoins(Collections.singletonList(existingCoin));
 
         BigDecimal expectedBalance = accountTest.getBalance().subtract(amount);
-        BigDecimal expectedAmountUSD = existingCoin.getAmountUSD().add(amount);
+        BigDecimal expectedAmountUSD = existingCoin.getAvgPrice().add(amount);
 
         AccountDto result = accountService.processCoinBuy(amount, coinTest, accountTest);
         AccountCoinDto resultCoin = result.getCoins().get(0);
@@ -95,8 +95,8 @@ class AccountServiceTest {
         assertNotNull(result);
         assertEquals(1, result.getCoins().size());
         assertEquals(expectedBalance, result.getBalance());
-        assertEquals(expectedAmountUSD, resultCoin.getAmountUSD());
-        assertEquals(existingCoin.getAmountCOIN(), resultCoin.getAmountCOIN());
+        assertEquals(expectedAmountUSD, resultCoin.getAvgPrice());
+        assertEquals(existingCoin.getCountCoin(), resultCoin.getCountCoin());
 
         verify(transactService, never()).logCoinRejected(any(BigDecimal.class), any(AccountCoin.class), any(Account.class));
         verify(transactService, times(1)).logCoinSuccess(any(BigDecimal.class), any(AccountCoin.class), any(Account.class));
@@ -118,8 +118,8 @@ class AccountServiceTest {
         assertNotNull(result);
         assertEquals(1, result.getCoins().size());
         assertEquals(expectedBalance, result.getBalance());
-        assertEquals(amount, resultCoin.getAmountUSD());
-        assertEquals(accountCoinTest.getAmountCOIN(), resultCoin.getAmountCOIN());
+        assertEquals(amount, resultCoin.getAvgPrice());
+        assertEquals(accountCoinTest.getCountCoin(), resultCoin.getCountCoin());
 
         verify(transactService, never()).logCoinRejected(any(BigDecimal.class), any(AccountCoin.class), any(Account.class));
         verify(transactService, times(1)).logCoinSuccess(any(BigDecimal.class), any(AccountCoin.class), any(Account.class));

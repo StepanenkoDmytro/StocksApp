@@ -187,15 +187,11 @@
                 <constraints nullable="false"/>
             </column>
 
-<!--            <column name="price" type="DECIMAL(10,2)">-->
-<!--                <constraints nullable="true"/>-->
-<!--            </column>-->
-
-            <column name="amountCOIN" type="DECIMAL(20,10)">
+            <column name="count_coin" type="DECIMAL(20,10)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="amountUSD" type="DECIMAL(10,2)">
+            <column name="average_price" type="DECIMAL(10,2)">
                 <constraints nullable="true"/>
             </column>
 

@@ -34,14 +34,11 @@ public class AccountCoin implements Serializable {
     @Column(name = "name")
     private String name;
 
-//    @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
-//    private BigDecimal price;
+    @Column(name = "count_coin", columnDefinition = "DECIMAL(20,10)")
+    private BigDecimal countCoin;
 
-    @Column(name = "amountCOIN", columnDefinition = "DECIMAL(20,10)")
-    private BigDecimal amountCOIN;
-
-    @Column(name = "amountUSD", columnDefinition = "DECIMAL(10,2)")
-    private BigDecimal amountUSD;
+    @Column(name = "average_price", columnDefinition = "DECIMAL(10,2)")
+    private BigDecimal avgPrice;
 
     @Column(name = "created")
     @CreatedDate
@@ -64,8 +61,8 @@ public class AccountCoin implements Serializable {
         accountCoin.setIdCoin(coin.getId());
         accountCoin.setName(coin.getName());
         accountCoin.setSymbol(coin.getSymbol());
-        accountCoin.setAmountCOIN(amountCOIN);
-        accountCoin.setAmountUSD(amountUSD);
+        accountCoin.setCountCoin(amountCOIN);
+        accountCoin.setAvgPrice(coin.getPriceUSD());
 
         return accountCoin;
     }
@@ -91,8 +88,8 @@ public class AccountCoin implements Serializable {
                 ", symbol='" + symbol + '\'' +
                 ", name='" + name + '\'' +
 //                ", price=" + price +
-                ", amountCOIN=" + amountCOIN +
-                ", amountUSD=" + amountUSD +
+                ", amountCOIN=" + countCoin +
+                ", amountUSD=" + avgPrice +
                 ", created=" + created +
                 '}';
     }

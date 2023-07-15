@@ -54,23 +54,24 @@ public class AccountServiceImpl implements AccountService {
         }
 
         BigDecimal newBalance = account.getBalance().subtract(amount);
-        AccountCoin accountCoin = AccountCoin.fromCoin(coin, amount);
+        AccountCoin newCoinBuy = AccountCoin.fromCoin(coin, amount);
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-            transactService.logCoinRejected(amount, accountCoin, account);
+            transactService.logCoinRejected(amount, newCoinBuy, account);
             return AccountDto.mapAccount(account);
         }
+
         List<AccountCoin> coins = account.getCoins();
-        if (isContainsItem(coins, accountCoin)) {
-            updateExistingCoin(account, accountCoin);
+        if (isContainsItem(coins, newCoinBuy)) {
+            updateExistingCoin(account, newCoinBuy);
         } else {
-            addNewCoin(account, accountCoin);
+            addNewCoin(account, newCoinBuy);
         }
 
         account.setBalance(newBalance);
 
         accountRepository.save(account);
-        transactService.logCoinSuccess(amount, accountCoin, account);
+        transactService.logCoinSuccess(amount, newCoinBuy, account);
 
         return AccountDto.mapAccount(account);
     }
@@ -167,15 +168,20 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.deleteById(accountID);
     }
 
-    private void updateExistingCoin(Account account, AccountCoin accountCoin) {
+    private void updateExistingCoin(Account account, AccountCoin newCoinBuy) {
         List<AccountCoin> coinsUser = account.getCoins();
-        AccountCoin existingCoin = getItemFromUser(coinsUser, accountCoin);
+        AccountCoin existingCoin = getItemFromUser(coinsUser, newCoinBuy);
 
-        BigDecimal newAmountCoin = existingCoin.getAmountCOIN().add(accountCoin.getAmountCOIN());
-        BigDecimal newAmountUSD = existingCoin.getAmountUSD().add(accountCoin.getAmountUSD());
+        BigDecimal existingCost = existingCoin.getAvgPrice().multiply(existingCoin.getCountCoin());
+        BigDecimal newBuyCost = newCoinBuy.getAvgPrice().multiply(newCoinBuy.getCountCoin());
 
-        existingCoin.setAmountCOIN(newAmountCoin);
-        existingCoin.setAmountUSD(newAmountUSD);
+        BigDecimal sumOfCost = existingCost.add(newBuyCost);
+
+        BigDecimal sumOfCount = existingCoin.getCountCoin().add(newCoinBuy.getCountCoin());
+        BigDecimal newAvgPrice = sumOfCost.divide(sumOfCount, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+
+        existingCoin.setCountCoin(sumOfCount);
+        existingCoin.setAvgPrice(newAvgPrice);
     }
 
     private void updateExistingStock(Account account, AccountStock newStock) {

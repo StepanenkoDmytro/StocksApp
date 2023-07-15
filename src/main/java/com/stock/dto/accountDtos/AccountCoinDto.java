@@ -10,15 +10,15 @@ public class AccountCoinDto {
     private String idCoin;
     private String name;
     private String symbol;
-    private BigDecimal amountCOIN;
-    private BigDecimal amountUSD;
+    private BigDecimal countCoin;
+    private BigDecimal avgPrice;
 
-    public AccountCoinDto(String idCoin, String name, String symbol, BigDecimal amountCOIN, BigDecimal amountUSD) {
+    public AccountCoinDto(String idCoin, String name, String symbol, BigDecimal countCoin, BigDecimal avgPrice) {
         this.idCoin = idCoin;
         this.name = name;
         this.symbol = symbol;
-        this.amountCOIN = amountCOIN;
-        this.amountUSD = amountUSD;
+        this.countCoin = countCoin;
+        this.avgPrice = avgPrice;
     }
 
     public static AccountCoinDto mapAccountCoin(AccountCoin coin){
@@ -26,7 +26,7 @@ public class AccountCoinDto {
                 coin.getIdCoin(),
                 coin.getName(),
                 coin.getSymbol(),
-                coin.getAmountCOIN(),
-                coin.getAmountUSD());
+                coin.getCountCoin(),
+                coin.getAvgPrice());
     }
 }
