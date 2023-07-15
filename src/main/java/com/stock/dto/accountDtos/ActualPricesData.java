@@ -1,5 +1,6 @@
-package com.stock.dto.forCharts;
+package com.stock.dto.accountDtos;
 
+import com.stock.dto.forCharts.PricesData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,8 +9,6 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class PieChartData {
+public class ActualPricesData {
     private List<PricesData> data;
-
-    private BigDecimal actualTotalBalance;
 }

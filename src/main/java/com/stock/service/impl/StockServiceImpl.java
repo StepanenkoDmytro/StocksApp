@@ -8,7 +8,7 @@ import com.stock.api.entity.yahooFinance.Mover;
 import com.stock.api.entity.yahooFinance.YHQuote;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
-import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.forCharts.PricesData;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.model.stock.Company;
@@ -61,33 +61,35 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<PiePrice> getPriceAccountStocksByList(AccountDto account) {
+    public List<PricesData> getPriceAccountStocksByList(AccountDto account) {
         if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
         }
 
         List<AccountStockDto> stocks = account.getStocks();
 
-        List<PiePrice> prices = stocks.stream()
+        List<PricesData> prices = stocks.stream()
                 .map(stock -> {
                     BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
-                    return new PiePrice(stock.getName(), actualStocksPrice);
+                    return new PricesData(stock.getName(), actualStocksPrice);
                 })
                 .collect(Collectors.toList());
 
-        PiePrice freeUSD = new PiePrice("USD", account.getBalance());
+        PricesData freeUSD = new PricesData("USD", account.getBalance());
         prices.add(freeUSD);
         return prices;
     }
     @Override
-    public List<PiePrice> getPriceStocksByList(List<AccountStockDto> stocks) {
-        if (stocks == null) {
+    public List<PricesData> getPriceStocksByList(AccountDto account) {
+        if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
         }
+
+        List<AccountStockDto> stocks = account.getStocks();
         return stocks.stream()
                 .map(stock -> {
                     BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol());
-                    return new PiePrice(stock.getSymbol(), actualStocksPrice);
+                    return new PricesData(stock.getSymbol(), actualStocksPrice);
                 })
                 .toList();
     }

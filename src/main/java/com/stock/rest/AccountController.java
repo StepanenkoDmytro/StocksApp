@@ -1,9 +1,6 @@
 package com.stock.rest;
 
-import com.stock.dto.accountDtos.DepositDto;
-import com.stock.dto.accountDtos.NewAccountDto;
-import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.accountDtos.UserDto;
+import com.stock.dto.accountDtos.*;
 import com.stock.dto.forCharts.PieChartData;
 import com.stock.model.user.User;
 import com.stock.service.AccountService;
@@ -66,10 +63,16 @@ public class AccountController {
         return ResponseEntity.ok().body(HttpStatus.OK);
     }
 
-    @PostMapping("/price-for-list")
+    @PostMapping("/pie-chart-data")
     public ResponseEntity<PieChartData> getPieCoinPrice(@RequestBody AccountDto account) {
         PieChartData pieChartData = accountService.getPieChartData(account);
         return ResponseEntity.ok(pieChartData);
+    }
+
+    @PostMapping("/actual-prices-data")
+    public ResponseEntity<ActualPricesData> getActualPricesData(@RequestBody AccountDto account) {
+        ActualPricesData actualPricesData = accountService.getActualPricesData(account);
+        return ResponseEntity.ok(actualPricesData);
     }
 
 // зробити цю функцію пізніше

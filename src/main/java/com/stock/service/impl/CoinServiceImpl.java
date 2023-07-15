@@ -7,7 +7,7 @@ import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.forCharts.CandlesDto;
-import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.forCharts.PricesData;
 import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,22 +55,35 @@ public class CoinServiceImpl implements CoinService {
     }
 
     @Override
-    public List<PiePrice> getPriceAccountCoinsByList(AccountDto account) {
+    public List<PricesData> getPriceAccountCoinsByList(AccountDto account) {
         if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
         }
 
         List<AccountCoinDto> coins = account.getCoins();
-        List<PiePrice> prices = coins.stream()
+        List<PricesData> prices = coins.stream()
                 .map(coin -> {
                     BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getAmountCOIN());
-                    return new PiePrice(coin.getSymbol(), actualPrice);
+                    return new PricesData(coin.getSymbol(), actualPrice);
                 })
                 .collect(Collectors.toList());
 
-        PiePrice freeUSD = new PiePrice("USD", account.getBalance());
+        PricesData freeUSD = new PricesData("USD", account.getBalance());
         prices.add(freeUSD);
         return prices;
+    }
+    public List<PricesData> getPriceCoinsByList(AccountDto account) {
+        if (account == null || account.getStocks() == null) {
+            return new ArrayList<>();
+        }
+
+        List<AccountCoinDto> coins = account.getCoins();
+        return coins.stream()
+                .map(coin -> {
+                    BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin());
+                    return new PricesData(coin.getSymbol(), actualPrice);
+                })
+                .toList();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.stock.service;
 
+import com.stock.dto.accountDtos.ActualPricesData;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.forCharts.PieChartData;
@@ -17,4 +18,5 @@ public interface AccountService {
     AccountDto processCoinBuy(BigDecimal amount, CoinDto coin, Account account);
     AccountDto processStockBuy(OverviewCompanyDto stock, BigDecimal price, int count, Account account);
     PieChartData getPieChartData(AccountDto account);
+    ActualPricesData getActualPricesData(AccountDto account);
 }

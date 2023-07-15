@@ -1,9 +1,10 @@
 package com.stock.service.impl;
 
+import com.stock.dto.accountDtos.ActualPricesData;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.forCharts.PieChartData;
-import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.forCharts.PricesData;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.exceptions.AccountFetchException;
 import com.stock.helper.AccountHelper;
@@ -105,15 +106,30 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public PieChartData getPieChartData(AccountDto account) {
-        List<PiePrice> prices = null;
+        List<PricesData> prices = null;
+        BigDecimal totalBalance = BigDecimal.ZERO;
 
         if(account.getAccountType().equals("CryptoWallet")) {
             prices = coinService.getPriceAccountCoinsByList(account);
+            totalBalance = calculateTotalBalance(prices);
         } else if (account.getAccountType().equals("StockWallet")) {
             prices = stockService.getPriceAccountStocksByList(account);
+            totalBalance = calculateTotalBalance(prices);
         }
 
-        return new PieChartData(prices);
+        return new PieChartData(prices, totalBalance);
+    }
+
+    @Override
+    public ActualPricesData getActualPricesData(AccountDto account) {
+        List<PricesData> prices = null;
+
+        if(account.getAccountType().equals("CryptoWallet")) {
+            prices = coinService.getPriceCoinsByList(account);
+        } else if (account.getAccountType().equals("StockWallet")) {
+            prices = stockService.getPriceStocksByList(account);
+        }
+        return new ActualPricesData(prices);
     }
 
     @Override
@@ -193,9 +209,9 @@ public class AccountServiceImpl implements AccountService {
     private void addNewStock(Account account, AccountStock accountStock) {
         account.addStocks(accountStock);
     }
-    private BigDecimal calculateTotalBalance(List<PiePrice> priceList) {
+    private BigDecimal calculateTotalBalance(List<PricesData> priceList) {
         return priceList.stream()
-                .map(PiePrice::getValue)
+                .map(PricesData::getValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .setScale(0, RoundingMode.HALF_UP);
     }

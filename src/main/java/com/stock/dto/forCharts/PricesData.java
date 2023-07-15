@@ -5,11 +5,11 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class PiePrice {
+public class PricesData {
     private String label;
     private BigDecimal value;
 
-    public PiePrice(String label, BigDecimal value) {
+    public PricesData(String label, BigDecimal value) {
         this.label = label;
         this.value = value;
     }

@@ -2,12 +2,11 @@ package com.stock.rest;
 
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
-import com.stock.dto.forCharts.PiePrice;
+import com.stock.dto.forCharts.PricesData;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.dto.stocks.StockBuyDetails;
 import com.stock.model.account.Account;
-import com.stock.model.account.AccountStock;
 import com.stock.service.AccountService;
 import com.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +53,11 @@ public class StockController {
     }
 
     @PostMapping("/price-list")
-    public ResponseEntity<List<PiePrice>> priceList(@RequestBody AccountDto account) {
+    public ResponseEntity<List<PricesData>> priceList(@RequestBody AccountDto account) {
         //зробити метод через веб-сокети
         List<AccountStockDto> stocks = account.getStocks();
         if(!stocks.isEmpty()) {
-            List<PiePrice> priceStocksByList = stockService.getPriceStocksByList(stocks);
+            List<PricesData> priceStocksByList = stockService.getPriceStocksByList(account);
             return ResponseEntity.ok(priceStocksByList);
         }
         return ResponseEntity.badRequest().build();
