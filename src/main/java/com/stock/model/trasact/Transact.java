@@ -27,7 +27,13 @@ public class Transact {
     private Account account;
     @Column(name = "transaction_type")
     @Enumerated(EnumType.STRING)
-    private TransactionType transaction_type;
+    private TransactionType transactionType;
+    @Column(name = "ticker")
+    private String ticker;
+    @Column(name = "count", columnDefinition = "DECIMAL(20,10)")
+    private BigDecimal count;
+    @Column(name = "price", columnDefinition = "DECIMAL(10,2)")
+    private BigDecimal price;
     @Column(name = "amount", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal amount;
     @Column(name = "source")
@@ -53,7 +59,7 @@ public class Transact {
 
     public static Transact transactCOIN(String status, BigDecimal amount, AccountCoin coin){
         Transact transactLog = new Transact();
-        transactLog.setTransaction_type(TransactionType.BUY_CRYPTO);
+        transactLog.setTransactionType(TransactionType.BUY_CRYPTO);
         transactLog.setAmount(amount);
         transactLog.setSource(Source.COINCAP);
         transactLog.setStatus(status);
@@ -64,7 +70,7 @@ public class Transact {
 
     public static Transact transactSTOCK(String status, BigDecimal purchasePrice, AccountStock stock){
         Transact transactLog = new Transact();
-        transactLog.setTransaction_type(TransactionType.BUY_STOCKS);
+        transactLog.setTransactionType(TransactionType.BUY_STOCKS);
         transactLog.setAmount(purchasePrice);
         transactLog.setSource(Source.BIG_BANK);
         transactLog.setStatus(status);
@@ -75,7 +81,7 @@ public class Transact {
 
     public static Transact transactDeposit(BigDecimal deposit){
         Transact transact = new Transact();
-        transact.setTransaction_type(TransactionType.DEPOSIT_ACCOUNT);
+        transact.setTransactionType(TransactionType.DEPOSIT_ACCOUNT);
         transact.setAmount(deposit);
         transact.setSource(Source.BIG_BANK);
         transact.setStatus("success");

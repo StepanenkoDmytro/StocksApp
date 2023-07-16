@@ -31,7 +31,7 @@ public class TransactDto {
     public static TransactDto mapTransactToDto(Transact transact) {
         return new TransactDto(
                 transact.getAccount().getId(),
-                transact.getTransaction_type().name(),
+                transact.getTransactionType().name(),
                 transact.getAmount(),
                 transact.getSource().name(),
                 transact.getStatus(),

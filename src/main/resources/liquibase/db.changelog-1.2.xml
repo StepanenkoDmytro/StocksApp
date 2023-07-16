@@ -30,6 +30,10 @@
                 <constraints nullable="true"/>
             </column>
 
+            <column name="fixed_profit" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
             <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
                 <constraints nullable="false"/>
             </column>
@@ -128,8 +132,20 @@
                 <constraints nullable="false" unique="false"/>
             </column>
 
-            <column name="amount" type="DECIMAL(10,2)">
+            <column name="ticker" type="VARCHAR(255)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+
+            <column name="count" type="DECIMAL(20,10)">
                 <constraints nullable="true"/>
+            </column>
+
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
             </column>
 
             <column name="source" type="VARCHAR(255)">
@@ -149,7 +165,7 @@
             </column>
 
             <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
 
         </createTable>
@@ -188,11 +204,11 @@
             </column>
 
             <column name="count_coin" type="DECIMAL(20,10)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="average_price" type="DECIMAL(10,2)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
 
             <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">

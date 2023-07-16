@@ -36,6 +36,9 @@ public class Account extends BaseEntity {
     @Column(name = "balance", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal balance;
 
+    @Column(name = "fixed_profit", columnDefinition = "DECIMAL(10,2)")
+    private BigDecimal fixedProfit;
+
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH,CascadeType.MERGE},
             mappedBy = "account")
