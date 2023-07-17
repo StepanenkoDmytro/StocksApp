@@ -25,4 +25,6 @@ public interface TransactRepository extends JpaRepository<Transact, Long> {
                         @Param("status")String status,
                         @Param("reason_code")String reason_code,
                         @Param("created_at") Date created_at);
+
+//    List<Transact> findByAccount
 }

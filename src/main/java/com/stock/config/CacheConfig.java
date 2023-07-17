@@ -33,6 +33,12 @@ public class CacheConfig extends CachingConfigurerSupport {
         CaffeineCacheManager overviewCompanyCacheManager = new CaffeineCacheManager("getOverviewCompany");
         overviewCompanyCacheManager.setCaffeine(overviewCompanyMoversCaffeine);
 
+        Caffeine<Object, Object> fearIndexCaffeine = Caffeine.newBuilder();
+//        overviewCompanyMoversCaffeine.expireAfterWrite(1, TimeUnit.MINUTES);
+        fearIndexCaffeine.expireAfterWrite(1, TimeUnit.DAYS);
+        CaffeineCacheManager fearIndexCacheManager = new CaffeineCacheManager("getFearGreedIndex");
+        fearIndexCacheManager.setCaffeine(fearIndexCaffeine);
+
         Caffeine<Object, Object> stockPriceCaffeine = Caffeine.newBuilder();
         stockPriceCaffeine.expireAfterWrite(1, TimeUnit.MINUTES);
 //        stockPriceCaffeine.expireAfterWrite(20, TimeUnit.SECONDS);
@@ -42,7 +48,8 @@ public class CacheConfig extends CachingConfigurerSupport {
         return new CompositeCacheManager(
                 moversCacheManager,
                 overviewCompanyCacheManager,
-                stockPriceCacheManager);
+                stockPriceCacheManager,
+                fearIndexCacheManager);
     }
 
     @Bean

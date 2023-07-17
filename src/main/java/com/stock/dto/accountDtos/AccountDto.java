@@ -15,16 +15,18 @@ public class AccountDto {
     private String accountName;
     private String accountType;
     private BigDecimal balance;
+    private BigDecimal fixedProfit;
     private List<AccountCoinDto> coins;
     private List<AccountStockDto> stocks;
 
-    public AccountDto(Long id , String accountName, String accountType, BigDecimal balance, List<AccountCoinDto> coins, List<AccountStockDto> stocks) {
+    public AccountDto(Long id, String accountName, String accountType, BigDecimal balance, BigDecimal fixedProfit, List<AccountCoinDto> coins, List<AccountStockDto> stocks) {
         this.id = id;
         this.accountName = accountName;
         this.accountType = accountType;
         this.balance = balance;
         this.coins = coins;
         this.stocks = stocks;
+        this.fixedProfit = fixedProfit;
     }
 
     public static AccountDto mapAccount(Account account) {
@@ -33,12 +35,13 @@ public class AccountDto {
                 account.getAccountName(),
                 account.getAccountType().name(),
                 account.getBalance(),
+                account.getFixedProfit(),
                 mapAccountCoins(account.getCoins()),
                 mapAccountStocks(account.getStocks()));
     }
 
     private static List<AccountCoinDto> mapAccountCoins(List<AccountCoin> coins) {
-        if(coins == null) {
+        if (coins == null) {
             return new ArrayList<>();
         }
         return coins.stream()
@@ -47,7 +50,7 @@ public class AccountDto {
     }
 
     private static List<AccountStockDto> mapAccountStocks(List<AccountStock> stocks) {
-        if(stocks == null) {
+        if (stocks == null) {
             return new ArrayList<>();
         }
         return stocks.stream()

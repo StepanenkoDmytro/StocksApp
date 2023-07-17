@@ -103,6 +103,7 @@ public class Account extends BaseEntity {
     public void prePersist() {
         super.prePersist();
         balance = new BigDecimal(0);
+        fixedProfit = new BigDecimal(0);
     }
 
     @Override

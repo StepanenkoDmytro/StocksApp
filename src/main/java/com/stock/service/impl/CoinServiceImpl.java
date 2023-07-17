@@ -1,7 +1,10 @@
 package com.stock.service.impl;
 
 import com.stock.api.CoinMarket;
+import com.stock.api.FearGreedIndexMarket;
+import com.stock.api.entity.FearGreedIndex.FearGreedIndex;
 import com.stock.dto.accountDtos.AccountDto;
+import com.stock.dto.coins.FearGreedIndexDto;
 import com.stock.helper.RequestManager;
 import com.stock.api.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
@@ -11,6 +14,7 @@ import com.stock.dto.forCharts.PricesData;
 import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.service.CoinService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,10 +25,12 @@ import java.util.stream.Collectors;
 @Service
 public class CoinServiceImpl implements CoinService {
     private final CoinMarket coinMarket;
+    private final FearGreedIndexMarket fearGreedIndexMarket;
 
     @Autowired
-    public CoinServiceImpl(CoinMarket coinMarket) {
+    public CoinServiceImpl(CoinMarket coinMarket, FearGreedIndexMarket fearGreedIndexMarket) {
         this.coinMarket = coinMarket;
+        this.fearGreedIndexMarket = fearGreedIndexMarket;
     }
 
     @Override
@@ -64,7 +70,7 @@ public class CoinServiceImpl implements CoinService {
         List<PricesData> prices = coins.stream()
                 .map(coin -> {
                     BigDecimal actualPrice = getPriceByTicker(coin.getIdCoin()).multiply(coin.getCountCoin());
-                    return new PricesData(coin.getSymbol(), actualPrice);
+                    return new PricesData(coin.getName(), actualPrice);
                 })
                 .collect(Collectors.toList());
 
@@ -72,6 +78,7 @@ public class CoinServiceImpl implements CoinService {
         prices.add(freeUSD);
         return prices;
     }
+
     public List<PricesData> getPriceCoinsByList(AccountDto account) {
         if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
@@ -101,5 +108,11 @@ public class CoinServiceImpl implements CoinService {
 
     public List<CandlesDto> getCandles(String baseID, String quoteID) {
         return coinMarket.findCandlesDataByBaseAndQuoteCoins(baseID, quoteID);
+    }
+
+    @Override
+    @Cacheable(value = "getFearGreedIndex")
+    public FearGreedIndexDto getFearGreedIndex() {
+        return fearGreedIndexMarket.getFearGreedIndex();
     }
 }

@@ -1,11 +1,9 @@
 package com.stock.rest;
 
 import com.stock.api.AlphaVantageMarket;
+import com.stock.api.entity.FearGreedIndex.FearGreedIndex;
 import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.coins.CoinBuy;
-import com.stock.dto.coins.CoinDetails;
-import com.stock.dto.coins.CoinsForClient;
-import com.stock.dto.coins.CoinDto;
+import com.stock.dto.coins.*;
 import com.stock.dto.forCharts.CandlesDto;
 import com.stock.helper.CoinBuyHelper;
 import com.stock.model.account.Account;
@@ -63,7 +61,7 @@ public class CoinController {
     @PostMapping("/{coin_id}")
     public ResponseEntity<AccountDto> buyCoin(@RequestBody CoinBuy coinBuy) {
         BigDecimal amountUSD = CoinBuyHelper.convertToUSD(coinBuy.getAmount());
-        if(amountUSD.compareTo(BigDecimal.TEN) > 0) {
+        if (amountUSD.compareTo(BigDecimal.TEN) > 0) {
             Account account = accountService.getAccountById(coinBuy.getAccountID());
             CoinDto coin = coinService.getByTicker(coinBuy.getCoinId());
 
@@ -73,5 +71,11 @@ public class CoinController {
         }
         //коли буде працювати фронт - зробити просто валідацію amount
         return ResponseEntity.badRequest().body(null);
+    }
+
+    @GetMapping("/fear-and-greed-index")
+    public ResponseEntity<FearGreedIndexDto> getFearGreedIndexResponse() {
+        FearGreedIndexDto fearGreedIndex = coinService.getFearGreedIndex();
+        return ResponseEntity.ok(fearGreedIndex);
     }
 }
