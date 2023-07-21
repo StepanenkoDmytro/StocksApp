@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 @SpringBootTest
-class PortfolioAnalyticTest {
+class PortfolioRiskAnalyzerTest {
     @Autowired
     private AlphaVantageMarket alphaVantageMarket;
 
@@ -44,15 +44,16 @@ class PortfolioAnalyticTest {
         //середня капіталзація портфелю складає 379_476_566_000
         //середня вага КО = 0.6784
         //середня вага IBM = 0.3216
-        double standardDeviation = Math.sqrt(ko * ko * 0.6784 * 0.6784 + ibm * ibm * 0.3216 * 0.3216);
-        System.out.println(standardDeviation);
+//        double standardDeviation = Math.sqrt(ko * ko * 0.6784 * 0.6784 + ibm * ibm * 0.3216 * 0.3216);
+//        System.out.println(standardDeviation);
     }
 
     //129,01 + 142370,129 + 172,68
     private double getStandardDeviationsByTicker(String ticker) {
-        List<DataPrice> prices = alphaVantageMarket.findWeeklyPricesById(ticker);
-        LocalDate limit = LocalDate.now().minusYears(5);
+        List<DataPrice> prices = alphaVantageMarket.findMonthlyPricesById(ticker);
 
+        LocalDate limit = LocalDate.now().minusYears(1);
+        System.out.println(prices.stream().filter(week -> week.getDate().isAfter(limit)).toList());
         List<Double> doubles = prices.stream()
                 .filter(week -> week.getDate().isAfter(limit))
                 .map(DataPrice::getClose)
@@ -60,26 +61,31 @@ class PortfolioAnalyticTest {
                 .toList();
 
         double prevElement = doubles.get(0);
-        double sum = doubles.get(0);
+//        double sum = doubles.get(0);
         List<Double> differenceList = new ArrayList<>();
         for (int i = 1; i < doubles.size(); i++) {
             double currentElement = doubles.get(i);
-            sum += currentElement;
-            double difference = (currentElement - prevElement) / prevElement;
+//            sum += currentElement;
+            double difference = ((currentElement - prevElement) / prevElement) * 100;
+//            double difference = (currentElement - prevElement) / prevElement;
             differenceList.add(difference);
 
             prevElement = currentElement;
         }
 
-        double averageValue = sum / differenceList.size();
+//        double averageValue = sum / differenceList;
 
-        double average = differenceList.stream()
-                .map(value -> value - averageValue)
-                .map(value -> value * value)
-                .mapToDouble(value -> value)
-                .average()
-                .orElse(0.0);
-
-        return Math.sqrt(average);
+//        double average = differenceList.stream()
+//                .map(value -> value - averageValue)
+//                .map(value -> value * value)
+//                .mapToDouble(value -> value)
+//                .average()
+//                .orElse(0.0);
+//
+//        return Math.sqrt(average);
+        double sum = differenceList.stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+        return sum / differenceList.size();
     }
 }

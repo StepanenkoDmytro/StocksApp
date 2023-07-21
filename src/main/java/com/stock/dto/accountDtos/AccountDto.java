@@ -4,12 +4,14 @@ import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
 import com.stock.model.account.AccountStock;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class AccountDto {
     private Long id;
     private String accountName;

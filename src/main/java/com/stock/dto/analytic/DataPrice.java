@@ -1,9 +1,8 @@
 package com.stock.dto.analytic;
 
 
-import com.stock.api.entity.alphaVantage.crypto.TimeSeriesData;
+import com.stock.api.entity.alphaVantage.stock.MonthlyTimeSeries;
 import com.stock.api.entity.alphaVantage.stock.WeeklyTimeSeries;
-import com.stock.dto.forCharts.CandlesDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -23,6 +22,24 @@ public class DataPrice {
     private LocalDate date;
 
     public static Optional<DataPrice> mapFromTimeSeriesData(WeeklyTimeSeries candleData, String date) {
+        try {
+            BigDecimal open = new BigDecimal(candleData.getOpen());
+            BigDecimal high = new BigDecimal(candleData.getHigh());
+            BigDecimal low = new BigDecimal(candleData.getLow());
+            BigDecimal close = new BigDecimal(candleData.getClose());
+            BigDecimal volume = new BigDecimal(candleData.getVolume());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate newDate = LocalDate.parse(date, formatter);
+
+            DataPrice dataPrice = new DataPrice(open, high, low, close, volume, newDate);
+            return Optional.of(dataPrice);
+        } catch (NullPointerException | NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<DataPrice> mapFromTimeSeriesData(MonthlyTimeSeries candleData, String date) {
         try {
             BigDecimal open = new BigDecimal(candleData.getOpen());
             BigDecimal high = new BigDecimal(candleData.getHigh());

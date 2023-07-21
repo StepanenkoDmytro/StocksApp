@@ -35,7 +35,6 @@ public class TwelveDataMarketImpl implements TwelveDataMarket {
                 .toUriString();
 
         HttpResponse<String> response = requestManager.sendHttpRequestWithHeaderXRapidAPIKey(url, apiKey, TWELVE_DATA_RAPIDAPI_HOST);
-        System.out.println(response.body());
         TwelveCompany company = responseMapper.convertCustomResponse(response, TwelveCompany.class);
         return CompanyDto.mapTwelveCompany(company);
     }

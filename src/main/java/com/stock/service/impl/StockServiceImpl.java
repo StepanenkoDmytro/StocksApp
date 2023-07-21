@@ -79,6 +79,7 @@ public class StockServiceImpl implements StockService {
         prices.add(freeUSD);
         return prices;
     }
+
     @Override
     public List<PricesData> getPriceStocksByList(AccountDto account) {
         if (account == null || account.getStocks() == null) {
@@ -98,18 +99,10 @@ public class StockServiceImpl implements StockService {
     @Cacheable(value = "getMovers", key = "#typeOfMover")
     public List<CompanyDto> getMovers(String typeOfMover) {
         List<Mover> movers = yhFinanceMarket.getMovers();
-//        Mover mover1 = movers.get(0);
-//        System.out.println(mover1);
-//        System.out.println(movers);
         Optional<List<YHQuote>> first = movers.stream()
                 .filter(mover -> mover.getCanonicalName().equals(typeOfMover))
                 .map(Mover::getQuotes)
                 .findFirst();
-        List<List<YHQuote>> lists = movers.stream()
-                .filter(mover -> mover.getCanonicalName().equals(typeOfMover))
-                .map(Mover::getQuotes)
-                .toList();
-//        System.out.println(lists);
         return first.orElseGet(ArrayList::new)
                 .stream()
                 .map(yhQuote -> getCompanyBySymbol(yhQuote.getSymbol()))

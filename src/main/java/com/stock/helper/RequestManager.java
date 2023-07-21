@@ -68,14 +68,6 @@ public class RequestManager {
     }
 
     public HttpResponse<String> sendHttpRequestWithHeaderXRapidAPIKey(String url, String apiKey, String host) {
-//        URI uri = URI.create(url);
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .GET()
-//                .uri(uri)
-//                .headers("Accept-Encoding", "gzip, deflate, br")
-//                .headers("X-RapidAPI-Key", apiKey)
-//                .headers("X-RapidAPI-Host", host)
-//                .build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("X-RapidAPI-Key", apiKey)

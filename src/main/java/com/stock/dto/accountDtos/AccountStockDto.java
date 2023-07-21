@@ -3,11 +3,13 @@ package com.stock.dto.accountDtos;
 import com.stock.model.account.AccountStock;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class AccountStockDto {
     private String symbol;
     private String assetType;

@@ -2,8 +2,12 @@ package com.stock.api.impl;
 
 import com.stock.api.AlphaVantageMarket;
 import com.stock.api.entity.alphaVantage.stock.AVCompany;
+import com.stock.api.entity.alphaVantage.stock.MonthlyTimeSeries;
 import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.api.entity.alphaVantage.stock.WeeklyTimeSeries;
+import com.stock.api.wrappers.MonthlyDataAlphaVantage;
 import com.stock.api.wrappers.QuoteData;
+import com.stock.api.wrappers.WeeklyDataAlphaVantage;
 import com.stock.dto.analytic.DataPrice;
 import com.stock.dto.forCharts.CandlesDto;
 import com.stock.helper.RequestManager;
@@ -16,7 +20,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 @PropertySource("classpath:security-keys.properties")
@@ -48,10 +55,10 @@ public class AlphaVantageMarketImpl implements AlphaVantageMarket {
     }
 
     @Override
-    public List<DataPrice> findWeeklyPricesById(String coinSymbol) {
+    public List<DataPrice> findWeeklyPricesById(String ticker) {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL_ALPHA_VANTAGE)
                 .queryParam("function", "TIME_SERIES_WEEKLY")
-                .queryParam("symbol", coinSymbol)
+                .queryParam("symbol", ticker)
 //                .queryParam("market", "CNY")
                 .queryParam("apikey", apiKey)
                 .build()
@@ -59,6 +66,29 @@ public class AlphaVantageMarketImpl implements AlphaVantageMarket {
 
         HttpResponse<String> response = requestManager.sendHttpRequestWithParamApiKey(url);
         return responseMapper.convertDataPriceResponse(response);
+    }
+
+    @Override
+    public List<DataPrice> findMonthlyPricesById(String ticker) {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL_ALPHA_VANTAGE)
+                .queryParam("function", "TIME_SERIES_MONTHLY_ADJUSTED")
+                .queryParam("symbol", ticker)
+                .queryParam("apikey", apiKey)
+                .build()
+                .toUriString();
+
+        HttpResponse<String> response = requestManager.sendHttpRequestWithParamApiKey(url);
+
+        List<DataPrice> result = new ArrayList<>();
+        Map<String, MonthlyTimeSeries> data = responseMapper.convertCustomResponse(response, MonthlyDataAlphaVantage.class).getData();
+
+        for (String key : data.keySet()) {
+            MonthlyTimeSeries candleData = data.get(key);
+            Optional<DataPrice> candleOptional = Optional.ofNullable(candleData)
+                    .flatMap(candle -> DataPrice.mapFromTimeSeriesData(candle, key));
+            candleOptional.ifPresent(result::add);
+        }
+        return result;
     }
 
     @Override

@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface AlphaVantageMarket {
     List<CandlesDto> findCandlesById(String coinID);
-    List<DataPrice> findWeeklyPricesById(String coinSymbol);
+    List<DataPrice> findWeeklyPricesById(String ticker);
+    List<DataPrice> findMonthlyPricesById(String ticker);
     List<AVCompany> findAllCompanies();
     BigDecimal findStockPriceByTicker(String ticker);
     OverviewCompany findCompanyByTicker(String ticker);
