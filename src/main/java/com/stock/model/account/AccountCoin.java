@@ -2,7 +2,7 @@ package com.stock.model.account;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.stock.dto.coins.CoinDto;
-import com.stock.helper.CoinBuyHelper;
+import com.stock.service.helpers.CoinBuyHelper;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 

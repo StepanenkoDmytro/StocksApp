@@ -1,13 +1,11 @@
 package com.stock.dto.stocks;
 
-import com.stock.api.entity.alphaVantage.stock.AVCompany;
-import com.stock.api.entity.finnhub.FinnhubCompany;
-import com.stock.api.entity.twelveData.TwelveCompany;
+import com.stock.service.api.producers.entity.alphaVantage.stock.AVCompany;
+import com.stock.service.api.producers.entity.finnhub.FinnhubCompany;
+import com.stock.service.api.producers.entity.twelveData.TwelveCompany;
 import com.stock.model.stock.Company;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor

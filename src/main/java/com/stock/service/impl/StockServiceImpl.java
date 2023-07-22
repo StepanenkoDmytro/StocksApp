@@ -1,11 +1,9 @@
 package com.stock.service.impl;
 
-import com.stock.api.AlphaVantageMarket;
-import com.stock.api.FinnhubMarket;
-import com.stock.api.YHFinanceMarket;
-import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
-import com.stock.api.entity.yahooFinance.Mover;
-import com.stock.api.entity.yahooFinance.YHQuote;
+import com.stock.service.api.StockAPIService;
+import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.service.api.producers.entity.yahooFinance.Mover;
+import com.stock.service.api.producers.entity.yahooFinance.YHQuote;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.dto.forCharts.PricesData;
@@ -27,16 +25,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class StockServiceImpl implements StockService {
-    private final AlphaVantageMarket alphaVantageMarket;
-    private final FinnhubMarket finnhubMarket;
-    private final YHFinanceMarket yhFinanceMarket;
+    private final StockAPIService stockAPIService;
     private final CompanyRepository companyRepository;
 
     @Autowired
-    public StockServiceImpl(AlphaVantageMarket alphaVantageMarket, FinnhubMarket finnhubMarket, YHFinanceMarket yhFinanceMarket, CompanyRepository companyRepository) {
-        this.alphaVantageMarket = alphaVantageMarket;
-        this.finnhubMarket = finnhubMarket;
-        this.yhFinanceMarket = yhFinanceMarket;
+    public StockServiceImpl(StockAPIService stockAPIService, CompanyRepository companyRepository) {
+        this.stockAPIService = stockAPIService;
         this.companyRepository = companyRepository;
     }
 
@@ -47,7 +41,7 @@ public class StockServiceImpl implements StockService {
         if (companyDB.isPresent()) {
             result = CompanyDto.mapCompany(companyDB.get());
         } else {
-            OverviewCompany companyAPI = alphaVantageMarket.findCompanyByTicker(symbol);
+            OverviewCompany companyAPI = stockAPIService.findCompanyByTicker(symbol);
             if (companyAPI.getName() != null) {
                 Company newCompany = Company.mapOverviewCompany(companyAPI);
                 newCompany.setUpdated(new Date());
@@ -70,7 +64,7 @@ public class StockServiceImpl implements StockService {
 
         List<PricesData> prices = stocks.stream()
                 .map(stock -> {
-                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
+                    BigDecimal actualStocksPrice = stockAPIService.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
                     return new PricesData(stock.getName(), actualStocksPrice);
                 })
                 .collect(Collectors.toList());
@@ -89,7 +83,7 @@ public class StockServiceImpl implements StockService {
         List<AccountStockDto> stocks = account.getStocks();
         return stocks.stream()
                 .map(stock -> {
-                    BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(stock.getSymbol());
+                    BigDecimal actualStocksPrice = stockAPIService.findPriceStockByTicker(stock.getSymbol());
                     return new PricesData(stock.getSymbol(), actualStocksPrice);
                 })
                 .toList();
@@ -98,7 +92,7 @@ public class StockServiceImpl implements StockService {
     @Override
     @Cacheable(value = "getMovers", key = "#typeOfMover")
     public List<CompanyDto> getMovers(String typeOfMover) {
-        List<Mover> movers = yhFinanceMarket.getMovers();
+        List<Mover> movers = stockAPIService.getMovers();
         Optional<List<YHQuote>> first = movers.stream()
                 .filter(mover -> mover.getCanonicalName().equals(typeOfMover))
                 .map(Mover::getQuotes)
@@ -112,11 +106,11 @@ public class StockServiceImpl implements StockService {
     @Override
     @Cacheable(value = "getOverviewCompany", key = "#ticker")
     public OverviewCompanyDto getOverviewCompanyBySymbol(String ticker) {
-        OverviewCompany company = alphaVantageMarket.findCompanyByTicker(ticker);
+        OverviewCompany company = stockAPIService.findCompanyByTicker(ticker);
 
         OverviewCompanyDto companyDto = OverviewCompanyDto.mapOverviewCompany(company);
 
-        BigDecimal actualStocksPrice = finnhubMarket.findPriceStockByTicker(ticker);
+        BigDecimal actualStocksPrice = stockAPIService.findPriceStockByTicker(ticker);
         companyDto.setPrice(actualStocksPrice);
         return companyDto;
     }

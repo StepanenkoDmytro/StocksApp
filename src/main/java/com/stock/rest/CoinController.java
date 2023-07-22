@@ -1,11 +1,10 @@
 package com.stock.rest;
 
-import com.stock.api.AlphaVantageMarket;
-import com.stock.api.entity.FearGreedIndex.FearGreedIndex;
+import com.stock.service.api.producers.AlphaVantageMarket;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.*;
 import com.stock.dto.forCharts.CandlesDto;
-import com.stock.helper.CoinBuyHelper;
+import com.stock.service.helpers.CoinBuyHelper;
 import com.stock.model.account.Account;
 import com.stock.service.AccountService;
 import com.stock.service.CoinService;

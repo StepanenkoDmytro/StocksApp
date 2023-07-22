@@ -1,6 +1,6 @@
 package com.stock.dto.stocks;
 
-import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package com.stock.dto.forCharts;
 
-import com.stock.api.entity.alphaVantage.crypto.TimeSeriesData;
+import com.stock.service.api.producers.entity.alphaVantage.crypto.TimeSeriesData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

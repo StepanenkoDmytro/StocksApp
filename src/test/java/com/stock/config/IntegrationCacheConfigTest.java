@@ -1,8 +1,8 @@
 package com.stock.config;
 
-import com.stock.api.FinnhubMarket;
-import com.stock.api.YHFinanceMarket;
-import com.stock.api.entity.yahooFinance.Mover;
+import com.stock.service.api.producers.FinnhubMarket;
+import com.stock.service.api.producers.YHFinanceMarket;
+import com.stock.service.api.producers.entity.yahooFinance.Mover;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.service.StockService;

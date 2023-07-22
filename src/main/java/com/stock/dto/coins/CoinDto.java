@@ -1,6 +1,6 @@
 package com.stock.dto.coins;
 
-import com.stock.api.entity.coinCap.Coin;
+import com.stock.service.api.producers.entity.coinCap.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

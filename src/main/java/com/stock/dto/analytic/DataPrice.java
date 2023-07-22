@@ -1,8 +1,8 @@
 package com.stock.dto.analytic;
 
 
-import com.stock.api.entity.alphaVantage.stock.MonthlyTimeSeries;
-import com.stock.api.entity.alphaVantage.stock.WeeklyTimeSeries;
+import com.stock.service.api.producers.entity.alphaVantage.stock.MonthlyTimeSeries;
+import com.stock.service.api.producers.entity.alphaVantage.stock.WeeklyTimeSeries;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

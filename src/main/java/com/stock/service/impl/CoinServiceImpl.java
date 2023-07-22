@@ -1,12 +1,11 @@
 package com.stock.service.impl;
 
-import com.stock.api.CoinMarket;
-import com.stock.api.FearGreedIndexMarket;
-import com.stock.api.entity.FearGreedIndex.FearGreedIndex;
+import com.stock.service.api.producers.CoinMarket;
+import com.stock.service.api.producers.FearGreedIndexMarket;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.FearGreedIndexDto;
-import com.stock.helper.RequestManager;
-import com.stock.api.entity.coinCap.Coin;
+import com.stock.service.helpers.RequestManager;
+import com.stock.service.api.producers.entity.coinCap.Coin;
 import com.stock.dto.coins.CoinsForClient;
 import com.stock.dto.coins.CoinDto;
 import com.stock.dto.forCharts.CandlesDto;

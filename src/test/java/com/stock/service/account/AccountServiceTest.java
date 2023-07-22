@@ -3,7 +3,7 @@ package com.stock.service.account;
 import com.stock.dto.accountDtos.AccountCoinDto;
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.coins.CoinDto;
-import com.stock.exceptions.AccountFetchException;
+import com.stock.service.exceptions.AccountFetchException;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountCoin;
 import com.stock.model.account.AccountType;

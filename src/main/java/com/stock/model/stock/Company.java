@@ -1,6 +1,6 @@
 package com.stock.model.stock;
 
-import com.stock.api.entity.alphaVantage.stock.OverviewCompany;
+import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;

@@ -11,7 +11,7 @@ import com.stock.model.account.Account;
 import com.stock.model.stock.analytic.RiskType;
 import com.stock.service.AccountService;
 import com.stock.service.StockService;
-import com.stock.service.analytic.stock.PortfolioRiskAnalyzer;
+import com.stock.service.analytic.PortfolioRiskAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.stock.rest;
 
-import com.stock.exceptions.ImageNotFoundException;
+import com.stock.service.exceptions.ImageNotFoundException;
 import com.stock.model.user.Image;
 import com.stock.repository.user.ImageRepository;
 import lombok.RequiredArgsConstructor;
