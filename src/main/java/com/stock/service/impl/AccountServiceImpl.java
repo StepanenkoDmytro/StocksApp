@@ -114,7 +114,7 @@ public class AccountServiceImpl implements AccountService {
             prices = coinService.getPriceAccountCoinsByList(account);
             totalBalance = calculateTotalBalance(prices);
         } else if (account.getAccountType().equals("StockWallet")) {
-            prices = stockService.getPriceAccountStocksByList(account);
+            prices = stockService.getPriceAccountStocksByListWithUSD(account);
             totalBalance = calculateTotalBalance(prices);
         }
 

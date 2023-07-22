@@ -1,8 +1,8 @@
 package com.stock.service.analytic;
 
-import com.stock.dto.accountDtos.AccountDto;
+import com.stock.model.account.Account;
 import com.stock.model.stock.analytic.RiskType;
 
 public interface PortfolioRiskAnalyzer {
-    RiskType getRiskStockPortfolio(AccountDto account);
+    RiskType getRiskStockPortfolio(Account account);
 }

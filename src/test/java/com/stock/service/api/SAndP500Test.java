@@ -2,6 +2,8 @@ package com.stock.service.api;
 
 import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
+import com.stock.model.account.Account;
+import com.stock.model.account.AccountStock;
 import com.stock.model.account.AccountType;
 import com.stock.model.stock.analytic.RiskType;
 import com.stock.service.analytic.PortfolioRiskAnalyzer;
@@ -23,9 +25,9 @@ class SAndP500Test {
 //private StockCalculator stockCalculator;
     @Test
     void test() {
-        AccountDto account = new AccountDto();
+        Account account = new Account();
 
-        List<AccountStockDto> accountStockDtos = new ArrayList<>();
+        List<AccountStock> accountStockDtos = new ArrayList<>();
 
 
 //
@@ -37,7 +39,7 @@ class SAndP500Test {
 //        NVDA.setSymbol("NVDA");
 //        accountStockDtos.add(NVDA);
 //
-        AccountStockDto TSLA = new AccountStockDto();
+        AccountStock TSLA = new AccountStock();
         TSLA.setSymbol("TSLA");
         accountStockDtos.add(TSLA);
 
@@ -45,7 +47,7 @@ class SAndP500Test {
 //        BABA.setSymbol("BABA");
 //        accountStockDtos.add(BABA);
 
-        AccountStockDto KO = new AccountStockDto();
+        AccountStock KO = new AccountStock();
         KO.setSymbol("KO");
         accountStockDtos.add(KO);
 //
@@ -54,7 +56,7 @@ class SAndP500Test {
 //        accountStockDtos.add(AAPL);
 //
         account.setStocks(accountStockDtos);
-        account.setAccountType(AccountType.StockWallet.name());
+        account.setAccountType(AccountType.valueOf(AccountType.StockWallet.name()));
         RiskType riskStockPortfolio = riskAnalyzer.getRiskStockPortfolio(account);
 //        String riskStockPortfolio = riskAnalyzer.getRiskStockPortfolio(account);
         System.out.println(riskStockPortfolio);

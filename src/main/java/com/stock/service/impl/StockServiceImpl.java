@@ -1,5 +1,6 @@
 package com.stock.service.impl;
 
+import com.stock.model.account.AccountStock;
 import com.stock.service.api.StockAPIService;
 import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
 import com.stock.service.api.producers.entity.yahooFinance.Mover;
@@ -55,7 +56,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<PricesData> getPriceAccountStocksByList(AccountDto account) {
+    public List<PricesData> getPriceAccountStocksByListWithUSD(AccountDto account) {
         if (account == null || account.getStocks() == null) {
             return new ArrayList<>();
         }
@@ -72,6 +73,16 @@ public class StockServiceImpl implements StockService {
         PricesData freeUSD = new PricesData("USD", account.getBalance());
         prices.add(freeUSD);
         return prices;
+    }
+
+    @Override
+    public List<PricesData> getPriceAccountStocksByListWithoutUSD(List<AccountStock> stocks) {
+        return stocks.stream()
+                .map(stock -> {
+                    BigDecimal actualStocksPrice = stockAPIService.findPriceStockByTicker(stock.getSymbol()).multiply(BigDecimal.valueOf(stock.getCountStocks()));
+                    return new PricesData(stock.getSymbol(), actualStocksPrice);
+                })
+                .toList();
     }
 
     @Override

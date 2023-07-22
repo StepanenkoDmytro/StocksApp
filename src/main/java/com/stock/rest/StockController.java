@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stocks")
+@CrossOrigin
 public class StockController {
     private final StockService stockService;
     private final AccountService accountService;
@@ -68,8 +69,9 @@ public class StockController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/account-risk")
-    public ResponseEntity<RiskResponse> getRiskByList(@RequestBody AccountDto account) {
+    @GetMapping("/account-risk/{accountID}")
+    public ResponseEntity<RiskResponse> getRiskByList(@PathVariable Long accountID) {
+        Account account = accountService.getAccountById(accountID);
         RiskType risk = portfolioRiskAnalyzer.getRiskStockPortfolio(account);
 
         return ResponseEntity.ok(new RiskResponse(risk.name()));

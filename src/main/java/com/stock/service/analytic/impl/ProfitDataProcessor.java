@@ -5,6 +5,7 @@ import com.stock.service.api.producers.AlphaVantageMarket;
 import com.stock.service.api.producers.GlobalStocksIndexMarket;
 import com.stock.dto.analytic.DataPriceShort;
 import com.stock.model.stock.analytic.ProfitData;
+import com.stock.service.helpers.YearMonthKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class ProfitDataProcessor {
         this.globalStocksIndexMarket = globalStocksIndexMarket;
     }
 
-    public Map<Integer, Double> getStocksProfit(String ticker) {
+    public Map<YearMonthKey, Double> getStocksProfit(String ticker) {
         List<ProfitData> stockProfit = profitDataService.getProfitsByTicker(ticker);
 
         if (!stockProfit.isEmpty()) {
@@ -35,7 +36,7 @@ public class ProfitDataProcessor {
         }
     }
 
-    public Map<Integer, Double> getIndexProfit() {
+    public Map<YearMonthKey, Double> getIndexProfit() {
         List<ProfitData> sp500 = profitDataService.getProfitsByTicker("SP500");;
         if (!sp500.isEmpty()) {
 
@@ -46,8 +47,8 @@ public class ProfitDataProcessor {
         }
     }
 
-    private Map<Integer, Double> calculateProfit(List<DataPriceShort> prices, String ticker) {
-        Map<Integer, Double> mapProfits = new HashMap<>();
+    private Map<YearMonthKey, Double> calculateProfit(List<DataPriceShort> prices, String ticker) {
+        Map<YearMonthKey, Double> mapProfits = new HashMap<>();
         LocalDate limit = LocalDate.now().minusYears(1);
 
         prices.stream()
@@ -57,21 +58,21 @@ public class ProfitDataProcessor {
                     double open = month.getOpen().doubleValue();
 
                     double value = ((close - open) / open) * 100;
-                    LocalDate monthValue = month.getDate();
-                    mapProfits.put(monthValue.getMonthValue(), value);
+                    LocalDate date = month.getDate();
+                    mapProfits.put(new YearMonthKey(date.getMonthValue(), date.getYear()), value);
 
-                    profitDataService.saveProfit(ticker, monthValue, value);
+                    profitDataService.saveProfit(ticker, date, value);
                 });
         return mapProfits;
     }
 
-    private Map<Integer, Double> mapDBProfitDataToMap(List<ProfitData> stockDataProfit) {
-        Map<Integer, Double> result = new HashMap<>();
+    private Map<YearMonthKey, Double> mapDBProfitDataToMap(List<ProfitData> stockDataProfit) {
+        Map<YearMonthKey, Double> result = new HashMap<>();
 
         for(ProfitData data : stockDataProfit) {
             double doubleValue = data.getProfitData().doubleValue();
-            int monthValue = data.getDate().getMonthValue();
-            result.put(monthValue, doubleValue);
+            LocalDate date = data.getDate();
+            result.put(new YearMonthKey(date.getMonthValue(), date.getYear()), doubleValue);
         }
         return result;
     }

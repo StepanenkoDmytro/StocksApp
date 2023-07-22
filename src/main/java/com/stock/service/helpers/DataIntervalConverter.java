@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,10 +16,11 @@ public class DataIntervalConverter {
     public static List<DataPriceShort> convertDailyToMonthlyData(List<IndexData> indexDataList) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 
-        Map<Integer, List<IndexData>> dataByMonth = indexDataList.stream()
+        Map<YearMonthKey, List<IndexData>> dataByMonth = indexDataList.stream()
+                .sorted(Comparator.comparing(data -> LocalDate.parse(data.getDate(), formatter)))
                 .collect(Collectors.groupingBy(data -> {
                     LocalDate date = LocalDate.parse(data.getDate(), formatter);
-                    return date.getMonthValue();
+                    return new YearMonthKey(date.getMonthValue(), date.getYear());
                 }));
 
         List<DataPriceShort> dataPriceList = new ArrayList<>();
