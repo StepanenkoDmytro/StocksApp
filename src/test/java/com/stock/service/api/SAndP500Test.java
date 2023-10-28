@@ -1,12 +1,10 @@
 package com.stock.service.api;
 
-import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.model.account.Account;
 import com.stock.model.account.AccountStock;
 import com.stock.model.account.AccountType;
 import com.stock.model.stock.analytic.RiskType;
-import com.stock.service.analytic.PortfolioRiskAnalyzer;
+import com.stock.service.analytic.PortfolioAnalyzer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +17,7 @@ class SAndP500Test {
 //    @Autowired
 //    private AccountService accountService;
     @Autowired
-    private PortfolioRiskAnalyzer riskAnalyzer;
+    private PortfolioAnalyzer riskAnalyzer;
 
 //    @Autowired
 //private StockCalculator stockCalculator;

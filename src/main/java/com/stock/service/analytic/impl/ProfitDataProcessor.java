@@ -37,7 +37,7 @@ public class ProfitDataProcessor {
     }
 
     public Map<YearMonthKey, Double> getIndexProfit() {
-        List<ProfitData> sp500 = profitDataService.getProfitsByTicker("SP500");;
+        List<ProfitData> sp500 = profitDataService.getProfitsByTicker("SP500");
         if (!sp500.isEmpty()) {
 
             return mapDBProfitDataToMap(sp500);
@@ -56,10 +56,11 @@ public class ProfitDataProcessor {
                 .forEach(month -> {
                     double close = month.getClose().doubleValue();
                     double open = month.getOpen().doubleValue();
-
-                    double value = ((close - open) / open) * 100;
                     LocalDate date = month.getDate();
-                    mapProfits.put(new YearMonthKey(date.getMonthValue(), date.getYear()), value);
+
+                    YearMonthKey key = new YearMonthKey(date.getMonthValue(), date.getYear());
+                    double value = ((close - open) / open) * 100;
+                    mapProfits.put(key, value);
 
                     profitDataService.saveProfit(ticker, date, value);
                 });

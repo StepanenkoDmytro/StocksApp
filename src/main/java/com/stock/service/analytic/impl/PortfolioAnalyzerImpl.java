@@ -8,7 +8,7 @@ import com.stock.service.exceptions.AccountFetchException;
 import com.stock.model.account.AccountType;
 import com.stock.model.stock.analytic.RiskType;
 import com.stock.service.helpers.InterpreterHelper;
-import com.stock.service.analytic.PortfolioRiskAnalyzer;
+import com.stock.service.analytic.PortfolioAnalyzer;
 import com.stock.service.helpers.YearMonthKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class PortfolioRiskAnalyzerImpl implements PortfolioRiskAnalyzer {
+public class PortfolioAnalyzerImpl implements PortfolioAnalyzer {
     private final ProfitDataProcessor profitDataProcessor;
     private final StockService stockService;
 
     @Autowired
-    public PortfolioRiskAnalyzerImpl(ProfitDataProcessor profitDataProcessor, StockService stockService) {
+    public PortfolioAnalyzerImpl(ProfitDataProcessor profitDataProcessor, StockService stockService) {
         this.profitDataProcessor = profitDataProcessor;
         this.stockService = stockService;
     }
@@ -76,18 +76,6 @@ public class PortfolioRiskAnalyzerImpl implements PortfolioRiskAnalyzer {
     }
 
     private Map<AccountStock, Double> calculateStocksCovariance(List<AccountStock> stocks, Map<YearMonthKey, Double> indexProfit, Double avgSP500) {
-//        return stocks.stream()
-//                .map(stock -> {
-//                    Map<YearMonthKey, Double> profits = profitDataProcessor.getStocksProfit(stock.getSymbol());
-//                    double avgProfit = calculateTotalProfit(profits);
-//
-//                    double covariance = profits.keySet().stream()
-//                            .mapToDouble(i -> (profits.get(i) - avgProfit) * (indexProfit.get(i) - avgSP500))
-//                            .sum();
-//                    return covariance / (profits.size() - 1);
-//                })
-//                .toList();
-
         Map<AccountStock, Double> stockCovarianceMap = new HashMap<>();
 
         for (AccountStock stock : stocks) {

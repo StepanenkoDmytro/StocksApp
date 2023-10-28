@@ -42,6 +42,7 @@ public class YHFinanceMarketImpl implements YHFinanceMarket {
 
         HttpResponse<String> response = requestManager.sendHttpRequestWithHeaderXRapidAPIKey(url, apiKey, YAHOO_RAPIDAPI_HOST);
         MoversWrapper moversData = responseMapper.convertCustomResponse(response, MoversWrapper.class);
+        System.out.println(moversData.getFinance().getResult());
         return moversData.getFinance().getResult();
     }
 

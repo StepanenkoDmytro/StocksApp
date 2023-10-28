@@ -73,6 +73,7 @@ class DataIntervalConverterTest {
     @BeforeEach
     void init() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        BigDecimal dividendZero = BigDecimal.ZERO;
         indexFewMonthDataList = new ArrayList<>(
                 Arrays.asList(
                         new IndexData("01-01-2022", 3400.25),
@@ -129,9 +130,9 @@ class DataIntervalConverterTest {
                 ));
         expectedForFewMonthDataList = new ArrayList<>(
                 Arrays.asList(
-                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), LocalDate.parse("01-27-2022", formatter)),
-                        new DataPriceShort(BigDecimal.valueOf(3450.45), BigDecimal.valueOf(3439.55), LocalDate.parse("02-27-2022", formatter)),
-                        new DataPriceShort(BigDecimal.valueOf(3442.92), BigDecimal.valueOf(3479.17), LocalDate.parse("03-17-2022", formatter))
+                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), dividendZero, LocalDate.parse("01-27-2022", formatter)),
+                        new DataPriceShort(BigDecimal.valueOf(3450.45), BigDecimal.valueOf(3439.55), dividendZero, LocalDate.parse("02-27-2022", formatter)),
+                        new DataPriceShort(BigDecimal.valueOf(3442.92), BigDecimal.valueOf(3479.17), dividendZero, LocalDate.parse("03-17-2022", formatter))
                 )
         );
 
@@ -158,7 +159,7 @@ class DataIntervalConverterTest {
                 ));
         expectedForOneMonthDataList = new ArrayList<>(
                 List.of(
-                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), LocalDate.parse("01-27-2022", formatter))
+                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), dividendZero, LocalDate.parse("01-27-2022", formatter))
                 )
         );
 
@@ -188,10 +189,10 @@ class DataIntervalConverterTest {
 
         expectedForFewMonthDataLIstWithDiffYears = new ArrayList<>(
                 Arrays.asList(
-                        new DataPriceShort(BigDecimal.valueOf(3500.25), BigDecimal.valueOf(3552.57), LocalDate.parse("01-27-2023", formatter)),
-                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), LocalDate.parse("01-27-2022", formatter)),
-                        new DataPriceShort(BigDecimal.valueOf(3450.45), BigDecimal.valueOf(3439.55), LocalDate.parse("02-27-2022", formatter)),
-                        new DataPriceShort(BigDecimal.valueOf(3442.92), BigDecimal.valueOf(3479.17), LocalDate.parse("03-17-2022", formatter))
+                        new DataPriceShort(BigDecimal.valueOf(3500.25), BigDecimal.valueOf(3552.57), dividendZero, LocalDate.parse("01-27-2023", formatter)),
+                        new DataPriceShort(BigDecimal.valueOf(3400.25), BigDecimal.valueOf(3452.57), dividendZero, LocalDate.parse("01-27-2022", formatter)),
+                        new DataPriceShort(BigDecimal.valueOf(3450.45), BigDecimal.valueOf(3439.55), dividendZero, LocalDate.parse("02-27-2022", formatter)),
+                        new DataPriceShort(BigDecimal.valueOf(3442.92), BigDecimal.valueOf(3479.17), dividendZero, LocalDate.parse("03-17-2022", formatter))
                 )
         );
     }

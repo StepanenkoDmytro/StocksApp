@@ -11,7 +11,7 @@ import com.stock.model.account.Account;
 import com.stock.model.stock.analytic.RiskType;
 import com.stock.service.AccountService;
 import com.stock.service.StockService;
-import com.stock.service.analytic.PortfolioRiskAnalyzer;
+import com.stock.service.analytic.PortfolioAnalyzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +25,13 @@ import java.util.List;
 public class StockController {
     private final StockService stockService;
     private final AccountService accountService;
-    private final PortfolioRiskAnalyzer portfolioRiskAnalyzer;
+    private final PortfolioAnalyzer portfolioAnalyzer;
 
     @Autowired
-    public StockController(StockService stockService, AccountService accountService, PortfolioRiskAnalyzer portfolioRiskAnalyzer) {
+    public StockController(StockService stockService, AccountService accountService, PortfolioAnalyzer portfolioAnalyzer) {
         this.stockService = stockService;
         this.accountService = accountService;
-        this.portfolioRiskAnalyzer = portfolioRiskAnalyzer;
+        this.portfolioAnalyzer = portfolioAnalyzer;
     }
 
     @GetMapping("/movers/{type}")
@@ -72,7 +72,7 @@ public class StockController {
     @GetMapping("/account-risk/{accountID}")
     public ResponseEntity<RiskResponse> getRiskByList(@PathVariable Long accountID) {
         Account account = accountService.getAccountById(accountID);
-        RiskType risk = portfolioRiskAnalyzer.getRiskStockPortfolio(account);
+        RiskType risk = portfolioAnalyzer.getRiskStockPortfolio(account);
 
         return ResponseEntity.ok(new RiskResponse(risk.name()));
     }

@@ -27,9 +27,10 @@ public class DataIntervalConverter {
         for (List<IndexData> monthData : dataByMonth.values()) {
             BigDecimal open = BigDecimal.valueOf(monthData.get(0).getClose());
             BigDecimal close = BigDecimal.valueOf(monthData.get(monthData.size() - 1).getClose());
+            BigDecimal dividend = BigDecimal.ZERO;
             LocalDate date = LocalDate.parse(monthData.get(monthData.size() - 1).getDate(), formatter);
 
-            DataPriceShort dataPrice = new DataPriceShort(open, close, date);
+            DataPriceShort dataPrice = new DataPriceShort(open, close, dividend, date);
 
             dataPriceList.add(dataPrice);
         }

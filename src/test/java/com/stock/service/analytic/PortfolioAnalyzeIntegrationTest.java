@@ -8,16 +8,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @SpringBootTest
-class PortfolioRiskAnalyzeIntegrationTest {
+class PortfolioAnalyzeIntegrationTest {
     @Autowired
     private AlphaVantageMarket alphaVantageMarket;
 
     @Test
-    void getAnaliz() {
+    void getAnalyze() {
         //рахується тестове значення для портфелю з КО, TESLA, IBM
         //капіталізація КО = 257_398_997_000
         //капіталізація TESLA = 855_099_376_000
@@ -83,5 +86,37 @@ class PortfolioRiskAnalyzeIntegrationTest {
                 .mapToDouble(Double::doubleValue)
                 .sum();
         return sum / differenceList.size();
+    }
+
+    @Test
+    void dividendsPredict() {
+        List<DataPriceShort> ko = alphaVantageMarket.findMonthlyPricesById("KO");
+        Map<Integer, Double> dividendDataLastYear = new TreeMap<>();
+
+        LocalDate now = LocalDate.now();
+
+        LocalDate startLastYear = now.with(TemporalAdjusters.firstDayOfYear()).minusYears(1);
+        LocalDate endLastYear = startLastYear.plusYears(1);
+
+        for(DataPriceShort data : ko) {
+            LocalDate date = data.getDate();
+            if(date.isAfter(startLastYear) && date.isBefore(endLastYear)) {
+                double div = data.getDividendAmount().doubleValue();
+                if (div != 0) {
+                    dividendDataLastYear.put(date.getMonthValue(), div);
+                }
+            }
+        }
+
+        int currentMonth = LocalDate.now().getMonthValue();
+        double predict = 0.0;
+
+        for(Integer month : dividendDataLastYear.keySet()) {
+            if(month >= currentMonth) {
+
+                predict += dividendDataLastYear.get(month);
+            }
+        }
+        System.out.println(predict);
     }
 }
