@@ -5,6 +5,6 @@ RUN mvn -f /app/pom.xml clean package -Dmaven.test.skip=true
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=builder /app/target/StockArchive-0.0.1-SNAPSHOT.jar /app/StockArchive-0.0.1-SNAPSHOT.jar
+COPY --from=builder /app/target/*.jar /app/*.jar
 EXPOSE 8000
-ENTRYPOINT ["java", "-jar", "/app/StockArchive-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/*.jar"]

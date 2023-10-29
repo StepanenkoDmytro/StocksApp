@@ -1,1 +1,1 @@
-create schema stocks;
+create database stocks;

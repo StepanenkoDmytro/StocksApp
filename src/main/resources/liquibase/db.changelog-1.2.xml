@@ -6,7 +6,7 @@
 
     <changeSet id="1.2.0" author="dmytro.stepanenko">
         <createTable tableName="accounts">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -26,19 +26,19 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="balance" type="DECIMAL(10,2)">
+            <column name="balance" type="NUMERIC(10,2)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="fixed_profit" type="DECIMAL(10,2)">
+            <column name="fixed_profit" type="NUMERIC(10,2)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="updated" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
@@ -61,7 +61,7 @@
 
     <changeSet id="1.2.2" author="dmytro.stepanenko">
         <createTable tableName="payments">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -81,7 +81,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="amount" type="DECIMAL(10,2)">
+            <column name="amount" type="NUMERIC(10,2)">
                 <constraints nullable="true"/>
             </column>
 
@@ -97,7 +97,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
@@ -116,7 +116,7 @@
 
     <changeSet id="1.2.4" author="dmytro.stepanenko">
         <createTable tableName="transacts">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -136,15 +136,15 @@
                 <constraints nullable="true" unique="false"/>
             </column>
 
-            <column name="count" type="DECIMAL(20,10)">
+            <column name="count" type="NUMERIC(20,10)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="price" type="DECIMAL(10,2)">
+            <column name="price" type="NUMERIC(10,2)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="amount" type="DECIMAL(10,2)">
+            <column name="amount" type="NUMERIC(10,2)">
                 <constraints nullable="false"/>
             </column>
 
@@ -164,7 +164,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
@@ -183,7 +183,7 @@
 
     <changeSet id="1.2.6" author="dmytro.stepanenko">
         <createTable tableName="account_coins">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -203,15 +203,15 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="count_coin" type="DECIMAL(20,10)">
+            <column name="count_coin" type="NUMERIC(20,10)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="average_price" type="DECIMAL(10,2)">
+            <column name="average_price" type="NUMERIC(10,2)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 
@@ -230,7 +230,7 @@
 
     <changeSet id="1.2.8" author="dmytro.stepanenko">
         <createTable tableName="account_stocks">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -258,7 +258,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="buy_price" type="DECIMAL(10,2)">
+            <column name="buy_price" type="NUMERIC(10,2)">
                 <constraints nullable="true"/>
             </column>
 
@@ -278,11 +278,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="dividend_yield" type="DECIMAL(5,4)">
+            <column name="dividend_yield" type="NUMERIC(5,4)">
                 <constraints nullable="true"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
                 <constraints nullable="false"/>
             </column>
 

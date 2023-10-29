@@ -6,7 +6,7 @@
 
     <changeSet id="1.0.0" author="dmytro.stepanenko">
         <createTable tableName="users">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -26,11 +26,11 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
@@ -43,7 +43,7 @@
 
     <changeSet id="1.0.1" author="dmytro.stepanenko">
         <createTable tableName="roles">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -51,11 +51,11 @@
                 <constraints nullable="false" unique="true"/>
             </column>
 
-            <column name="created" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="created" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="updated" type="TIMESTAMP" defaultValue="CURRENT_TIMESTAMP()">
+            <column name="updated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
 
@@ -107,7 +107,7 @@
 
     <changeSet id="1.0.6" author="dmytro.stepanenko">
         <createTable tableName="images">
-            <column name="image_id" type="BIGINT" autoIncrement="true">
+            <column name="image_id" type="BIGSERIAL">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
@@ -127,7 +127,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="bytes" type="LONGBLOB">
+            <column name="bytes" type="BYTEA">
                 <constraints nullable="false"/>
             </column>
         </createTable>
