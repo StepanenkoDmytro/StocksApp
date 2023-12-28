@@ -50,8 +50,7 @@ public class CoinController {
     }
 
     @GetMapping("/{coin_id}")
-    public ResponseEntity<CoinDetails> getCoinWithCandles(@AuthenticationPrincipal UserDetails userDetails,
-                                                          @PathVariable(value = "coin_id") String coinID) {
+    public ResponseEntity<CoinDetails> getCoinWithCandles(@PathVariable(value = "coin_id") String coinID) {
         CoinDto coin = coinService.getByTicker(coinID);
         List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
         return ResponseEntity.ok(new CoinDetails(coin, candles));

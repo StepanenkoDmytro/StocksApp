@@ -23,7 +23,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
     private static final String MAIN_ENDPOINT = "/api/v1/main";
-    private static final String ABOUT_ENDPOINT = "/api/v1/about";
+    private static final String COINS_ENDPOINT = "/api/v1/coins/**";
+    private static final String STOCKS_ENDPOINT = "/api/v1/stocks/**";
     private static final String AUTH_ENDPOINT = "/api/v1/auth/sign-in";
     private static final String AUTH_ENDPOINTV1 = "/api/v1/auth/refresh-token";
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
@@ -45,7 +46,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers(MAIN_ENDPOINT, AUTH_ENDPOINT,AUTH_ENDPOINTV1, "/api/v1/coins", "/api/v1/coins/*")
+                .antMatchers(MAIN_ENDPOINT, AUTH_ENDPOINT,AUTH_ENDPOINTV1, COINS_ENDPOINT, STOCKS_ENDPOINT)
                 .permitAll()
                 .and()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
