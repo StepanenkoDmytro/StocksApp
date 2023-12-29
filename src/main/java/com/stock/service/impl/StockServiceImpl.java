@@ -1,5 +1,6 @@
 package com.stock.service.impl;
 
+import com.stock.dto.stocks.CompanyDtoWithPrice;
 import com.stock.model.account.AccountStock;
 import com.stock.service.api.StockAPIService;
 import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
@@ -100,6 +101,7 @@ public class StockServiceImpl implements StockService {
                 .toList();
     }
 
+    //typesOfMover: DAY_GAINERS, DAY_LOSERS, MOST_ACTIVES
     @Override
     @Cacheable(value = "getMovers", key = "#typeOfMover")
     public List<CompanyDto> getMovers(String typeOfMover) {
@@ -112,6 +114,29 @@ public class StockServiceImpl implements StockService {
                 .stream()
                 .map(yhQuote -> getCompanyBySymbol(yhQuote.getSymbol()))
                 .toList();
+    }
+
+//    private CompanyDtoWithPrice getCompanyWithPriceBySymbol(String symbol) {
+//        Optional<Company> companyDB = companyRepository.findBySymbol(symbol);
+//        CompanyDtoWithPrice result;
+//        if (companyDB.isPresent()) {
+//            result = CompanyDtoWithPrice.mapCompany(companyDB.get());
+//        } else {
+//            OverviewCompany companyAPI = stockAPIService.findCompanyByTicker(symbol);
+//            if (companyAPI.getName() != null) {
+//                Company newCompany = Company.mapOverviewCompany(companyAPI);
+//                newCompany.setUpdated(new Date());
+//                companyRepository.save(newCompany);
+//                result = CompanyDtoWithPrice.mapCompany(newCompany);
+//            } else {
+//                result = new CompanyDtoWithPrice(symbol, "not_found", "not_found", BigDecimal.ZERO);
+//            }
+//        }
+//        return result;
+//    }
+
+    public BigDecimal getPriceBySymbol(String symbol) {
+        return stockAPIService.findPriceStockByTicker(symbol);
     }
 
     @Override
