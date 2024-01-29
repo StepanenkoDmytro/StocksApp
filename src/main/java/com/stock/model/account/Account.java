@@ -26,9 +26,11 @@ public class Account extends BaseEntity {
     @Column(name = "account_number")
     private String accountNumber;
 
+    //TODO: Delete
     @Column(name = "account_name")
     private String accountName;
 
+    //TODO: Delete
     @Enumerated(EnumType.STRING)
     @Column(name = "account_type")
     private AccountType accountType;
