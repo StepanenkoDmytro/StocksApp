@@ -22,9 +22,10 @@ public class CompanyDtoWithPrice {
     }
 
     public static CompanyDtoWithPrice mapCompany(CompanyDto companyDto) {
+        String assetType = "Stock";
         return new CompanyDtoWithPrice(
                 companyDto.getSymbol(),
                 companyDto.getName(),
-                companyDto.getAssetType());
+                assetType);
     }
 }

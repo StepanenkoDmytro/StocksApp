@@ -13,8 +13,9 @@ public class CoinDto {
     private String id;
     private String name;
     private String symbol;
-    private BigDecimal priceUSD;
-    private BigDecimal marketCapUsd;
+    private String assetType;
+    private BigDecimal price;
+    private BigDecimal marketCapitalization;
 
     public static CoinDto mapCoinToDto(Coin coin) {
         BigDecimal valuePrice;
@@ -27,10 +28,13 @@ public class CoinDto {
             valuePrice = BigDecimal.ZERO;
         }
 
+        String assetType = "Crypto";
+
         return new CoinDto(
                 coin.getId(),
                 coin.getName(),
                 coin.getSymbol(),
+                assetType,
                 valuePrice.setScale(2, RoundingMode.HALF_UP),
                 marketCapUsd.setScale(2, RoundingMode.HALF_UP)
                 );

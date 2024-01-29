@@ -50,10 +50,10 @@ public class CoinController {
     }
 
     @GetMapping("/{coin_id}")
-    public ResponseEntity<CoinDetails> getCoinWithCandles(@PathVariable(value = "coin_id") String coinID) {
+    public ResponseEntity<CoinDto> getCoinWithCandles(@PathVariable(value = "coin_id") String coinID) {
         CoinDto coin = coinService.getByTicker(coinID);
-        List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
-        return ResponseEntity.ok(new CoinDetails(coin, candles));
+//        List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
+        return ResponseEntity.ok(coin);
     }
 
     @PostMapping("/{coin_id}")
