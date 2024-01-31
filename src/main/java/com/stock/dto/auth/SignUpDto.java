@@ -11,7 +11,8 @@ public class SignUpDto {
 
     public static User signUpToUser(SignUpDto signUpDTO){
         User user = new User();
-        user.setUsername(signUpDTO.getUsername());
+        user.setUsername("todo reword, loh");
+//        user.setUsername(signUpDTO.getUsername());
         user.setEmail(signUpDTO.getEmail());
         user.setPassword(signUpDTO.getPassword());
 

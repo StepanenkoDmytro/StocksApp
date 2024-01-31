@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/stocks")
+@RequestMapping("/api/v1/markets/stocks")
 @CrossOrigin
 public class StockController {
     private final StockService stockService;

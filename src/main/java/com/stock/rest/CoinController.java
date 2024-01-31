@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/coins")
+@RequestMapping("/api/v1/markets/coins")
 @CrossOrigin
 public class CoinController {
     private final CoinService coinService;
