@@ -1,6 +1,6 @@
 package com.stock.rest;
 
-import com.stock.model.profile.Portfolio;
+import com.stock.model.portfolio.Portfolio;
 import com.stock.service.PortfolioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

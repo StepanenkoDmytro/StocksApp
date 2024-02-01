@@ -19,10 +19,6 @@ import java.util.List;
         @NamedAttributeNode(value = "accounts")
 })
 public class User extends BaseEntity {
-
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "email")
     private String email;
 
@@ -34,11 +30,6 @@ public class User extends BaseEntity {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
-
-    @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
 
     @JsonManagedReference
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
@@ -60,11 +51,9 @@ public class User extends BaseEntity {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
-                ", image=" + image +
                 '}';
     }
 }

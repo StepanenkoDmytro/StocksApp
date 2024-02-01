@@ -1,7 +1,6 @@
-package com.stock.model.profile;
+package com.stock.model.portfolio;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.stock.model.account.Account;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -11,13 +10,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "portfolio_stocks")
+@Table(name = "portfolio_coins")
 @Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PortfolioStock implements Serializable {
+public class PortfolioCoin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,26 +27,16 @@ public class PortfolioStock implements Serializable {
     private Portfolio portfolio;
     @Column(name = "asset_type")
     private String assetType;
+    @Column(name = "id_coin")
+    private String idCoin;
     @Column(name = "symbol")
     private String symbol;
     @Column(name = "name")
     private String name;
-    @Column(name = "exchange")
-    private String exchange;
-    @Column(name = "currency")
-    private String currency;
-    @Column(name = "avg_price")
+    @Column(name = "count", columnDefinition = "DECIMAL(20,10)")
+    private BigDecimal count;
+    @Column(name = "avg_price", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal avgPrice;
-    @Column(name = "count")
-    private int count;
-    @Column(name = "country")
-    private String country;
-    @Column(name = "sector")
-    private String sector;
-    @Column(name = "industry")
-    private String industry;
-    @Column(name = "dividend_yield")
-    private BigDecimal dividendYield;
     @Column(name = "created")
     @CreatedDate
     private Date created;

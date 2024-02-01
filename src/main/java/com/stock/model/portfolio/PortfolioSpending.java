@@ -1,4 +1,4 @@
-package com.stock.model.profile;
+package com.stock.model.portfolio;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;

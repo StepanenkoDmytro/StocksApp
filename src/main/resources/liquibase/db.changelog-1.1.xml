@@ -5,10 +5,10 @@
 
     <changeSet id="1.1.0" author="dmytro.stepanenko">
         <sql>
-            INSERT INTO users (username, email, password) VALUES ('user', 'user@', '$2a$12$C5xDH.5ptBh18HfjA2EVhee1Pv/aojAfYdCqDxbA4pOPoxZjUrP5K');
+            INSERT INTO users (email, password) VALUES ('user@', '$2a$12$C5xDH.5ptBh18HfjA2EVhee1Pv/aojAfYdCqDxbA4pOPoxZjUrP5K');
         </sql>
         <sql>
-            INSERT INTO users (username, email, password) VALUES ('admin', 'admin@', '$2a$12$.v/4gFV2W3OsR9ViaofWV.nmOKMcHjOZAkXi0amJzavKQzBK6IJSC');
+            INSERT INTO users (email, password) VALUES ('admin@', '$2a$12$.v/4gFV2W3OsR9ViaofWV.nmOKMcHjOZAkXi0amJzavKQzBK6IJSC');
         </sql>
         <sql>
             INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);

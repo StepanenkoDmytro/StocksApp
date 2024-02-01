@@ -1,7 +1,6 @@
 package com.stock.service.impl;
 
 
-import com.stock.model.user.Image;
 import com.stock.model.user.Role;
 import com.stock.model.user.Status;
 import com.stock.model.user.User;
@@ -22,7 +21,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
     @Autowired
@@ -50,12 +49,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User with username: %s not found", username)));
-    }
-
-    @Override
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
     }
@@ -63,11 +56,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isUserExistByEmail(String email) {
         return userRepository.existsByEmail(email);
-    }
-
-    @Override
-    public boolean isUserExistByUsername(String username) {
-        return userRepository.existsByUsername(username);
     }
 
     @Override
@@ -79,17 +67,6 @@ public class UserServiceImpl implements UserService {
         user.setRoles(userRoles);
         user.setStatus(Status.ACTIVE);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Override
-    public void saveUser(User user, MultipartFile file) throws IOException {
-        Image image;
-        if (file.getSize() != 0) {
-            image = toImageEntity(file);
-            user.setImage(image);
-            image.setUser(user);
-        }
         userRepository.save(user);
     }
     @Override
@@ -105,15 +82,5 @@ public class UserServiceImpl implements UserService {
 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
-    }
-
-    private Image toImageEntity(MultipartFile file) throws IOException {
-        Image image = new Image();
-        image.setName(file.getName());
-        image.setSize(file.getSize());
-        image.setOriginFileName(file.getOriginalFilename());
-        image.setContentType(file.getContentType());
-        image.setBytes(file.getBytes());
-        return image;
     }
 }

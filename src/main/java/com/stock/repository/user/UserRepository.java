@@ -12,13 +12,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //@Query("SELECT DISTINCT u FROM USER u JOIN FETCH u.accounts a JOIN FETCH a.coins WHERE u.email = ?1")
 //Optional<User> findFullByEmail(String email);
 
-    @EntityGraph(attributePaths = "roles")
-    Optional<User> findByUsername(String name);
 
     @EntityGraph(attributePaths = "roles")
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
-
-    boolean existsByUsername(String username);
 }

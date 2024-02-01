@@ -1,6 +1,5 @@
-package com.stock.model.profile;
+package com.stock.model.portfolio;
 
-import com.stock.model.account.Account;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 

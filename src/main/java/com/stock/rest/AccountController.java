@@ -37,7 +37,7 @@ public class AccountController {
     public ResponseEntity createAccount(@RequestBody NewAccountDto accountDto,
                                         @AuthenticationPrincipal UserDetails userDetails){
         //спитати в Алекса як краще, повернути юзера з новим списком аккаунтів, або просто новий аккаунт
-        User user = userService.getUserByUsername(userDetails.getUsername());
+        User user = userService.getFullUserByEmail(userDetails.getUsername());
         accountService.createAccount(accountDto.getNewAccountName(), accountDto.getAccountType(), user);
         return ResponseEntity.ok(UserDto.mapUserToUserDto(user));
     }

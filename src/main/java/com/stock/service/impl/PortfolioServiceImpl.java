@@ -1,6 +1,6 @@
 package com.stock.service.impl;
 
-import com.stock.model.profile.Portfolio;
+import com.stock.model.portfolio.Portfolio;
 import com.stock.repository.portfolio.PortfolioRepository;
 import com.stock.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
