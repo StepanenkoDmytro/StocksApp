@@ -2,22 +2,21 @@ package com.stock.model.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stock.model.BaseEntity;
-import com.stock.model.account.Account;
+import com.stock.model.portfolio.Portfolio;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Entity
 @Table(name = "users")
-@NamedEntityGraph(
-        name = "userAccountsCoins",
-        attributeNodes = {
-        @NamedAttributeNode(value = "accounts")
-})
+//@NamedEntityGraph(
+//        name = "userPortfolios",
+//        attributeNodes = {
+//        @NamedAttributeNode(value = "portfolios")
+//})
 public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
@@ -31,21 +30,21 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-    @JsonManagedReference
+//    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE},
             mappedBy = "user")
-    private List<Account> accounts;
+    private List<Portfolio> portfolios;
 
     public User() {
     }
 
-    public void addAccount(Account account) {
-        if (accounts == null) {
-            accounts = new ArrayList<>();
+    public void addPortfolio(Portfolio portfolio) {
+        if (portfolios == null) {
+            portfolios = new ArrayList<>();
         }
-        accounts.add(account);
-        account.setUser(this);
+        portfolios.add(portfolio);
+        portfolio.setUser(this);
     }
 
     @Override

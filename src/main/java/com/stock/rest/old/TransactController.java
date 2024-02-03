@@ -1,4 +1,4 @@
-package com.stock.rest;
+package com.stock.rest.old;
 
 import com.stock.dto.trasact.TransactDto;
 import com.stock.service.TransactService;

@@ -42,12 +42,15 @@ public class AuthController {
     public ResponseEntity login(@RequestBody AuthDto authDto) {
         String email = authDto.getEmail();
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
 
-        User user = userService.getFullUserByEmail(email);
+        User user = userService.getUserByEmail(email);
         String token = jwtTokenProvider.createToken(user);
-
         Map<String, Object> response = new HashMap<>();
         response.put("user", UserDto.mapUserToUserDto(user));
         response.put("token", token);

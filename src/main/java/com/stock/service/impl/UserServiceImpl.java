@@ -1,6 +1,7 @@
 package com.stock.service.impl;
 
 
+import com.stock.model.portfolio.Portfolio;
 import com.stock.model.user.Role;
 import com.stock.model.user.Status;
 import com.stock.model.user.User;
@@ -12,9 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,8 +62,9 @@ public class UserServiceImpl implements UserService {
         Role roleUser = roleRepository.findByName("ROLE_USER");
         List<Role> userRoles = new ArrayList<>();
         userRoles.add(roleUser);
-
         user.setRoles(userRoles);
+
+        user.addPortfolio(new Portfolio());
         user.setStatus(Status.ACTIVE);
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         userRepository.save(user);

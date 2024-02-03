@@ -2,12 +2,14 @@ package com.stock.model.portfolio;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stock.model.BaseEntity;
+import com.stock.model.user.User;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,8 +20,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Portfolio extends BaseEntity {
-    @Column(name = "portfolio_id")
-    private String accountID;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
+            CascadeType.REFRESH, CascadeType.MERGE})
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(name = "balance", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal balance;
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
@@ -39,4 +43,22 @@ public class Portfolio extends BaseEntity {
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
     private List<PortfolioStock> stocksList;
+
+    public void addSpending(PortfolioSpending newSpending) {
+        if(spendingsList == null) {
+            spendingsList = new ArrayList<>();
+        }
+        PortfolioSpending existingSpending = spendingsList.stream()
+                .filter(spending -> spending.getId() != null && spending.getId().equals(newSpending.getId()))
+                .findFirst().orElse(null);
+
+        if (existingSpending == null) {
+            spendingsList.add(newSpending);
+            newSpending.setPortfolio(this);
+        } else {
+            int index = spendingsList.indexOf(existingSpending);
+            spendingsList.set(index, newSpending);
+            newSpending.setPortfolio(this);
+        }
+    }
 }

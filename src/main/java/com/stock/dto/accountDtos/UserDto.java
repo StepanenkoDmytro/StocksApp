@@ -5,8 +5,8 @@ import com.stock.model.user.User;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 public class UserDto {
@@ -25,7 +25,8 @@ public class UserDto {
         return new UserDto(
                 user.getId(),
                 user.getEmail(),
-                mapAccountsListToDto(user.getAccounts())
+                new ArrayList()
+//                mapAccountsListToDto(user.getAccounts())
                 );
     }
 

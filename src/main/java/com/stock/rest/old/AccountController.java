@@ -1,4 +1,4 @@
-package com.stock.rest;
+package com.stock.rest.old;
 
 import com.stock.dto.accountDtos.*;
 import com.stock.dto.forCharts.PieChartData;
