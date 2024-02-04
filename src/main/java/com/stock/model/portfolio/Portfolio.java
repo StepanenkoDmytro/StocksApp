@@ -10,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Data
@@ -59,6 +60,20 @@ public class Portfolio extends BaseEntity {
             int index = spendingsList.indexOf(existingSpending);
             spendingsList.set(index, newSpending);
             newSpending.setPortfolio(this);
+        }
+    }
+
+    public void deleteSpending(String id) {
+        if(spendingsList == null) {
+            return;
+        }
+        Iterator<PortfolioSpending> iterator = spendingsList.iterator();
+        while (iterator.hasNext()) {
+            PortfolioSpending spending = iterator.next();
+            if (spending.getId().equals(id)) {
+                iterator.remove();
+                break;
+            }
         }
     }
 }

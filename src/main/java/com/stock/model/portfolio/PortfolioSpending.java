@@ -18,8 +18,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class PortfolioSpending implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private String id;
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE})
@@ -34,4 +34,12 @@ public class PortfolioSpending implements Serializable {
     @Column(name = "date")
     @CreatedDate
     private Date date;
+
+    public PortfolioSpending(String id, String category, String title, BigDecimal cost, Date date) {
+        this.id = id;
+        this.category = category;
+        this.title = title;
+        this.cost = cost;
+        this.date = date;
+    }
 }

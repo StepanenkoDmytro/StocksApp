@@ -3,236 +3,28 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-
     <changeSet id="1.4.0" author="dmytro.stepanenko">
-        <createTable tableName="portfolio">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="user_id" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="balance" type="NUMERIC(10,2)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="updated" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="status" type="VARCHAR(25)" defaultValue="ACTIVE">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.4.1" author="dmytro.stepanenko">
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="portfolio"
-                                 constraintName="fk_portfolio_users"
-                                 onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
-                                 referencedColumnNames="id"
-                                 referencedTableName="users"/>
-    </changeSet>
-
-    <changeSet id="1.4.2" author="dmytro.stepanenko">
-        <createTable tableName="profit">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="portfolio_id" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="profit" type="NUMERIC(10,2)">
-                <constraints nullable="true" unique="false"/>
-            </column>
-
-            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.4.3" author="dmytro.stepanenko">
-        <addForeignKeyConstraint baseColumnNames="portfolio_id"
-                                 baseTableName="profit"
-                                 constraintName="fk_profit_portfolio_id"
-                                 onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
-                                 referencedColumnNames="id"
-                                 referencedTableName="portfolio"/>
-    </changeSet>
-
-    <changeSet id="1.4.4" author="dmytro.stepanenko">
-        <createTable tableName="portfolio_coins">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="portfolio_id" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="asset_type" type="VARCHAR(50)">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="id_coin" type="VARCHAR(255)">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="symbol" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="count" type="NUMERIC(20,10)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="avg_price" type="NUMERIC(10,2)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.4.5" author="dmytro.stepanenko">
-        <addForeignKeyConstraint baseColumnNames="portfolio_id"
-                                 baseTableName="portfolio_coins"
-                                 constraintName="fk_portfolio_coins_portfolio_id"
-                                 onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
-                                 referencedColumnNames="id"
-                                 referencedTableName="portfolio"/>
-    </changeSet>
-
-    <changeSet id="1.4.6" author="dmytro.stepanenko">
-        <createTable tableName="portfolio_stocks">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="portfolio_id" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="asset_type" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="symbol" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="exchange" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="currency" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="avg_price" type="NUMERIC(10,2)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="count" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="country" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="sector" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="industry" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="dividend_yield" type="NUMERIC(5,4)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.4.7" author="dmytro.stepanenko">
-        <addForeignKeyConstraint baseColumnNames="portfolio_id"
-                                 baseTableName="portfolio_stocks"
-                                 constraintName="fk_portfolio_stocks_portfolio_id"
-                                 onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
-                                 referencedColumnNames="id"
-                                 referencedTableName="portfolio"/>
-    </changeSet>
-
-    <changeSet id="1.4.8" author="dmytro.stepanenko">
-        <createTable tableName="portfolio_spending">
-            <column name="id" type="BIGSERIAL">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="portfolio_id" type="BIGINT">
-                <constraints nullable="false" unique="false"/>
-            </column>
-
-            <column name="category" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="cost" type="NUMERIC(10,2)">
-                <constraints nullable="true"/>
-            </column>
-
-            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-    </changeSet>
-
-    <changeSet id="1.4.9" author="dmytro.stepanenko">
-        <addForeignKeyConstraint baseColumnNames="portfolio_id"
-                                 baseTableName="portfolio_spending"
-                                 constraintName="fk_portfolio_spending_portfolio_id"
-                                 onDelete="CASCADE"
-                                 onUpdate="RESTRICT"
-                                 referencedColumnNames="id"
-                                 referencedTableName="portfolio"/>
+        <sql>
+            INSERT INTO users (email, password) VALUES ('user@', '$2a$12$C5xDH.5ptBh18HfjA2EVhee1Pv/aojAfYdCqDxbA4pOPoxZjUrP5K');
+        </sql>
+        <sql>
+            INSERT INTO users (email, password) VALUES ('admin@', '$2a$12$.v/4gFV2W3OsR9ViaofWV.nmOKMcHjOZAkXi0amJzavKQzBK6IJSC');
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (2, 1);
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
+        </sql>
+        <sql>
+            INSERT INTO portfolio (user_id, balance, created, updated, status) VALUES (1, 0, NOW(), NOW(), 'ACTIVE');
+        </sql>
+        <sql>
+            INSERT INTO portfolio (user_id, balance, created, updated, status) VALUES (2, 0, NOW(), NOW(), 'ACTIVE');
+        </sql>
     </changeSet>
 
 </databaseChangeLog>
