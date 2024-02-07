@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/profile/")
 @CrossOrigin
@@ -18,13 +20,21 @@ public class PortfolioController {
         this.portfolioService = portfolioService;
     }
 
-    @PostMapping("add-spending")
-    public ResponseEntity addSpending(@RequestBody SpendingDTO spending) {
+    @GetMapping("spendings-list/{portfolioID}")
+    public ResponseEntity getSpendings(@PathVariable Long portfolioID) {
+        Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
+        List<SpendingDTO> spendingsList = portfolio.getSpendingsList().stream().map(SpendingDTO::mapToDTO).toList();
+        return ResponseEntity.ok().body(spendingsList);
+    }
+
+    @PostMapping("{portfolioID}/add-spending")
+    public ResponseEntity addSpending(@PathVariable Long portfolioID, @RequestBody SpendingDTO spending) {
         //TODO add @AuthenticationPrincipal UserDetails userDetails for find user portfolio
-        Portfolio portfolio = portfolioService.getPortfolioById(1L);
+        Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
         portfolio.addSpending(SpendingDTO.mapFromDTO(spending));
         portfolioService.savePortfolio(portfolio);
-        return ResponseEntity.ok().body(HttpStatus.OK);
+        spending.setSaved(true);
+        return ResponseEntity.ok().body(spending);
     }
 
     @DeleteMapping("delete-spending/{id}")

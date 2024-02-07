@@ -12,11 +12,11 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
-//@NamedEntityGraph(
-//        name = "userPortfolios",
-//        attributeNodes = {
-//        @NamedAttributeNode(value = "portfolios")
-//})
+@NamedEntityGraph(
+        name = "userPortfolios",
+        attributeNodes = {
+        @NamedAttributeNode(value = "portfolios")
+})
 public class User extends BaseEntity {
     @Column(name = "email")
     private String email;

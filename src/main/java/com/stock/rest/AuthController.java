@@ -49,7 +49,7 @@ public class AuthController {
             System.out.println(exp);
         }
 
-        User user = userService.getUserByEmail(email);
+        User user = userService.getFullUserByEmail(email);
         String token = jwtTokenProvider.createToken(user);
         Map<String, Object> response = new HashMap<>();
         response.put("user", UserDto.mapUserToUserDto(user));
@@ -59,20 +59,20 @@ public class AuthController {
 
     @PostMapping("sign-up")
     public ResponseEntity registerUser(@RequestBody SignUpDto newUser) {
-//        if (userService.isUserExistByEmail(newUser.getEmail())) {
-//            return ResponseEntity.badRequest().body("Email is already exist!");
-//        }
-//        if (userService.isUserExistByUsername(newUser.getUsername())) {
-//            return ResponseEntity.badRequest().body("Username is already exist!");
-//        }
-//        User user = SignUpDto.signUpToUser(newUser);
-//        userService.registration(user);
-//        String token = jwtTokenProvider.createToken(user);
-//
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("user", UserDto.mapUserToUserDto(user));
-//        response.put("token", token);
-        return ResponseEntity.ok("succseesasdasdsa");
+        if (userService.isUserExistByEmail(newUser.getEmail())) {
+            return ResponseEntity.badRequest().body("Email is already exist!");
+        }
+        if (userService.isUserExistByEmail(newUser.getEmail())) {
+            return ResponseEntity.badRequest().body("Username is already exist!");
+        }
+        User user = SignUpDto.signUpToUser(newUser);
+        userService.registration(user);
+        String token = jwtTokenProvider.createToken(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", UserDto.mapUserToUserDto(user));
+        response.put("token", token);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("refresh-token")
