@@ -1,6 +1,5 @@
 package com.stock.model.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stock.model.BaseEntity;
 import com.stock.model.portfolio.Portfolio;
 import lombok.*;
@@ -47,12 +46,8 @@ public class User extends BaseEntity {
         portfolio.setUser(this);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                '}';
+    protected boolean canEqual(final Object other) {
+        return other instanceof User;
     }
+
 }

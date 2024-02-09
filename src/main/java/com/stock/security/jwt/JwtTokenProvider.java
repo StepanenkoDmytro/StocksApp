@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 @Component
 @PropertySource("classpath:security-keys.properties")
 public class JwtTokenProvider {
+
+
     private final UserDetailsService userDetailsService;
     private final long validityInMilliseconds;
     private String secret;

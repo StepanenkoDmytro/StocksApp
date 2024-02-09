@@ -1,5 +1,6 @@
 package com.stock.dto.auth;
 
+//import com.stock.helper.dto.GoogleUserDto;
 import com.stock.model.user.User;
 import lombok.Data;
 
@@ -15,4 +16,12 @@ public class SignUpDto {
 
         return user;
     }
+
+//    public static User signUpGoogleToUser(GoogleUserDto signUpDTO){
+//        User user = new User();
+//        user.setEmail(signUpDTO.getEmail());
+//        user.setPassword("");
+//
+//        return user;
+//    }
 }
