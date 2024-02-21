@@ -1,0 +1,30 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="1.4.0" author="dmytro.stepanenko">
+        <sql>
+            INSERT INTO users (email, password) VALUES ('user@pegazzo.com', '$2a$12$C5xDH.5ptBh18HfjA2EVhee1Pv/aojAfYdCqDxbA4pOPoxZjUrP5K');
+        </sql>
+        <sql>
+            INSERT INTO users (email, password) VALUES ('admin@pegazzo.com', '$2a$12$.v/4gFV2W3OsR9ViaofWV.nmOKMcHjOZAkXi0amJzavKQzBK6IJSC');
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (2, 1);
+        </sql>
+        <sql>
+            INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
+        </sql>
+        <sql>
+            INSERT INTO portfolio (user_id, balance, created, updated, status) VALUES (1, 0, NOW(), NOW(), 'ACTIVE');
+        </sql>
+        <sql>
+            INSERT INTO portfolio (user_id, balance, created, updated, status) VALUES (2, 0, NOW(), NOW(), 'ACTIVE');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

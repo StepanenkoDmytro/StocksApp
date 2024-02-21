@@ -3,22 +3,300 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+
     <changeSet id="1.1.0" author="dmytro.stepanenko">
-        <sql>
-            INSERT INTO users (username, email, password) VALUES ('user', 'user@', '$2a$12$C5xDH.5ptBh18HfjA2EVhee1Pv/aojAfYdCqDxbA4pOPoxZjUrP5K');
-        </sql>
-        <sql>
-            INSERT INTO users (username, email, password) VALUES ('admin', 'admin@', '$2a$12$.v/4gFV2W3OsR9ViaofWV.nmOKMcHjOZAkXi0amJzavKQzBK6IJSC');
-        </sql>
-        <sql>
-            INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
-        </sql>
-        <sql>
-            INSERT INTO user_roles (user_id, role_id) VALUES (2, 1);
-        </sql>
-        <sql>
-            INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
-        </sql>
+        <createTable tableName="accounts">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="account_number" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="account_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="account_type" type="VARCHAR(25)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="balance" type="NUMERIC(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="fixed_profit" type="NUMERIC(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR(25)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.1" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="accounts"
+                                 constraintName="fk_accounts_users"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
+
+    <changeSet id="1.1.2" author="dmytro.stepanenko">
+        <createTable tableName="payments">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="beneficiary" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="beneficiary_acc_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="amount" type="NUMERIC(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="reference_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status_payment" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reason_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.3" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="payments"
+                                 constraintName="fk_payments_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.1.4" author="dmytro.stepanenko">
+        <createTable tableName="transacts">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="transaction_type" type="VARCHAR(50)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="ticker" type="VARCHAR(255)">
+                <constraints nullable="true" unique="false"/>
+            </column>
+
+            <column name="count" type="NUMERIC(20,10)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="price" type="NUMERIC(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="amount" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="source" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status_transact" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="reason_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="purchase_details" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.5" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="transacts"
+                                 constraintName="fk_transacts_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.1.6" author="dmytro.stepanenko">
+        <createTable tableName="account_coins">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="id_coin" type="VARCHAR(255)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="symbol" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="count_coin" type="NUMERIC(20,10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="average_price" type="NUMERIC(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.7" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="account_coins"
+                                 constraintName="fk_account_coins_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
+    </changeSet>
+
+    <changeSet id="1.1.8" author="dmytro.stepanenko">
+        <createTable tableName="account_stocks">
+            <column name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="account_id" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="symbol" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="asset_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="exchange" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="buy_price" type="NUMERIC(10,2)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="count_stocks" type="BIGINT">
+                <constraints nullable="false" unique="false"/>
+            </column>
+
+            <column name="country" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="sector" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="industry" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="dividend_yield" type="NUMERIC(5,4)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP" defaultValue="NOW()">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+
+    <changeSet id="1.1.9" author="dmytro.stepanenko">
+        <addForeignKeyConstraint baseColumnNames="account_id"
+                                 baseTableName="account_stocks"
+                                 constraintName="fk_account_stocks_account_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="accounts"/>
     </changeSet>
 
 </databaseChangeLog>

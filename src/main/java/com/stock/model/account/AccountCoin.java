@@ -55,14 +55,14 @@ public class AccountCoin implements Serializable {
 
 
     public static AccountCoin fromCoin(CoinDto coin, BigDecimal amountUSD){
-        BigDecimal amountCOIN = CoinBuyHelper.convertCoinByAmount(amountUSD, coin.getPriceUSD());
+        BigDecimal amountCOIN = CoinBuyHelper.convertCoinByAmount(amountUSD, coin.getPrice());
 
         AccountCoin accountCoin = new AccountCoin();
         accountCoin.setIdCoin(coin.getId());
         accountCoin.setName(coin.getName());
         accountCoin.setSymbol(coin.getSymbol());
         accountCoin.setCountCoin(amountCOIN);
-        accountCoin.setAvgPrice(coin.getPriceUSD());
+        accountCoin.setAvgPrice(coin.getPrice());
 
         return accountCoin;
     }

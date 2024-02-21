@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/coins")
+@RequestMapping("/api/v1/markets/coins")
 @CrossOrigin
 public class CoinController {
     private final CoinService coinService;
@@ -50,11 +50,10 @@ public class CoinController {
     }
 
     @GetMapping("/{coin_id}")
-    public ResponseEntity<CoinDetails> getCoinWithCandles(@AuthenticationPrincipal UserDetails userDetails,
-                                                          @PathVariable(value = "coin_id") String coinID) {
+    public ResponseEntity<CoinDto> getCoinWithCandles(@PathVariable(value = "coin_id") String coinID) {
         CoinDto coin = coinService.getByTicker(coinID);
-        List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
-        return ResponseEntity.ok(new CoinDetails(coin, candles));
+//        List<CandlesDto> candles = alphaVantageMarket.findCandlesById(coin.getSymbol());
+        return ResponseEntity.ok(coin);
     }
 
     @PostMapping("/{coin_id}")

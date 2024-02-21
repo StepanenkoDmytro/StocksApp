@@ -100,6 +100,7 @@ public class StockServiceImpl implements StockService {
                 .toList();
     }
 
+    //typesOfMover: DAY_GAINERS, DAY_LOSERS, MOST_ACTIVES
     @Override
     @Cacheable(value = "getMovers", key = "#typeOfMover")
     public List<CompanyDto> getMovers(String typeOfMover) {
@@ -112,6 +113,10 @@ public class StockServiceImpl implements StockService {
                 .stream()
                 .map(yhQuote -> getCompanyBySymbol(yhQuote.getSymbol()))
                 .toList();
+    }
+
+    public BigDecimal getPriceBySymbol(String symbol) {
+        return stockAPIService.findPriceStockByTicker(symbol);
     }
 
     @Override

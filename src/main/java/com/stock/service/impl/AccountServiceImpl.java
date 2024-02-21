@@ -136,16 +136,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void createAccount(String accountName, String accountType, User user) {
         //зробити валідацію
-        AccountType type = AccountType.valueOf(accountType);
-
-        Account account = new Account();
-        account.setAccountName(accountName);
-        account.setAccountType(type);
-
-        account.setAccountNumber(AccountHelper.generateAccountNumber());
-
-        user.addAccount(account);
-        userService.saveUser(user);
+//        AccountType type = AccountType.valueOf(accountType);
+//
+//        Account account = new Account();
+//        account.setAccountName(accountName);
+//        account.setAccountType(type);
+//
+//        account.setAccountNumber(AccountHelper.generateAccountNumber());
+//
+//        user.addAccount(account);
+//        userService.saveUser(user);
     }
 
     @Override

@@ -6,9 +6,11 @@ import com.stock.dto.stocks.CompanyDto;
 import com.stock.dto.stocks.OverviewCompanyDto;
 import com.stock.model.account.AccountStock;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface StockService {
+    BigDecimal getPriceBySymbol(String symbol);
     CompanyDto getCompanyBySymbol(String symbol);
     List<PricesData> getPriceAccountStocksByListWithoutUSD(List<AccountStock> stocks);
     List<PricesData> getPriceAccountStocksByListWithUSD(AccountDto account);

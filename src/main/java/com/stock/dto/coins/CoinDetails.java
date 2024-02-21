@@ -10,5 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 public class CoinDetails {
     private CoinDto coin;
-    private List<CandlesDto> candles;
+//    private List<CandlesDto> candles;
 }

@@ -3,6 +3,9 @@ package com.stock.rest;
 import com.stock.dto.auth.AuthDto;
 import com.stock.dto.auth.SignUpDto;
 import com.stock.dto.accountDtos.UserDto;
+import com.stock.helper.GoogleSignUpDto;
+import com.stock.helper.GoogleUserDto;
+import com.stock.helper.SocialAuthHelper;
 import com.stock.model.user.User;
 import com.stock.security.jwt.JwtTokenProvider;
 import com.stock.service.UserService;
@@ -15,6 +18,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,28 +31,33 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final SocialAuthHelper socialMediaHelper;
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
     @Value("${jwt.token.secret}")
     private String secret;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, SocialAuthHelper socialMediaHelper) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.socialMediaHelper = socialMediaHelper;
     }
 
     @PostMapping("sign-in")
     public ResponseEntity login(@RequestBody AuthDto authDto) {
         String email = authDto.getEmail();
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
+        } catch (Exception exp) {
+            System.out.println(exp);
+        }
 
         User user = userService.getFullUserByEmail(email);
         String token = jwtTokenProvider.createToken(user);
-
         Map<String, Object> response = new HashMap<>();
         response.put("user", UserDto.mapUserToUserDto(user));
         response.put("token", token);
@@ -57,14 +67,48 @@ public class AuthController {
     @PostMapping("sign-up")
     public ResponseEntity registerUser(@RequestBody SignUpDto newUser) {
         if (userService.isUserExistByEmail(newUser.getEmail())) {
-            return ResponseEntity.badRequest().body("Email is already taken!");
+            return ResponseEntity.badRequest().body("Email is already exist!");
         }
-        if (userService.isUserExistByUsername(newUser.getUsername())) {
-            return ResponseEntity.badRequest().body("Username is already taken!");
+        if (userService.isUserExistByEmail(newUser.getEmail())) {
+            return ResponseEntity.badRequest().body("Username is already exist!");
         }
         User user = SignUpDto.signUpToUser(newUser);
         userService.registration(user);
-        return ResponseEntity.ok("User registered successfully");
+        String token = jwtTokenProvider.createToken(user);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", UserDto.mapUserToUserDto(user));
+        response.put("token", token);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("google-sign-up")
+    public ResponseEntity<?> registerGoogleUser(@RequestBody GoogleSignUpDto newUser) {
+        GoogleUserDto googleUser = null;
+        try {
+            googleUser = socialMediaHelper.getEmailFromGoogleToken(newUser.getToken());
+            String emailUser = googleUser.getEmail();
+
+            if (googleUser.isEmailVerify()) {
+                if (!userService.isUserExistByEmail(emailUser)) {
+                    User user = GoogleUserDto.signUpGoogleToUser(googleUser);
+                    userService.registration(user);
+                }
+
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(emailUser, ""));
+
+                User user = userService.getFullUserByEmail(emailUser);
+                String token = jwtTokenProvider.createToken(user);
+                Map<String, Object> response = new HashMap<>();
+                response.put("user", UserDto.mapUserToUserDto(user));
+                response.put("token", token);
+                return ResponseEntity.ok(response);
+            }
+        } catch (GeneralSecurityException | IOException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("refresh-token")
