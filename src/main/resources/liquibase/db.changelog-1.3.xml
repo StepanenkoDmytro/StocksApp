@@ -210,7 +210,7 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="title" type="VARCHAR(255)">
+            <column name="comment" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
 

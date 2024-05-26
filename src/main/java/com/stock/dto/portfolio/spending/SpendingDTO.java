@@ -16,7 +16,7 @@ public class SpendingDTO {
     private String id;
     private Boolean isSaved;
     private String category;
-    private String title;
+    private String comment;
     private BigDecimal cost;
     private Date date;
 
@@ -24,7 +24,7 @@ public class SpendingDTO {
         return new PortfolioSpending(
                 spending.id,
                 spending.category,
-                spending.title,
+                spending.comment,
                 spending.cost,
                 spending.date
         );
@@ -35,7 +35,7 @@ public class SpendingDTO {
                 spending.getId(),
                 true,
                 spending.getCategory(),
-                spending.getTitle(),
+                spending.getComment(),
                 spending.getCost(),
                 spending.getDate()
         );

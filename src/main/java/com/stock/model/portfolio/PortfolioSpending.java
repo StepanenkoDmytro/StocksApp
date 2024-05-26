@@ -27,18 +27,18 @@ public class PortfolioSpending implements Serializable {
     private Portfolio portfolio;
     @Column(name = "category")
     private String category;
-    @Column(name = "title")
-    private String title;
+    @Column(name = "comment")
+    private String comment;
     @Column(name = "cost", columnDefinition = "DECIMAL(10,2)")
     private BigDecimal cost;
     @Column(name = "date")
     @CreatedDate
     private Date date;
 
-    public PortfolioSpending(String id, String category, String title, BigDecimal cost, Date date) {
+    public PortfolioSpending(String id, String category, String comment, BigDecimal cost, Date date) {
         this.id = id;
         this.category = category;
-        this.title = title;
+        this.comment = comment;
         this.cost = cost;
         this.date = date;
     }
