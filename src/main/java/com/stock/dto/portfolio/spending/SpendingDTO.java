@@ -4,7 +4,6 @@ import com.stock.model.portfolio.PortfolioSpending;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -34,7 +33,7 @@ public class SpendingDTO {
         return new SpendingDTO(
                 spending.getId(),
                 true,
-                spending.getCategory(),
+                spending.getCategoryId(),
                 spending.getComment(),
                 spending.getCost(),
                 spending.getDate()

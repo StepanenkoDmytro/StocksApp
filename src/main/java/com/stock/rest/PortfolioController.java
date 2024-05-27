@@ -1,5 +1,6 @@
 package com.stock.rest;
 
+import com.stock.dto.portfolio.category.CategoryDTO;
 import com.stock.dto.portfolio.spending.SpendingDTO;
 import com.stock.model.portfolio.Portfolio;
 import com.stock.service.PortfolioService;
@@ -41,5 +42,23 @@ public class PortfolioController {
     public ResponseEntity deleteSpending(@PathVariable String id) {
         portfolioService.deleteSpending(id);
         return ResponseEntity.ok().body(HttpStatus.OK);
+    }
+
+    @GetMapping("categories-list/{portfolioID}")
+    public ResponseEntity getCategories(@PathVariable Long portfolioID) {
+        Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
+        List<CategoryDTO> categoriesList = portfolio.getCategoryList().stream().map(CategoryDTO::mapToDTO).toList();
+        return ResponseEntity.ok().body(categoriesList);
+    }
+
+    @PostMapping("{portfolioID}/add-category")
+    public ResponseEntity addCategory(@PathVariable Long portfolioID, @RequestBody CategoryDTO category) {
+        //TODO add @AuthenticationPrincipal UserDetails userDetails for find user portfolio
+        System.out.println(category);
+        Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
+        portfolio.addCategory(CategoryDTO.mapFromDTO(category));
+        portfolioService.savePortfolio(portfolio);
+        category.setSaved(true);
+        return ResponseEntity.ok().body(category);
     }
 }

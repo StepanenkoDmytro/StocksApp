@@ -39,6 +39,10 @@ public class Portfolio extends BaseEntity {
     @JsonManagedReference
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
+    private List<PortfolioCategory> categoryList;
+    @JsonManagedReference
+    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "portfolio")
     private List<PortfolioCoin> coinsList;
     @JsonManagedReference
     @Fetch(value = FetchMode.SUBSELECT)
@@ -60,6 +64,24 @@ public class Portfolio extends BaseEntity {
             int index = spendingsList.indexOf(existingSpending);
             spendingsList.set(index, newSpending);
             newSpending.setPortfolio(this);
+        }
+    }
+
+    public void addCategory(PortfolioCategory newCategory) {
+        if(categoryList == null) {
+            categoryList = new ArrayList<>();
+        }
+        PortfolioCategory existingCategory = categoryList.stream()
+                .filter(category -> category.getId() != null && category.getId().equals(newCategory.getId()))
+                .findFirst().orElse(null);
+
+        if (existingCategory == null) {
+            categoryList.add(newCategory);
+            newCategory.setPortfolio(this);
+        } else {
+            int index = categoryList.indexOf(existingCategory);
+            categoryList.set(index, newCategory);
+            newCategory.setPortfolio(this);
         }
     }
 
