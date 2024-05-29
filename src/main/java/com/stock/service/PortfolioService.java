@@ -6,4 +6,5 @@ public interface PortfolioService {
     Portfolio getPortfolioById(Long portfolioID);
     void savePortfolio(Portfolio portfolio);
     void deleteSpending(String id);
+    void deleteCategory(String id);
 }

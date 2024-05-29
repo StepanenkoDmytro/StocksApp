@@ -61,4 +61,10 @@ public class PortfolioController {
         category.setSaved(true);
         return ResponseEntity.ok().body(category);
     }
+
+    @DeleteMapping("delete-category/{id}")
+    public ResponseEntity deleteCategory(@PathVariable String id) {
+        portfolioService.deleteCategory(id);
+        return ResponseEntity.ok().body(HttpStatus.OK);
+    }
 }

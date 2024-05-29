@@ -1,11 +1,9 @@
 package com.stock.dto.portfolio.category;
 
-import com.stock.dto.portfolio.spending.SpendingDTO;
 import com.stock.model.portfolio.PortfolioCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
