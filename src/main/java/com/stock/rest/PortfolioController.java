@@ -54,7 +54,7 @@ public class PortfolioController {
     @PostMapping("{portfolioID}/add-category")
     public ResponseEntity addCategory(@PathVariable Long portfolioID, @RequestBody CategoryDTO category) {
         //TODO add @AuthenticationPrincipal UserDetails userDetails for find user portfolio
-        System.out.println(category);
+//        System.out.println(category);
         Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
         portfolio.addCategory(CategoryDTO.mapFromDTO(category));
         portfolioService.savePortfolio(portfolio);

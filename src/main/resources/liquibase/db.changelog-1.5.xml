@@ -21,6 +21,10 @@
                 <constraints nullable="false"/>
             </column>
 
+            <column name="color" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="parent_id" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>

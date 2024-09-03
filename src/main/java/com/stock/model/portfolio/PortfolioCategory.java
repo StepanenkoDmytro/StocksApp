@@ -26,13 +26,17 @@ public class PortfolioCategory implements Serializable {
     private String title;
     @Column(name = "icon")
     private String icon;
+
+    @Column(name = "color")
+    private String color;
     @Column(name = "parent_id")
     private String parent;
 
-    public PortfolioCategory(String id, String title, String icon, String parent) {
+    public PortfolioCategory(String id, String title, String icon, String color, String parent) {
         this.id = id;
         this.title = title;
         this.icon = icon;
+        this.color = color;
         this.parent = parent;
     }
 }

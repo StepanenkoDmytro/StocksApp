@@ -12,6 +12,7 @@ public class CategoryDTO {
     private String id;
     private String title;
     private String icon;
+    private String color;
     private String parent;
     private boolean isSaved;
 
@@ -20,6 +21,7 @@ public class CategoryDTO {
                 categoryDTO.getId(),
                 categoryDTO.getTitle(),
                 categoryDTO.getIcon(),
+                categoryDTO.getColor(),
                 categoryDTO.getParent()
         );
     }
@@ -29,6 +31,7 @@ public class CategoryDTO {
                 category.getId(),
                 category.getTitle(),
                 category.getIcon(),
+                category.getColor(),
                 category.getParent(),
                 true
         );
