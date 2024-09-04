@@ -22,7 +22,7 @@
             </column>
 
             <column name="color" type="VARCHAR(50)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
 
             <column name="parent_id" type="VARCHAR(255)">
