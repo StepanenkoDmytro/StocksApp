@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  stock-archive-db:
+    image: postgres:14.7-alpine
+    environment:
+      POSTGRES_USER: pegazzo
+      POSTGRES_PASSWORD: YduxEs885bZjhCu
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./server/infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - db-data:/server/var/lib/postgresql/data
+    restart: unless-stopped
+
+  stock-archive-server:
+    image: stock-archive-server:0.1
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - stock-archive-db
+    environment:
+      - SERVER_PORT=8000
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-archive-db/stocks
+
+  pgadmin:
+    image: dpage/pgadmin4:7
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dmitriy.s.stepanenko@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 2OXAOIlhqv1UjJt
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  db-data:
+  pgadmin-data:
