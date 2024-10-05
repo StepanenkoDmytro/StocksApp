@@ -15,7 +15,7 @@ services:
   stock-archive-server:
     image: stock-archive-server:0.1
     build:
-      context: ./server
+      context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
