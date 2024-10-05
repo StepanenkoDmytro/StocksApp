@@ -25,17 +25,5 @@ services:
       - SERVER_PORT=8000
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stock-archive-db/stocks
 
-  pgadmin:
-    image: dpage/pgadmin4:7
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: dmitriy.s.stepanenko@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: 2OXAOIlhqv1UjJt
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-
 volumes:
   db-data:
-  pgadmin-data:
