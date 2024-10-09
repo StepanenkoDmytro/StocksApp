@@ -57,7 +57,7 @@ public class Company {
     public static Company mapOverviewCompany(OverviewCompany company) {
         BigDecimal companyDividend;
 
-        if(company.getDividendYield() == null || company.getDividendYield().isEmpty()) {
+        if(company.getDividendYield() == null || company.getDividendYield().equals("None")) {
             companyDividend = BigDecimal.ZERO;
         } else {
             companyDividend = new BigDecimal(company.getDividendYield());
