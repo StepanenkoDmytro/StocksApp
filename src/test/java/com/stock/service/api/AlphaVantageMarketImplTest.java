@@ -1,6 +1,5 @@
 package com.stock.service.api;
 
-import com.stock.dto.stocks.CompaniesForClient;
 import com.stock.dto.stocks.CompanyDto;
 import com.stock.service.StockService;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,7 @@
 package com.stock.service.impl;
 
+import com.stock.dto.stocks.CompaniesForClient;
+import com.stock.dto.stocks.CompanyDtoWithPrice;
 import com.stock.model.account.AccountStock;
 import com.stock.service.api.StockAPIService;
 import com.stock.service.api.producers.entity.alphaVantage.stock.OverviewCompany;
@@ -15,6 +17,9 @@ import com.stock.repository.stock.CompanyRepository;
 import com.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -33,6 +38,19 @@ public class StockServiceImpl implements StockService {
     public StockServiceImpl(StockAPIService stockAPIService, CompanyRepository companyRepository) {
         this.stockAPIService = stockAPIService;
         this.companyRepository = companyRepository;
+    }
+
+    @Override
+    public CompaniesForClient getCompaniesList(int page) {
+        int size = 10;
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Company> all = companyRepository.findAll(pageable);
+
+        List<CompanyDto> companies = all.getContent().stream()
+                .map(CompanyDto::mapCompany)
+                .collect(Collectors.toList());
+
+        return new CompaniesForClient(companies, all.getTotalPages(), all.getTotalElements(), page);
     }
 
     @Override

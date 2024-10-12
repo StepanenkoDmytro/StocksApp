@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CompaniesForClient {
-    List<CompanyDto> data;
-//    int totalPages;
-//    int totalItems;
-//    int currentPage;
+    private List<CompanyDto> data;
+    private int totalPages;
+    private long totalItems;
+    private int currentPage;
 }

@@ -4,10 +4,7 @@ import com.stock.dto.accountDtos.AccountDto;
 import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.dto.analytic.RiskResponse;
 import com.stock.dto.forCharts.PricesData;
-import com.stock.dto.stocks.CompanyDto;
-import com.stock.dto.stocks.CompanyDtoWithPrice;
-import com.stock.dto.stocks.OverviewCompanyDto;
-import com.stock.dto.stocks.StockBuyDetails;
+import com.stock.dto.stocks.*;
 import com.stock.model.account.Account;
 import com.stock.model.stock.analytic.RiskType;
 import com.stock.service.AccountService;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -39,6 +37,13 @@ public class StockController {
         this.portfolioAnalyzer = portfolioAnalyzer;
     }
 
+    @GetMapping
+    public ResponseEntity<CompaniesForClient> getAllCompanies(@RequestParam("page") Optional<Integer> page) {
+        int currentPage = page.orElse(0);
+        CompaniesForClient companiesList = stockService.getCompaniesList(currentPage);
+        return ResponseEntity.ok(companiesList);
+    }
+
     //typesOfMover: DAY_GAINERS, DAY_LOSERS, MOST_ACTIVES
     @GetMapping("/movers/{type}")
     public ResponseEntity<List<CompanyDtoWithPrice>> getActivesCompanies(@PathVariable("type") String type) {
@@ -50,12 +55,6 @@ public class StockController {
         }).collect(Collectors.toList());
         return ResponseEntity.ok(movers);
     }
-
-//    @GetMapping("/movers")
-//    public ResponseEntity<List<Mover>> getActiveCompanies() {
-//        List<Mover> test = yHFinanceMarketImpl.getMovers();
-//        return ResponseEntity.ok(test);
-//    }
 
     @GetMapping("/{symbol}")
     public ResponseEntity<OverviewCompanyDto> getCompanyBySymbol(@PathVariable("symbol") String symbol) {
