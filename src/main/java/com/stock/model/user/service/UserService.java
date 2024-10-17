@@ -38,9 +38,13 @@ public class UserService {
                 new UsernameNotFoundException(String.format("User with email: %s not found", email)));
     }
 
-    public User getUserByEmail(String email) {
+    public User getUserByEmailWithException(String email) {
         return userRepository.findByEmail(email).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User with email: %s not found", email)));
+    }
+
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public Optional<User> getUserById(long id) {

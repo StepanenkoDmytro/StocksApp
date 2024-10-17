@@ -6,6 +6,7 @@ import com.stock.service.exceptions.AuthSourceException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -19,30 +20,35 @@ public class PasswordRecoveryService {
     }
 
     public void sendRecoveryCodeToUser(String email) {
-        User userByEmail = userService.getUserByEmail(email);
-        if (userByEmail.getAuthSource() != null) {
-            throw new AuthSourceException("Password reset is unavailable for users authenticated via external OAuth providers");
+        Optional<User> optionalUserByEmail = userService.getUserByEmail(email);
+        if(optionalUserByEmail.isPresent()) {
+            User userByEmail = optionalUserByEmail.get();
+            if (userByEmail.getAuthSource() != null) {
+                throw new AuthSourceException("Password reset is unavailable for users authenticated via external OAuth providers");
+            }
+
+            String recoveryCode = generateRecoveryCode();
+            LocalDateTime recoveryTime = LocalDateTime.now().plusMinutes(5);
+
+            userByEmail.setRecoveryCode(recoveryCode);
+            userByEmail.setRecoveryCodeExpiration(recoveryTime);
+
+            userService.saveUser(userByEmail);
+            mailService.sendRecoveryCode(email, recoveryCode);
         }
-
-        String recoveryCode = generateRecoveryCode();
-        LocalDateTime recoveryTime = LocalDateTime.now().plusMinutes(5);
-
-        userByEmail.setRecoveryCode(recoveryCode);
-        userByEmail.setRecoveryCodeExpiration(recoveryTime);
-
-        userService.saveUser(userByEmail);
-        mailService.sendRecoveryCode(email, recoveryCode);
-
     }
 
     public void resetPassword(String email, String newPassword, String recoveryCode) {
-        User userByEmail = userService.getUserByEmail(email);
+        Optional<User> optionalUserByEmail = userService.getUserByEmail(email);
 
-        if(validateRecoveryCode(userByEmail, recoveryCode)) {
-            userByEmail.setPassword(userService.passwordEncoder().encode(newPassword));
-            userByEmail.setRecoveryCode(null);
-            userByEmail.setRecoveryCodeExpiration(null);
-            userService.saveUser(userByEmail);
+        if(optionalUserByEmail.isPresent()) {
+            User userByEmail = optionalUserByEmail.get();
+            if(validateRecoveryCode(userByEmail, recoveryCode)) {
+                userByEmail.setPassword(userService.passwordEncoder().encode(newPassword));
+                userByEmail.setRecoveryCode(null);
+                userByEmail.setRecoveryCodeExpiration(null);
+                userService.saveUser(userByEmail);
+            }
         }
     }
 
