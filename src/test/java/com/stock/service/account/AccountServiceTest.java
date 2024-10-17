@@ -1,34 +1,6 @@
 package com.stock.service.account;
 
-import com.stock.dto.accountDtos.AccountCoinDto;
-import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.coins.CoinDto;
-import com.stock.service.exceptions.AccountFetchException;
-import com.stock.model.account.Account;
-import com.stock.model.account.AccountCoin;
-import com.stock.model.account.AccountType;
-import com.stock.model.user.User;
-import com.stock.repository.account.AccountRepository;
-import com.stock.service.TransactService;
-import com.stock.service.UserService;
-import com.stock.service.impl.AccountServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 //@ExtendWith(MockitoExtension.class)
 //class AccountServiceTest {

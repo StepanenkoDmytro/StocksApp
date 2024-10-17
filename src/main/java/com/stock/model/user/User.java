@@ -6,6 +6,7 @@ import com.stock.model.portfolio.Portfolio;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,15 @@ public class User extends BaseEntity {
             CascadeType.REFRESH, CascadeType.MERGE},
             mappedBy = "user")
     private List<Portfolio> portfolios;
+
+    @Column(name = "recovery_code")
+    private String recoveryCode;
+
+    @Column(name = "recovery_code_expiration")
+    private LocalDateTime recoveryCodeExpiration;
+
+    @Column(name = "auth_source")
+    private String authSource;
 
     public User() {
     }

@@ -1,8 +1,8 @@
 package com.stock.security;
 
 import com.stock.model.user.User;
+import com.stock.model.user.service.UserService;
 import com.stock.security.jwt.JwtUserFactory;
-import com.stock.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

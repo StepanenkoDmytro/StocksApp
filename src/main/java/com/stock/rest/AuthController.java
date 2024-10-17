@@ -7,8 +7,10 @@ import com.stock.helper.GoogleSignUpDto;
 import com.stock.helper.GoogleUserDto;
 import com.stock.helper.SocialAuthHelper;
 import com.stock.model.user.User;
+import com.stock.model.user.dto.ResetPasswordRequest;
+import com.stock.model.user.service.PasswordRecoveryService;
+import com.stock.model.user.service.UserService;
 import com.stock.security.jwt.JwtTokenProvider;
-import com.stock.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -32,17 +34,19 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final SocialAuthHelper socialMediaHelper;
+    private final PasswordRecoveryService passwordRecoveryService;
     @Value("${jwt.token.expired}")
     private long validityInMilliseconds;
     @Value("${jwt.token.secret}")
     private String secret;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, SocialAuthHelper socialMediaHelper) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, SocialAuthHelper socialMediaHelper, PasswordRecoveryService passwordRecoveryService) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.socialMediaHelper = socialMediaHelper;
+        this.passwordRecoveryService = passwordRecoveryService;
     }
 
     @PostMapping("sign-in")
@@ -126,5 +130,17 @@ public class AuthController {
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token is expired or invalid");
+    }
+
+    @PostMapping("send-code")
+    public ResponseEntity<String> sendRecoveryCode(@RequestParam String email) {
+        passwordRecoveryService.sendRecoveryCodeToUser(email);
+        return ResponseEntity.ok("Recovery code sent to email");
+    }
+
+    @PostMapping("reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        passwordRecoveryService.resetPassword(request.getEmail(), request.getNewPassword(), request.getCode());
+        return ResponseEntity.ok("Password reset successful");
     }
 }

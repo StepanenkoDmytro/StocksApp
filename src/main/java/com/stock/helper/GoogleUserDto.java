@@ -24,6 +24,7 @@ public class GoogleUserDto {
         User user = new User();
         user.setEmail(signUpDTO.getEmail());
         user.setPassword("");
+        user.setAuthSource("google");
 
         return user;
     }
