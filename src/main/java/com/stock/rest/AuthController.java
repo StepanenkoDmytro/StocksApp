@@ -7,6 +7,7 @@ import com.stock.helper.GoogleSignUpDto;
 import com.stock.helper.GoogleUserDto;
 import com.stock.helper.SocialAuthHelper;
 import com.stock.model.user.User;
+import com.stock.model.user.dto.RecoveryCodeRequest;
 import com.stock.model.user.dto.ResetPasswordRequest;
 import com.stock.model.user.service.PasswordRecoveryService;
 import com.stock.model.user.service.UserService;
@@ -133,8 +134,8 @@ public class AuthController {
     }
 
     @PostMapping("send-code")
-    public ResponseEntity<String> sendRecoveryCode(@RequestParam String email) {
-        passwordRecoveryService.sendRecoveryCodeToUser(email);
+    public ResponseEntity<String> sendRecoveryCode(@RequestBody RecoveryCodeRequest email) {
+        passwordRecoveryService.sendRecoveryCodeToUser(email.getEmail());
         return ResponseEntity.ok("Recovery code sent to email");
     }
 
