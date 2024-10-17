@@ -25,7 +25,7 @@ public class PasswordRecoveryService {
         }
 
         String recoveryCode = generateRecoveryCode();
-        LocalDateTime recoveryTime = LocalDateTime.now().plusMinutes(30);
+        LocalDateTime recoveryTime = LocalDateTime.now().plusMinutes(5);
 
         userByEmail.setRecoveryCode(recoveryCode);
         userByEmail.setRecoveryCodeExpiration(recoveryTime);
