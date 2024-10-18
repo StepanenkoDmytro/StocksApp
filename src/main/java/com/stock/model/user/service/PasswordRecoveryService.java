@@ -19,7 +19,8 @@ public class PasswordRecoveryService {
         this.mailService = mailService;
     }
 
-    public void sendRecoveryCodeToUser(String email) {
+    public String sendRecoveryCodeToUser(String email) {
+        //TODO: rewrite when create ExceptionHandler and change return null
         Optional<User> optionalUserByEmail = userService.getUserByEmail(email);
         if(optionalUserByEmail.isPresent()) {
             User userByEmail = optionalUserByEmail.get();
@@ -35,7 +36,9 @@ public class PasswordRecoveryService {
 
             userService.saveUser(userByEmail);
             mailService.sendRecoveryCode(email, recoveryCode);
+            return recoveryCode;
         }
+        return null;
     }
 
     public void resetPassword(String email, String newPassword, String recoveryCode) {
