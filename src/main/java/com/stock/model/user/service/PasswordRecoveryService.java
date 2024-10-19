@@ -56,7 +56,7 @@ public class PasswordRecoveryService {
     }
 
     private String generateRecoveryCode() {
-        return String.valueOf(new Random().nextInt(999999));
+        return String.format("%06d", new Random().nextInt(999999));
     }
 
     public boolean validateRecoveryCode(User user, String code) {

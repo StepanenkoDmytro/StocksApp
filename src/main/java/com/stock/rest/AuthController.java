@@ -29,7 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @PropertySource("classpath:security-keys.properties")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
@@ -59,7 +59,7 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, authDto.getPassword()));
         } catch (Exception exp) {
-            System.out.println(exp);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password");
         }
 
         User user = userService.getFullUserByEmail(email);
