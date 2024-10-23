@@ -2,16 +2,16 @@ package com.stock.service.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stock.service.api.producers.entity.alphaVantage.crypto.TimeSeriesData;
-import com.stock.service.api.producers.entity.alphaVantage.stock.AVCompany;
-import com.stock.service.api.producers.entity.alphaVantage.stock.MonthlyTimeSeries;
-import com.stock.service.api.producers.entity.alphaVantage.stock.WeeklyTimeSeries;
-import com.stock.service.api.producers.wrappers.CandlesAlphaVantageData;
-import com.stock.service.api.producers.wrappers.MonthlyDataAlphaVantage;
-import com.stock.service.api.producers.wrappers.WeeklyDataAlphaVantage;
+import com.stock.model.coin.api.producers.entity.alphaVantage.crypto.TimeSeriesData;
+import com.stock.model.coin.api.producers.entity.alphaVantage.stock.AVCompany;
+import com.stock.model.coin.api.producers.entity.alphaVantage.stock.MonthlyTimeSeries;
+import com.stock.model.coin.api.producers.entity.alphaVantage.stock.WeeklyTimeSeries;
+import com.stock.model.coin.api.producers.wrappers.CandlesAlphaVantageData;
+import com.stock.model.coin.api.producers.wrappers.MonthlyDataAlphaVantage;
+import com.stock.model.coin.api.producers.wrappers.WeeklyDataAlphaVantage;
 import com.stock.dto.analytic.DataPriceShort;
 import com.stock.dto.forCharts.CandlesDto;
-import com.stock.service.exceptions.RequestException;
+import com.stock.exceptions.RequestException;
 import org.springframework.stereotype.Component;
 
 import java.net.http.HttpResponse;

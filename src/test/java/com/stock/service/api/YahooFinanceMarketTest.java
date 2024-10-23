@@ -1,8 +1,8 @@
 package com.stock.service.api;
 
-import com.stock.service.api.producers.entity.yahooFinance.Mover;
-import com.stock.service.api.producers.wrappers.MoversWrapper;
-import com.stock.service.exceptions.RequestException;
+import com.stock.model.coin.api.producers.entity.yahooFinance.Mover;
+import com.stock.model.coin.api.producers.wrappers.MoversWrapper;
+import com.stock.exceptions.RequestException;
 import com.stock.service.helpers.RequestManager;
 import com.stock.service.helpers.ResponseMapper;
 import org.junit.jupiter.api.Test;

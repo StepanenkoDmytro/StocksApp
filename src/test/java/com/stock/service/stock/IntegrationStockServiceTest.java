@@ -1,8 +1,8 @@
 package com.stock.service.stock;
 
-import com.stock.dto.stocks.CompanyDto;
-import com.stock.dto.stocks.OverviewCompanyDto;
-import com.stock.service.StockService;
+import com.stock.model.stock.dto.CompanyDto;
+import com.stock.model.stock.dto.OverviewCompanyDto;
+import com.stock.model.stock.service.StockService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

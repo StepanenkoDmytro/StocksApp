@@ -1,10 +1,10 @@
 package com.stock.service.impl;
 
-import com.stock.model.account.Account;
-import com.stock.model.account.AccountCoin;
-import com.stock.model.account.AccountStock;
+import com.stock.model.user.account.entities.Account;
+import com.stock.model.user.account.entities.AccountCoin;
+import com.stock.model.user.account.entities.AccountStock;
 import com.stock.model.trasact.Transact;
-import com.stock.repository.account.TransactRepository;
+import com.stock.model.user.account.repository.TransactRepository;
 import com.stock.service.TransactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

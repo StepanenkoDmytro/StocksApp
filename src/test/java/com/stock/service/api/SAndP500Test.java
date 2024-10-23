@@ -1,10 +1,10 @@
 package com.stock.service.api;
 
-import com.stock.model.account.Account;
-import com.stock.model.account.AccountStock;
-import com.stock.model.account.AccountType;
-import com.stock.model.stock.analytic.RiskType;
-import com.stock.service.analytic.PortfolioAnalyzer;
+import com.stock.model.user.account.entities.Account;
+import com.stock.model.user.account.entities.AccountStock;
+import com.stock.model.user.account.entities.AccountType;
+import com.stock.model.stock.analytic.entities.RiskType;
+import com.stock.model.stock.analytic.service.PortfolioAnalyzer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

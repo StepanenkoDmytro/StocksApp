@@ -1,8 +1,8 @@
 package com.stock.service;
 
-import com.stock.model.account.Account;
-import com.stock.model.account.AccountCoin;
-import com.stock.model.account.AccountStock;
+import com.stock.model.user.account.entities.Account;
+import com.stock.model.user.account.entities.AccountCoin;
+import com.stock.model.user.account.entities.AccountStock;
 import com.stock.model.trasact.Transact;
 
 import java.math.BigDecimal;

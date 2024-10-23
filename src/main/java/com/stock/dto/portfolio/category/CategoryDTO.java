@@ -1,6 +1,6 @@
 package com.stock.dto.portfolio.category;
 
-import com.stock.model.portfolio.PortfolioCategory;
+import com.stock.model.user.portfolio.entities.PortfolioCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

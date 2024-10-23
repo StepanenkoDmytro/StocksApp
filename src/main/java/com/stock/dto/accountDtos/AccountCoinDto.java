@@ -1,6 +1,6 @@
 package com.stock.dto.accountDtos;
 
-import com.stock.model.account.AccountCoin;
+import com.stock.model.user.account.entities.AccountCoin;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -1,8 +1,8 @@
 package com.stock.service.api;
 
-import com.stock.service.api.producers.FearGreedIndexMarket;
+import com.stock.model.coin.api.producers.FearGreedIndexMarket;
 import com.stock.dto.coins.FearGreedIndexDto;
-import com.stock.service.CoinService;
+import com.stock.model.coin.service.CoinService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

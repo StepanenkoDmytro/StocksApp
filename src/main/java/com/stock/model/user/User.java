@@ -1,8 +1,8 @@
 package com.stock.model.user;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.stock.model.BaseEntity;
-import com.stock.model.portfolio.Portfolio;
+import com.stock.config.BaseEntity;
+import com.stock.model.role.Role;
+import com.stock.model.user.portfolio.entities.Portfolio;
 import lombok.*;
 
 import javax.persistence.*;

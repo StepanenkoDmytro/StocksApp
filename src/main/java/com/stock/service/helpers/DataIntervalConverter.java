@@ -1,6 +1,6 @@
 package com.stock.service.helpers;
 
-import com.stock.service.api.producers.entity.globalIndex.IndexData;
+import com.stock.model.coin.api.producers.entity.globalIndex.IndexData;
 import com.stock.dto.analytic.DataPriceShort;
 
 import java.math.BigDecimal;

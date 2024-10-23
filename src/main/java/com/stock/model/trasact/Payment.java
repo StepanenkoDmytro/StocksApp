@@ -1,7 +1,7 @@
 package com.stock.model.trasact;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.stock.model.account.Account;
+import com.stock.model.user.account.entities.Account;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 

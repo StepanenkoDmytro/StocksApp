@@ -1,7 +1,7 @@
 package com.stock.dto.accountDtos;
 
 import com.stock.dto.portolioDTOs.PortfolioDTO;
-import com.stock.model.portfolio.Portfolio;
+import com.stock.model.user.portfolio.entities.Portfolio;
 import com.stock.model.user.User;
 import lombok.Data;
 

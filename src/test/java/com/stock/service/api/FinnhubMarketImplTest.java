@@ -1,6 +1,6 @@
 package com.stock.service.api;
 
-import com.stock.service.api.producers.FinnhubMarket;
+import com.stock.model.coin.api.producers.FinnhubMarket;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

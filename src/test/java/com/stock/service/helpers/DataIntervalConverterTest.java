@@ -1,8 +1,7 @@
 package com.stock.service.helpers;
 
 import com.stock.dto.analytic.DataPriceShort;
-import com.stock.service.api.producers.entity.globalIndex.IndexData;
-import com.stock.service.helpers.DataIntervalConverter;
+import com.stock.model.coin.api.producers.entity.globalIndex.IndexData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
 package com.stock.dto.portfolio.spending;
 
-import com.stock.model.portfolio.PortfolioSpending;
+import com.stock.model.user.portfolio.entities.PortfolioSpending;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

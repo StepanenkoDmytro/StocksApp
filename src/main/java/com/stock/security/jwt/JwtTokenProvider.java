@@ -1,6 +1,6 @@
 package com.stock.security.jwt;
 
-import com.stock.model.user.Role;
+import com.stock.model.role.Role;
 import com.stock.model.user.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.stock.service.helpers;
 
 
-import com.stock.service.exceptions.RequestException;
+import com.stock.exceptions.RequestException;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 

@@ -1,12 +1,12 @@
 package com.stock.model.user.service;
 
 
-import com.stock.model.portfolio.Portfolio;
-import com.stock.model.user.Role;
-import com.stock.model.user.Status;
+import com.stock.model.user.portfolio.entities.Portfolio;
+import com.stock.model.role.Role;
+import com.stock.model.role.Status;
 import com.stock.model.user.User;
-import com.stock.repository.user.RoleRepository;
-import com.stock.repository.user.UserRepository;
+import com.stock.model.role.repository.RoleRepository;
+import com.stock.model.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

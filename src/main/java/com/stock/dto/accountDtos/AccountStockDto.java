@@ -1,6 +1,6 @@
 package com.stock.dto.accountDtos;
 
-import com.stock.model.account.AccountStock;
+import com.stock.model.user.account.entities.AccountStock;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

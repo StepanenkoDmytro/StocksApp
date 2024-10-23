@@ -1,18 +1,12 @@
 package com.stock.dto.portolioDTOs;
 
-import com.stock.dto.accountDtos.AccountCoinDto;
-import com.stock.dto.accountDtos.AccountDto;
-import com.stock.dto.accountDtos.AccountStockDto;
 import com.stock.dto.portfolio.spending.SpendingDTO;
-import com.stock.model.account.Account;
-import com.stock.model.account.AccountCoin;
-import com.stock.model.portfolio.Portfolio;
-import com.stock.model.portfolio.PortfolioSpending;
+import com.stock.model.user.portfolio.entities.Portfolio;
+import com.stock.model.user.portfolio.entities.PortfolioSpending;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

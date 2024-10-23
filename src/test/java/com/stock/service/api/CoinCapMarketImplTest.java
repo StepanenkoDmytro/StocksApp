@@ -1,7 +1,7 @@
 package com.stock.service.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stock.service.api.producers.wrappers.CoinData;
+import com.stock.model.coin.api.producers.wrappers.CoinData;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

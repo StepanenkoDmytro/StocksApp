@@ -1,6 +1,6 @@
 package com.stock.service.helpers;
 
-import com.stock.model.stock.analytic.RiskType;
+import com.stock.model.stock.analytic.entities.RiskType;
 
 public class InterpreterHelper {
     public static RiskType riskInterpreter(double risk) {
