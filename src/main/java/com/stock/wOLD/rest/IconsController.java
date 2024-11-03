@@ -1,7 +1,7 @@
-package com.stock.rest;
+package com.stock.wOLD.rest;
 
 import com.stock.model.icons.GoogleIcon;
-import com.stock.repository.icons.GoogleIconsRepository;
+import com.stock.wOLD.icons.GoogleIconsRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

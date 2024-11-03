@@ -1,4 +1,4 @@
-package com.stock.repository.icons;
+package com.stock.wOLD.icons;
 
 import com.stock.model.icons.GoogleIcon;
 import org.springframework.data.jpa.repository.JpaRepository;
