@@ -41,4 +41,13 @@
                                  referencedColumnNames="id"
                                  referencedTableName="portfolio"/>
     </changeSet>
+
+    <changeSet id="1.5.2" author="dmytro.stepanenko">
+        <addColumn tableName="portfolio_category">
+            <column name="limit" type="DOUBLE PRECISION" defaultValue="0">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
