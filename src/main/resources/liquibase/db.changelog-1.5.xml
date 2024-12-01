@@ -50,4 +50,8 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="1.5.3" author="dmytro.stepanenko">
+        <renameColumn tableName="portfolio_category" oldColumnName="limit" newColumnName="limit_category" columnDataType="DOUBLE PRECISION"/>
+    </changeSet>
+
 </databaseChangeLog>

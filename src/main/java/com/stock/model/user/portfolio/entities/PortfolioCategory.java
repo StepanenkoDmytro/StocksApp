@@ -26,7 +26,7 @@ public class PortfolioCategory implements Serializable {
     private String title;
     @Column(name = "icon")
     private String icon;
-    @Column(name = "limit")
+    @Column(name = "limit_category")
     private Double limit;
     @Column(name = "color")
     private String color;

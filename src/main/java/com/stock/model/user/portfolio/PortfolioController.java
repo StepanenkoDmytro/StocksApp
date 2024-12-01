@@ -3,6 +3,7 @@ package com.stock.model.user.portfolio;
 import com.stock.dto.portfolio.category.CategoryDTO;
 import com.stock.dto.portfolio.spending.SpendingDTO;
 import com.stock.model.user.portfolio.entities.Portfolio;
+import com.stock.model.user.portfolio.entities.PortfolioCategory;
 import com.stock.model.user.portfolio.service.PortfolioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,8 @@ public class PortfolioController {
         //TODO add @AuthenticationPrincipal UserDetails userDetails for find user portfolio
 //        System.out.println(category);
         Portfolio portfolio = portfolioService.getPortfolioById(portfolioID);
-        portfolio.addCategory(CategoryDTO.mapFromDTO(category));
+        PortfolioCategory updatedCategory = CategoryDTO.mapFromDTO(category);
+        portfolio.addCategory(updatedCategory);
         portfolioService.savePortfolio(portfolio);
         category.setSaved(true);
         return ResponseEntity.ok().body(category);
