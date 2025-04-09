@@ -19,6 +19,9 @@ import java.util.List;
         @NamedAttributeNode(value = "portfolios")
 })
 public class User extends BaseEntity {
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "email")
     private String email;
 
@@ -31,7 +34,6 @@ public class User extends BaseEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-//    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH,
             CascadeType.REFRESH, CascadeType.MERGE},
             mappedBy = "user")
@@ -45,6 +47,9 @@ public class User extends BaseEntity {
 
     @Column(name = "auth_source")
     private String authSource;
+
+    @Column(name = "is_confirm_email")
+    private boolean isConfirmEmail = false;
 
     public User() {
     }

@@ -27,4 +27,20 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="1.6.3" author="dmytro.stepanenko">
+        <addColumn tableName="users">
+            <column name="is_confirm_email" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="1.6.4" author="dmytro.stepanenko">
+        <addColumn tableName="users">
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

@@ -1,6 +1,7 @@
 package com.stock.model.user.service;
 
 
+import com.stock.dto.accountDtos.UserShortDto;
 import com.stock.model.user.portfolio.entities.Portfolio;
 import com.stock.model.role.Role;
 import com.stock.model.role.Status;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,5 +80,10 @@ public class UserService {
 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Transactional
+    public void updateUser(UserShortDto userShortDto) {
+
     }
 }

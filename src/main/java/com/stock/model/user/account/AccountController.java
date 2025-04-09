@@ -5,8 +5,6 @@ import com.stock.dto.forCharts.PieChartData;
 import com.stock.model.user.User;
 import com.stock.model.user.service.UserService;
 import com.stock.model.user.account.service.AccountService;
-import com.stock.model.coin.service.CoinService;
-import com.stock.model.stock.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +20,11 @@ import java.math.BigDecimal;
 public class AccountController {
     private final UserService userService;
     private final AccountService accountService;
-    private final CoinService coinService;
-    private final StockService stockService;
 
     @Autowired
-    public AccountController(UserService userService, AccountService accountService, CoinService coinService, StockService stockService) {
+    public AccountController(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
-        this.coinService = coinService;
-        this.stockService = stockService;
     }
 
     @PostMapping("create")

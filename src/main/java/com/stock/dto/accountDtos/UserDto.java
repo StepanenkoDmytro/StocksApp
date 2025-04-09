@@ -11,12 +11,14 @@ import java.util.List;
 @Data
 public class UserDto {
     private Long id;
+    private String username;
     private String email;
     private List<PortfolioDTO> portfolio;
     private BigDecimal totalBalance;
 
-    public UserDto(Long id, String email, List<PortfolioDTO> portfolio) {
+    public UserDto(Long id, String username, String email, List<PortfolioDTO> portfolio) {
         this.id = id;
+        this.username = username;
         this.email = email;
         this.portfolio = portfolio;
     }
@@ -24,6 +26,7 @@ public class UserDto {
     public static UserDto mapUserToUserDto(User user) {
         return new UserDto(
                 user.getId(),
+                user.getName(),
                 user.getEmail(),
                 mapAccountsListToDto(user.getPortfolios())
                 );
